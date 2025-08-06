@@ -1,73 +1,126 @@
-# Welcome to your Lovable project
+# GATE CLUB - Digital Excellence Hub
 
-## Project info
+Welcome to the official repository for the GATE CLUB Digital Excellence Hub, a comprehensive web application designed to help students prepare for the GATE (Graduate Aptitude Test in Engineering) exams. This platform is developed by Silver Oak University to provide a seamless and effective learning experience.
 
-**URL**: https://lovable.dev/projects/8f3653e1-6a52-4b67-89d1-eee7c39b0be3
+![Hero Section](src/assets/hero-image.jpg)
 
-## How can I edit this code?
+## 🚀 Features
 
-There are several ways of editing your application.
+This platform is packed with features to aid in GATE preparation:
 
-**Use Lovable**
+- **Comprehensive Study Materials**: Access to university-curated content for all 27 GATE subjects.
+- **Advanced Mock Tests**: A realistic GATE testing environment with detailed performance analytics.
+- **Expert Community**: Connect with faculty, successful alumni, and peer study groups.
+- **Video Lectures**: Interactive sessions from expert faculty at Silver Oak University.
+- **Previous Year Papers**: An extensive bank of past GATE questions with detailed solutions.
+- **Progress Analytics**: Personalized insights to track and improve performance.
+- **24/7 Access**: Learn anytime, anywhere.
+- **AI-Powered Personalization**: Get personalized recommendations for a tailored learning path.
+- **Instant Doubt Resolution**: Get your questions answered instantly.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8f3653e1-6a52-4b67-89d1-eee7c39b0be3) and start prompting.
+## 🛠️ Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+This project is built with a modern tech stack:
 
-**Use your preferred IDE**
+- **Frontend**: [React](https://reactjs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Backend**: [Supabase](https://supabase.io/)
+- **Form Management**: [React Hook Form](https://react-hook-form.com/)
+- **Routing**: [React Router](https://reactrouter.com/)
+- **Linting**: [ESLint](https://eslint.org/)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🏁 Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Follow these instructions to set up the project locally.
 
-Follow these steps:
+### Prerequisites
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Bun](https://bun.sh/) (as a package manager)
+- A [Supabase](https://supabase.io/) account
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/gate-club.git
+    cd gate-club
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+2.  **Install dependencies:**
+    ```bash
+    bun install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the root of the project and add your Supabase project URL and anon key:
+    ```
+    VITE_SUPABASE_URL=your-supabase-project-url
+    VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+    ```
+
+4.  **Run the development server:**
+    ```bash
+    bun run dev
+    ```
+    The application should now be running on `http://localhost:5173`.
+
+## 📂 Project Structure
+
+The project follows a standard Vite + React project structure:
+
+```
+/
+├── public/              # Static assets
+├── src/
+│   ├── assets/          # Images and other assets
+│   ├── components/      # Reusable UI components
+│   ├── hooks/           # Custom React hooks
+│   ├── integrations/    # Supabase client and types
+│   ├── lib/             # Utility functions
+│   ├── pages/           # Application pages
+│   ├── App.tsx          # Main App component
+│   └── main.tsx         # Entry point
+├── supabase/            # Supabase migrations and config
+├── package.json         # Project metadata and dependencies
+└── vite.config.ts       # Vite configuration
 ```
 
-**Edit a file directly in GitHub**
+## ☁️ Supabase Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This project uses Supabase for its backend services.
 
-**Use GitHub Codespaces**
+1.  **Create a new Supabase project:**
+    Go to the [Supabase Dashboard](https://app.supabase.io) and create a new project.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2.  **Get your API keys:**
+    In your Supabase project, go to `Settings` > `API` to find your project URL and `anon` key.
 
-## What technologies are used for this project?
+3.  **Set up the database schema:**
+    Use the SQL files in the `supabase/migrations` directory to set up your database schema. You can run these queries in the Supabase SQL editor.
 
-This project is built with:
+## 🚀 Deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The application can be deployed to any static site hosting service like Vercel, Netlify, or GitHub Pages.
 
-## How can I deploy this project?
+Run the following command to build the application for production:
+```bash
+bun run build
+```
+This will create a `dist` directory with the production-ready files.
 
-Simply open [Lovable](https://lovable.dev/projects/8f3653e1-6a52-4b67-89d1-eee7c39b0be3) and click on Share -> Publish.
+## 🙏 Contributing
 
-## Can I connect a custom domain to my Lovable project?
+Contributions are welcome! Please follow these steps to contribute:
 
-Yes, you can!
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a pull request.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📄 License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
