@@ -14,13 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      auth_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          session_token: string
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          session_token: string
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          session_token?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auth_sessions_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          created_at: string
+          department: string | null
+          enrollment_no: string
+          first_name: string | null
+          id: string
+          is_active: boolean
+          last_name: string | null
+          password_hash: string | null
+          updated_at: string
+          year_of_study: number | null
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          enrollment_no: string
+          first_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_name?: string | null
+          password_hash?: string | null
+          updated_at?: string
+          year_of_study?: number | null
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          enrollment_no?: string
+          first_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_name?: string | null
+          password_hash?: string | null
+          updated_at?: string
+          year_of_study?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_expired_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
