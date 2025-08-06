@@ -39,12 +39,12 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group">
-                Start Your Journey
+              <Button variant="hero" size="lg" className="group" onClick={() => window.location.href = '/auth'}>
+                Access Student Portal
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="academic" size="lg" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-primary">
-                Explore Resources
+              <Button variant="academic" size="lg" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-primary" onClick={() => window.location.href = '/subjects'}>
+                Browse Subjects
               </Button>
             </div>
 
