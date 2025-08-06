@@ -109,18 +109,3 @@ Run the following command to build the application for production:
 bun run build
 ```
 This will create a `dist` directory with the production-ready files.
-
-## 🙏 Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/your-feature-name`).
-3.  Make your changes.
-4.  Commit your changes (`git commit -m 'Add some feature'`).
-5.  Push to the branch (`git push origin feature/your-feature-name`).
-6.  Open a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
