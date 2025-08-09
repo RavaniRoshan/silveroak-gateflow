@@ -9,6 +9,8 @@ import Auth from "./pages/Auth";
 import Subjects from "./pages/Subjects";
 import MockPapers from "./pages/MockPapers";
 import ConnectMentor from "./pages/ConnectMentor";
+import Community from "./pages/Community";
+import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/subjects" element={<Subjects />} />
             <Route path="/mock-papers" element={<MockPapers />} />
             <Route path="/connect-mentor" element={<ConnectMentor />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/resources" element={<Resources />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

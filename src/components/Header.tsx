@@ -44,10 +44,10 @@ const Header = () => {
             <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
               Connect Mentor
             </a>
-            <a href="#community" className="text-foreground hover:text-primary transition-colors">
+            <a href="/community" className="text-foreground hover:text-primary transition-colors">
               Community
             </a>
-            <a href="#resources" className="text-foreground hover:text-primary transition-colors">
+            <a href="/resources" className="text-foreground hover:text-primary transition-colors">
               Resources
             </a>
           </nav>
@@ -107,14 +107,14 @@ const Header = () => {
                     Connect Mentor
                   </a>
                   <a 
-                    href="#community" 
+                    href="/community" 
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Community
                   </a>
                   <a 
-                    href="#resources" 
+                    href="/resources" 
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
