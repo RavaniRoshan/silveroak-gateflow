@@ -119,9 +119,9 @@ const ConnectMentor = () => {
 
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
-      case 'Available': return 'bg-green-100 text-green-800';
-      case 'Busy': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Available': return 'bg-success/10 text-success border border-success/20';
+      case 'Busy': return 'bg-destructive/10 text-destructive border border-destructive/20';
+      default: return 'bg-muted text-muted-foreground border border-border';
     }
   };
 

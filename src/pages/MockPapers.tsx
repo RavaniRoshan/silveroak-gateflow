@@ -140,17 +140,17 @@ const MockPapers = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Easy': return 'bg-green-100 text-green-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'Hard': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Easy': return 'bg-success/10 text-success border border-success/20';
+      case 'Medium': return 'bg-warning/10 text-warning border border-warning/20';
+      case 'Hard': return 'bg-destructive/10 text-destructive border border-destructive/20';
+      default: return 'bg-muted text-muted-foreground border border-border';
     }
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 70) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 70) return 'text-success';
+    if (score >= 60) return 'text-warning';
+    return 'text-destructive';
   };
 
   return (
@@ -293,9 +293,9 @@ const MockPapers = () => {
         )}
 
         {/* Additional Info */}
-        <div className="mt-12 bg-blue-50 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">About GATE Mock Papers</h3>
-          <p className="text-blue-800 text-sm leading-relaxed">
+        <div className="mt-12 bg-primary/5 rounded-lg p-6 border border-primary/10">
+          <h3 className="text-lg font-semibold text-primary mb-2">About GATE Mock Papers</h3>
+          <p className="text-primary/80 text-sm leading-relaxed">
             Practice with authentic GATE question papers from the last 5 years. Each paper is designed to simulate 
             the actual exam environment with accurate timing, marking scheme, and difficulty level. All solutions 
             are provided with detailed explanations by our Silver Oak University faculty.

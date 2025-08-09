@@ -36,7 +36,7 @@ const SimpleCaptcha = ({ onVerify }: { onVerify: (isValid: boolean) => void }) =
           placeholder="Answer"
           className="w-20"
         />
-        {isVerified && <Shield className="h-4 w-4 text-green-600" />}
+        {isVerified && <Shield className="h-4 w-4 text-success" />}
       </div>
     </div>
   );
@@ -193,8 +193,8 @@ const Auth = () => {
             
             <TabsContent value="signup">
               <form onSubmit={(e) => handleSubmit(e, true)} className="space-y-4">
-                <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 mb-4">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-primary/5 p-3 rounded-lg border border-primary/10 mb-4">
+                  <p className="text-sm text-primary">
                     <strong>First time accessing GATE CLUB?</strong><br/>
                     Enter your enrollment number and create a password for future logins.
                   </p>
