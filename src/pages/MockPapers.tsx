@@ -205,66 +205,82 @@ const MockPapers = () => {
           </div>
         </div>
 
-        {/* Papers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPapers.map((paper) => (
-            <Card key={paper.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-university-primary" />
-                    <Badge variant="outline">{paper.year}</Badge>
-                  </div>
-                  <Badge className={getDifficultyColor(paper.difficulty)}>
-                    {paper.difficulty}
-                  </Badge>
-                </div>
-                
-                <CardTitle className="text-lg">{paper.title}</CardTitle>
-                <CardDescription>
-                  {paper.subject} ({paper.subjectCode})
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Paper Stats */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span>{paper.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
-                      <span>{paper.questions} Questions</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span>{paper.attempts} Attempts</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-muted-foreground">Avg Score:</span>
-                      <span className={`font-semibold ${getScoreColor(paper.avgScore)}`}>
-                        {paper.avgScore}%
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button className="flex-1" size="sm">
-                      <Play className="h-4 w-4 mr-2" />
-                      Take Test
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Papers Grouped by Year */}
+        {Object.entries(
+          filteredPapers.reduce((acc: Record<string, typeof filteredPapers>, paper) => {
+            const y = paper.year.toString();
+            (acc[y] ||= []).push(paper);
+            return acc;
+          }, {} as Record<string, typeof filteredPapers>)
+        )
+          .sort(([a], [b]) => Number(b) - Number(a))
+          .map(([year, papers]) => (
+            <section key={year} aria-labelledby={`year-${year}`} className="mb-10">
+              <div className="flex items-center justify-between mb-3">
+                <h2 id={`year-${year}`} className="text-xl font-semibold">{year} Papers</h2>
+                <Badge variant="outline">{papers.length}</Badge>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {papers.map((paper) => (
+                  <Card key={paper.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <FileText className="h-5 w-5 text-university-primary" />
+                          <Badge variant="outline">{paper.year}</Badge>
+                        </div>
+                        <Badge className={getDifficultyColor(paper.difficulty)}>
+                          {paper.difficulty}
+                        </Badge>
+                      </div>
+                      
+                      <CardTitle className="text-lg">{paper.title}</CardTitle>
+                      <CardDescription>
+                        {paper.subject} ({paper.subjectCode})
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Paper Stats */}
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                            <span>{paper.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <span>{paper.questions} Questions</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span>{paper.attempts} Attempts</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-muted-foreground">Avg Score:</span>
+                            <span className={`font-semibold ${getScoreColor(paper.avgScore)}`}>
+                              {paper.avgScore}%
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* Action Buttons */}
+                        <div className="flex gap-2">
+                          <Button className="flex-1" size="sm">
+                            <Play className="h-4 w-4 mr-2" />
+                            Take Test
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+        ))}
 
         {filteredPapers.length === 0 && (
           <div className="text-center py-12">
