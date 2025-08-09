@@ -4,6 +4,7 @@ import { BookOpen, Users, Trophy, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeToggle } from "@/components/theme-toggle";
 import universityLogo from "@/assets/university-logo.png";
 
 const Header = () => {
@@ -53,7 +54,7 @@ const Header = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {student ? (
               <>
                 <div className="hidden md:flex items-center space-x-2">
@@ -76,6 +77,7 @@ const Header = () => {
               </Button>
             )}
             
+            <ThemeToggle />
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
