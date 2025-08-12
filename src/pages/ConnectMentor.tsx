@@ -327,6 +327,8 @@ const ConnectMentor = () => {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
