@@ -11,6 +11,7 @@ import BranchSelection from "./pages/BranchSelection";
 import Dashboard from "./pages/Dashboard";
 import PYQs from "./pages/PYQs";
 import Tests from "./pages/Tests";
+import StudyResources from "./pages/StudyResources";
 import Subjects from "./pages/Subjects";
 import MockPapers from "./pages/MockPapers";
 import ConnectMentor from "./pages/ConnectMentor";
