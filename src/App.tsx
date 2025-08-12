@@ -53,6 +53,11 @@ const App = () => (
                 <Tests />
               </ProtectedRoute>
             } />
+            <Route path="/study-resources" element={
+              <ProtectedRoute>
+                <StudyResources />
+              </ProtectedRoute>
+            } />
             <Route path="/subjects" element={
               <ProtectedRoute>
                 <Subjects />
