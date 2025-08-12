@@ -16,9 +16,10 @@ interface Student {
 interface AuthContextType {
   student: Student | null;
   loading: boolean;
-  signIn: (enrollmentNo: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (enrollmentNo: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
+  updateBranchSelection: (department: string) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
