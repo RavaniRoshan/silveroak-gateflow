@@ -85,7 +85,7 @@ const Community = () => {
               <Card key={title} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <Icon className="h-5 w-5 text-university-primary" />
+                    <Icon className="h-5 w-5 text-primary" />
                     <CardTitle className="text-lg">{title}</CardTitle>
                   </div>
                   <CardDescription>{desc}</CardDescription>
