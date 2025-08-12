@@ -47,7 +47,7 @@ const Auth = () => {
   const { signIn, signUp, student, loading } = useAuth();
   const { toast } = useToast();
   
-  const [enrollmentNo, setEnrollmentNo] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,7 +55,11 @@ const Auth = () => {
 
   useEffect(() => {
     if (student && !loading) {
-      navigate('/');
+      if (!student.branch_selected) {
+        navigate('/branch-selection');
+      } else {
+        navigate('/dashboard');
+      }
     }
   }, [student, loading, navigate]);
 
@@ -71,7 +75,7 @@ const Auth = () => {
       return;
     }
 
-    if (!enrollmentNo || !password) {
+    if (!email || !password) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields",
@@ -80,10 +84,20 @@ const Auth = () => {
       return;
     }
 
+    // Validate university email domain
+    if (!email.endsWith('@university.edu')) {
+      toast({
+        title: "Invalid Email Domain",
+        description: "Only university email addresses (@university.edu) are allowed",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
-      const { error } = isSignUp ? await signUp(enrollmentNo, password) : await signIn(enrollmentNo, password);
+      const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
       
       if (error) {
         toast({
@@ -111,20 +125,20 @@ const Auth = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-university-primary via-university-forest to-university-secondary flex items-center justify-center">
-        <div className="text-white text-lg">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center">
+        <div className="text-foreground text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-university-primary via-university-forest to-university-secondary flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-university-primary/10 flex items-center justify-center">
-            <GraduationCap className="h-6 w-6 text-university-primary" />
+          <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <GraduationCap className="h-6 w-6 text-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold text-university-forest">
+          <CardTitle className="text-2xl font-bold text-foreground">
             Silver Oak University
           </CardTitle>
           <CardDescription>
@@ -142,12 +156,13 @@ const Auth = () => {
             <TabsContent value="signin">
               <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="enrollment-signin">Enrollment Number</Label>
+                  <Label htmlFor="email-signin">University Email</Label>
                   <Input
-                    id="enrollment-signin"
-                    placeholder="e.g., SOE2021CS001"
-                    value={enrollmentNo}
-                    onChange={(e) => setEnrollmentNo(e.target.value.toUpperCase())}
+                    id="email-signin"
+                    type="email"
+                    placeholder="your.name@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                     required
                   />
                 </div>
@@ -196,17 +211,18 @@ const Auth = () => {
                 <div className="bg-primary/5 p-3 rounded-lg border border-primary/10 mb-4">
                   <p className="text-sm text-primary">
                     <strong>First time accessing GATE CLUB?</strong><br/>
-                    Enter your enrollment number and create a password for future logins.
+                    Enter your university email and create a password for future logins.
                   </p>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="enrollment-signup">Enrollment Number</Label>
+                  <Label htmlFor="email-signup">University Email</Label>
                   <Input
-                    id="enrollment-signup"
-                    placeholder="e.g., SOE2021CS001"
-                    value={enrollmentNo}
-                    onChange={(e) => setEnrollmentNo(e.target.value.toUpperCase())}
+                    id="email-signup"
+                    type="email"
+                    placeholder="your.name@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                     required
                   />
                 </div>
@@ -251,10 +267,15 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
           
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-2">
             <p className="text-sm text-muted-foreground">
               Free resources for Silver Oak University students only
             </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-sm font-medium text-blue-800 mb-1">Demo Credentials</p>
+              <p className="text-xs text-blue-600">Email: rudraksh@university.edu</p>
+              <p className="text-xs text-blue-600">Password: test</p>
+            </div>
           </div>
         </CardContent>
       </Card>
