@@ -211,7 +211,7 @@ const ConnectMentor = () => {
                   {/* Mentor Stats */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-university-primary" />
+                      <GraduationCap className="h-4 w-4 text-primary" />
                       <span className="text-sm font-medium">{mentor.specialization}</span>
                     </div>
                     
