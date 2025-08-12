@@ -148,12 +148,42 @@ const Dashboard = () => {
         {/* Main Dashboard Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-6 bg-card border border-border text-foreground">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tests">Tests</TabsTrigger>
-            <TabsTrigger value="pyqs">PYQs</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="alumni">Alumni</TabsTrigger>
+            <TabsTrigger
+              value="overview"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger
+              value="tests"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              Tests
+            </TabsTrigger>
+            <TabsTrigger
+              value="pyqs"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              PYQs
+            </TabsTrigger>
+            <TabsTrigger
+              value="resources"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              Resources
+            </TabsTrigger>
+            <TabsTrigger
+              value="profile"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              Profile
+            </TabsTrigger>
+            <TabsTrigger
+              value="alumni"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+            >
+              Alumni
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
