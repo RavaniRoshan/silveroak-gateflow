@@ -48,8 +48,10 @@ export type Database = {
       }
       students: {
         Row: {
+          branch_selected: boolean
           created_at: string
           department: string | null
+          email: string
           enrollment_no: string
           first_name: string | null
           id: string
