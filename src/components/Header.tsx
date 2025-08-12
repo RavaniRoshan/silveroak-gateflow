@@ -36,20 +36,20 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/subjects" className="text-foreground hover:text-primary transition-colors">
-              Subjects
+            <a href="/tests" className="text-foreground hover:text-primary transition-colors">
+              Tests
             </a>
-            <a href="/mock-papers" className="text-foreground hover:text-primary transition-colors">
-              Mock Papers
+            <a href="/pyqs" className="text-foreground hover:text-primary transition-colors">
+              PYQs
             </a>
-            <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
-              Connect Mentor
+            <a href="/study-resources" className="text-foreground hover:text-primary transition-colors">
+              Resources
             </a>
             <a href="/community" className="text-foreground hover:text-primary transition-colors">
               Community
             </a>
-            <a href="/resources" className="text-foreground hover:text-primary transition-colors">
-              Resources
+            <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
+              Mentors
             </a>
           </nav>
 
