@@ -47,7 +47,7 @@ const Auth = () => {
   const { signIn, signUp, student, loading } = useAuth();
   const { toast } = useToast();
   
-  const [enrollmentNo, setEnrollmentNo] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
