@@ -22,10 +22,10 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* University Logo & Branding */}
-          <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate('/')}>
-            <img 
-              src={universityLogo} 
-              alt="Silver Oak University" 
+          <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate(student ? '/dashboard' : '/')}>
+            <img
+              src={universityLogo}
+              alt="Silver Oak University"
               className="h-10 w-10"
             />
             <div className="hidden md:block">
