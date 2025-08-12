@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import BranchSelection from "./pages/BranchSelection";
 import Subjects from "./pages/Subjects";
 import MockPapers from "./pages/MockPapers";
 import ConnectMentor from "./pages/ConnectMentor";
