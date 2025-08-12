@@ -8,12 +8,14 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import BranchSelection from "./pages/BranchSelection";
+import Dashboard from "./pages/Dashboard";
 import Subjects from "./pages/Subjects";
 import MockPapers from "./pages/MockPapers";
 import ConnectMentor from "./pages/ConnectMentor";
 import Community from "./pages/Community";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -28,13 +30,41 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/branch-selection" element={<BranchSelection />} />
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/subjects" element={<Subjects />} />
-            <Route path="/mock-papers" element={<MockPapers />} />
-            <Route path="/connect-mentor" element={<ConnectMentor />} />
-            <Route path="/community" element={<Community />} />
-            <Route path="/resources" element={<Resources />} />
+            <Route path="/branch-selection" element={
+              <ProtectedRoute requireBranch={false}>
+                <BranchSelection />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/subjects" element={
+              <ProtectedRoute>
+                <Subjects />
+              </ProtectedRoute>
+            } />
+            <Route path="/mock-papers" element={
+              <ProtectedRoute>
+                <MockPapers />
+              </ProtectedRoute>
+            } />
+            <Route path="/connect-mentor" element={
+              <ProtectedRoute>
+                <ConnectMentor />
+              </ProtectedRoute>
+            } />
+            <Route path="/community" element={
+              <ProtectedRoute>
+                <Community />
+              </ProtectedRoute>
+            } />
+            <Route path="/resources" element={
+              <ProtectedRoute>
+                <Resources />
+              </ProtectedRoute>
+            } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
