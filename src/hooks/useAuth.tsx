@@ -41,41 +41,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem('gate_club_token');
-      if (!token) {
+      const studentData = localStorage.getItem('gate_club_student');
+      if (!studentData) {
         setLoading(false);
         return;
       }
 
-      const { data, error } = await supabase
-        .from('auth_sessions')
-        .select(`
-          student_id,
-          expires_at,
-          students (
-            id,
-            email,
-            enrollment_no,
-            first_name,
-            last_name,
-            department,
-            year_of_study,
-            is_active,
-            branch_selected
-          )
-        `)
-        .eq('session_token', token)
-        .gt('expires_at', new Date().toISOString())
-        .maybeSingle();
-
-      if (error || !data || !data.students) {
-        localStorage.removeItem('gate_club_token');
-        setStudent(null);
-      } else {
-        setStudent(data.students as Student);
-      }
+      const student = JSON.parse(studentData);
+      setStudent(student);
     } catch (error) {
-      localStorage.removeItem('gate_club_token');
+      localStorage.removeItem('gate_club_student');
       setStudent(null);
     }
     setLoading(false);
@@ -88,56 +63,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { error: 'Only university email addresses (@university.edu) are allowed' };
       }
 
-      // First check if student exists
-      const { data: studentData, error: studentError } = await supabase
-        .from('students')
-        .select('*')
-        .eq('email', email)
-        .eq('is_active', true)
-        .maybeSingle();
+      // Demo user credentials
+      const demoUsers = {
+        'rudraksh@university.edu': {
+          id: '1',
+          email: 'rudraksh@university.edu',
+          enrollment_no: 'SOE2021CS001',
+          first_name: 'Rudraksh',
+          last_name: 'Patel',
+          department: null,
+          year_of_study: 4,
+          is_active: true,
+          branch_selected: false,
+          password: 'test'
+        }
+      };
 
-      if (studentError || !studentData) {
+      const userData = demoUsers[email as keyof typeof demoUsers];
+      if (!userData) {
         return { error: 'Email not found or account is inactive. Please contact admin for account approval.' };
       }
 
-      // If no password set, this is first time login - set password
-      if (!studentData.password_hash) {
-        const hashedPassword = btoa(password); // Simple encoding for demo
-        
-        const { error: updateError } = await supabase
-          .from('students')
-          .update({ password_hash: hashedPassword })
-          .eq('id', studentData.id);
-
-        if (updateError) {
-          return { error: 'Failed to set password' };
-        }
-      } else {
-        // Verify password
-        const hashedPassword = btoa(password);
-        if (studentData.password_hash !== hashedPassword) {
-          return { error: 'Invalid password' };
-        }
+      if (userData.password !== password) {
+        return { error: 'Invalid password' };
       }
 
-      // Create session
-      const sessionToken = btoa(JSON.stringify({ id: studentData.id, time: Date.now() }));
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
-
-      const { error: sessionError } = await supabase
-        .from('auth_sessions')
-        .insert({
-          student_id: studentData.id,
-          session_token: sessionToken,
-          expires_at: expiresAt.toISOString()
-        });
-
-      if (sessionError) {
-        return { error: 'Failed to create session' };
-      }
-
-      localStorage.setItem('gate_club_token', sessionToken);
-      setStudent(studentData);
+      // Store user data in localStorage
+      localStorage.setItem('gate_club_student', JSON.stringify(userData));
+      setStudent(userData);
       return { error: null };
     } catch (error) {
       return { error: 'An unexpected error occurred' };
@@ -155,20 +108,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { error: 'Not authenticated' };
       }
 
-      const { error } = await supabase
-        .from('students')
-        .update({
-          department: department,
-          branch_selected: true
-        })
-        .eq('id', student.id);
-
-      if (error) {
-        return { error: 'Failed to update branch selection' };
-      }
-
       // Update local student state
-      setStudent({ ...student, department, branch_selected: true });
+      const updatedStudent = { ...student, department, branch_selected: true };
+      setStudent(updatedStudent);
+      localStorage.setItem('gate_club_student', JSON.stringify(updatedStudent));
       return { error: null };
     } catch (error) {
       return { error: 'An unexpected error occurred' };
@@ -176,15 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    const token = localStorage.getItem('gate_club_token');
-    if (token) {
-      await supabase
-        .from('auth_sessions')
-        .delete()
-        .eq('session_token', token);
-    }
-    
-    localStorage.removeItem('gate_club_token');
+    localStorage.removeItem('gate_club_student');
     setStudent(null);
   };
 
