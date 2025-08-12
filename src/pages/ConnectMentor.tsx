@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -127,12 +129,14 @@ const ConnectMentor = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-university-primary to-university-forest text-white py-12">
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border-b py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">Connect with Mentors</h1>
-            <p className="text-xl opacity-90">
+            <h1 className="text-4xl font-bold mb-4 text-foreground">Connect with Mentors</h1>
+            <p className="text-xl text-muted-foreground">
               Get personalized guidance from GATE toppers and Silver Oak University faculty
             </p>
           </div>
@@ -207,7 +211,7 @@ const ConnectMentor = () => {
                   {/* Mentor Stats */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-university-primary" />
+                      <GraduationCap className="h-4 w-4 text-primary" />
                       <span className="text-sm font-medium">{mentor.specialization}</span>
                     </div>
                     
@@ -288,7 +292,7 @@ const ConnectMentor = () => {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="text-center">
             <CardHeader>
-              <Search className="h-8 w-8 text-university-primary mx-auto mb-2" />
+              <Search className="h-8 w-8 text-primary mx-auto mb-2" />
               <CardTitle className="text-lg">1. Find Your Mentor</CardTitle>
             </CardHeader>
             <CardContent>
@@ -297,10 +301,10 @@ const ConnectMentor = () => {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="text-center">
             <CardHeader>
-              <MessageCircle className="h-8 w-8 text-university-primary mx-auto mb-2" />
+              <MessageCircle className="h-8 w-8 text-primary mx-auto mb-2" />
               <CardTitle className="text-lg">2. Connect & Schedule</CardTitle>
             </CardHeader>
             <CardContent>
@@ -309,10 +313,10 @@ const ConnectMentor = () => {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="text-center">
             <CardHeader>
-              <GraduationCap className="h-8 w-8 text-university-primary mx-auto mb-2" />
+              <GraduationCap className="h-8 w-8 text-primary mx-auto mb-2" />
               <CardTitle className="text-lg">3. Learn & Succeed</CardTitle>
             </CardHeader>
             <CardContent>
@@ -323,6 +327,8 @@ const ConnectMentor = () => {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

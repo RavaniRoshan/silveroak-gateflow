@@ -4,8 +4,8 @@ import { BookOpen, Users, Trophy, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemeToggle } from "@/components/theme-toggle";
-import universityLogo from "@/assets/university-logo.png";
+// import { ThemeToggle } from "@/components/theme-toggle";
+// import universityLogo from "@/assets/university-logo.png";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,12 +22,10 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* University Logo & Branding */}
-          <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate('/')}>
-            <img 
-              src={universityLogo} 
-              alt="Silver Oak University" 
-              className="h-10 w-10"
-            />
+          <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate(student ? '/dashboard' : '/')}>
+            <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-sm">SOU</span>
+            </div>
             <div className="hidden md:block">
               <h1 className="text-xl font-bold text-primary">Silver Oak University</h1>
               <p className="text-sm text-muted-foreground -mt-1">GATE CLUB</p>
@@ -36,20 +34,20 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/subjects" className="text-foreground hover:text-primary transition-colors">
-              Subjects
+            <a href="/tests" className="text-foreground hover:text-primary transition-colors">
+              Tests
             </a>
-            <a href="/mock-papers" className="text-foreground hover:text-primary transition-colors">
-              Mock Papers
+            <a href="/pyqs" className="text-foreground hover:text-primary transition-colors">
+              PYQs
             </a>
-            <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
-              Connect Mentor
+            <a href="/study-resources" className="text-foreground hover:text-primary transition-colors">
+              Resources
             </a>
             <a href="/community" className="text-foreground hover:text-primary transition-colors">
               Community
             </a>
-            <a href="/resources" className="text-foreground hover:text-primary transition-colors">
-              Resources
+            <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
+              Mentors
             </a>
           </nav>
 
@@ -57,7 +55,10 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             {student ? (
               <>
-                <div className="hidden md:flex items-center space-x-2">
+                <div
+                  className="hidden md:flex items-center space-x-2 cursor-pointer hover:text-primary transition-colors"
+                  onClick={() => navigate('/dashboard')}
+                >
                   <User className="h-4 w-4" />
                   <span className="text-sm font-medium">
                     {student.first_name} {student.last_name}
@@ -76,8 +77,7 @@ const Header = () => {
                 Student Access
               </Button>
             )}
-            
-            <ThemeToggle />
+
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -87,46 +87,52 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[250px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <a 
-                    href="/subjects" 
+                  <a
+                    href="/tests"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Subjects
+                    Tests
                   </a>
-                  <a 
-                    href="/mock-papers" 
+                  <a
+                    href="/pyqs"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Mock Papers
+                    PYQs
                   </a>
-                  <a 
-                    href="/connect-mentor" 
-                    className="text-foreground hover:text-primary transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Connect Mentor
-                  </a>
-                  <a 
-                    href="/community" 
-                    className="text-foreground hover:text-primary transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Community
-                  </a>
-                  <a 
-                    href="/resources" 
+                  <a
+                    href="/study-resources"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Resources
                   </a>
+                  <a
+                    href="/community"
+                    className="text-foreground hover:text-primary transition-colors py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Community
+                  </a>
+                  <a
+                    href="/connect-mentor"
+                    className="text-foreground hover:text-primary transition-colors py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Mentors
+                  </a>
                   
                   <div className="pt-4 border-t">
                     {student ? (
                       <>
-                        <div className="pb-2">
+                        <div
+                          className="pb-2 cursor-pointer hover:text-primary transition-colors"
+                          onClick={() => {
+                            navigate('/dashboard');
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
                           <p className="text-sm font-medium">{student.first_name} {student.last_name}</p>
                           <p className="text-xs text-muted-foreground">{student.enrollment_no}</p>
                         </div>

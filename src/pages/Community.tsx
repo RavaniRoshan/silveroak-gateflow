@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Users, MessageCircle, Megaphone, GraduationCap } from 'lucide-react';
@@ -62,11 +64,13 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="bg-gradient-to-r from-university-primary to-university-forest text-white py-12">
+      <Header />
+
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border-b py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">GATE Community</h1>
-            <p className="text-xl opacity-90">
+            <h1 className="text-4xl font-bold mb-4 text-foreground">GATE Community</h1>
+            <p className="text-xl text-muted-foreground">
               Fast, focused discussions — built for learning, not distractions
             </p>
           </div>
@@ -81,7 +85,7 @@ const Community = () => {
               <Card key={title} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <Icon className="h-5 w-5 text-university-primary" />
+                    <Icon className="h-5 w-5 text-primary" />
                     <CardTitle className="text-lg">{title}</CardTitle>
                   </div>
                   <CardDescription>{desc}</CardDescription>
@@ -103,6 +107,8 @@ const Community = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 };
