@@ -267,10 +267,15 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
           
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-2">
             <p className="text-sm text-muted-foreground">
               Free resources for Silver Oak University students only
             </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-sm font-medium text-blue-800 mb-1">Demo Credentials</p>
+              <p className="text-xs text-blue-600">Email: rudraksh@university.edu</p>
+              <p className="text-xs text-blue-600">Password: test</p>
+            </div>
           </div>
         </CardContent>
       </Card>
