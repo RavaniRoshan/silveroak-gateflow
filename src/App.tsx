@@ -42,6 +42,16 @@ const App = () => (
                 <Dashboard />
               </ProtectedRoute>
             } />
+            <Route path="/pyqs" element={
+              <ProtectedRoute>
+                <PYQs />
+              </ProtectedRoute>
+            } />
+            <Route path="/tests" element={
+              <ProtectedRoute>
+                <Tests />
+              </ProtectedRoute>
+            } />
             <Route path="/subjects" element={
               <ProtectedRoute>
                 <Subjects />
