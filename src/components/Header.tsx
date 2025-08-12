@@ -87,40 +87,40 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[250px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <a 
-                    href="/subjects" 
+                  <a
+                    href="/tests"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Subjects
+                    Tests
                   </a>
-                  <a 
-                    href="/mock-papers" 
+                  <a
+                    href="/pyqs"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Mock Papers
+                    PYQs
                   </a>
-                  <a 
-                    href="/connect-mentor" 
+                  <a
+                    href="/study-resources"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Connect Mentor
+                    Resources
                   </a>
-                  <a 
-                    href="/community" 
+                  <a
+                    href="/community"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Community
                   </a>
-                  <a 
-                    href="/resources" 
+                  <a
+                    href="/connect-mentor"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Resources
+                    Mentors
                   </a>
                   
                   <div className="pt-4 border-t">
