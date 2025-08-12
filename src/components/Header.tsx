@@ -126,7 +126,13 @@ const Header = () => {
                   <div className="pt-4 border-t">
                     {student ? (
                       <>
-                        <div className="pb-2">
+                        <div
+                          className="pb-2 cursor-pointer hover:text-primary transition-colors"
+                          onClick={() => {
+                            navigate('/dashboard');
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
                           <p className="text-sm font-medium">{student.first_name} {student.last_name}</p>
                           <p className="text-xs text-muted-foreground">{student.enrollment_no}</p>
                         </div>
