@@ -71,7 +71,7 @@ const Auth = () => {
       return;
     }
 
-    if (!enrollmentNo || !password) {
+    if (!email || !password) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields",
@@ -80,10 +80,20 @@ const Auth = () => {
       return;
     }
 
+    // Validate university email domain
+    if (!email.endsWith('@university.edu')) {
+      toast({
+        title: "Invalid Email Domain",
+        description: "Only university email addresses (@university.edu) are allowed",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
-      const { error } = isSignUp ? await signUp(enrollmentNo, password) : await signIn(enrollmentNo, password);
+      const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
       
       if (error) {
         toast({
@@ -142,12 +152,13 @@ const Auth = () => {
             <TabsContent value="signin">
               <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="enrollment-signin">Enrollment Number</Label>
+                  <Label htmlFor="email-signin">University Email</Label>
                   <Input
-                    id="enrollment-signin"
-                    placeholder="e.g., SOE2021CS001"
-                    value={enrollmentNo}
-                    onChange={(e) => setEnrollmentNo(e.target.value.toUpperCase())}
+                    id="email-signin"
+                    type="email"
+                    placeholder="your.name@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                     required
                   />
                 </div>
@@ -196,17 +207,18 @@ const Auth = () => {
                 <div className="bg-primary/5 p-3 rounded-lg border border-primary/10 mb-4">
                   <p className="text-sm text-primary">
                     <strong>First time accessing GATE CLUB?</strong><br/>
-                    Enter your enrollment number and create a password for future logins.
+                    Enter your university email and create a password for future logins.
                   </p>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="enrollment-signup">Enrollment Number</Label>
+                  <Label htmlFor="email-signup">University Email</Label>
                   <Input
-                    id="enrollment-signup"
-                    placeholder="e.g., SOE2021CS001"
-                    value={enrollmentNo}
-                    onChange={(e) => setEnrollmentNo(e.target.value.toUpperCase())}
+                    id="email-signup"
+                    type="email"
+                    placeholder="your.name@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                     required
                   />
                 </div>
