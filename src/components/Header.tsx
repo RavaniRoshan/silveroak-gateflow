@@ -55,7 +55,10 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             {student ? (
               <>
-                <div className="hidden md:flex items-center space-x-2">
+                <div
+                  className="hidden md:flex items-center space-x-2 cursor-pointer hover:text-primary transition-colors"
+                  onClick={() => navigate('/dashboard')}
+                >
                   <User className="h-4 w-4" />
                   <span className="text-sm font-medium">
                     {student.first_name} {student.last_name}
