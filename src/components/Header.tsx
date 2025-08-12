@@ -4,7 +4,7 @@ import { BookOpen, Users, Trophy, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemeToggle } from "@/components/theme-toggle";
+// import { ThemeToggle } from "@/components/theme-toggle";
 // import universityLogo from "@/assets/university-logo.png";
 
 const Header = () => {
