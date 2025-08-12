@@ -125,8 +125,8 @@ const Auth = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-university-primary via-university-forest to-university-secondary flex items-center justify-center">
-        <div className="text-white text-lg">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center">
+        <div className="text-foreground text-lg">Loading...</div>
       </div>
     );
   }
