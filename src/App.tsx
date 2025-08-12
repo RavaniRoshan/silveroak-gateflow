@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import BranchSelection from "./pages/BranchSelection";
 import Dashboard from "./pages/Dashboard";
+import PYQs from "./pages/PYQs";
+import Tests from "./pages/Tests";
 import Subjects from "./pages/Subjects";
 import MockPapers from "./pages/MockPapers";
 import ConnectMentor from "./pages/ConnectMentor";
