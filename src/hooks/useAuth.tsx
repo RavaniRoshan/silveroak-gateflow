@@ -3,12 +3,14 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Student {
   id: string;
+  email: string;
   enrollment_no: string;
   first_name: string | null;
   last_name: string | null;
   department: string | null;
   year_of_study: number | null;
   is_active: boolean;
+  branch_selected: boolean;
 }
 
 interface AuthContextType {
