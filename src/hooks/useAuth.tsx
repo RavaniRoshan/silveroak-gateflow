@@ -55,12 +55,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           expires_at,
           students (
             id,
+            email,
             enrollment_no,
             first_name,
             last_name,
             department,
             year_of_study,
-            is_active
+            is_active,
+            branch_selected
           )
         `)
         .eq('session_token', token)
@@ -80,18 +82,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   };
 
-  const signIn = async (enrollmentNo: string, password: string) => {
+  const signIn = async (email: string, password: string) => {
     try {
+      // Validate university email domain
+      if (!email.endsWith('@university.edu')) {
+        return { error: 'Only university email addresses (@university.edu) are allowed' };
+      }
+
       // First check if student exists
       const { data: studentData, error: studentError } = await supabase
         .from('students')
         .select('*')
-        .eq('enrollment_no', enrollmentNo)
+        .eq('email', email)
         .eq('is_active', true)
         .maybeSingle();
 
       if (studentError || !studentData) {
-        return { error: 'Enrollment number not found or account is inactive' };
+        return { error: 'Email not found or account is inactive. Please contact admin for account approval.' };
       }
 
       // If no password set, this is first time login - set password
@@ -138,9 +145,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signUp = async (enrollmentNo: string, password: string) => {
-    // For this system, signup is just first-time login since enrollment numbers are pre-registered
-    return signIn(enrollmentNo, password);
+  const signUp = async (email: string, password: string) => {
+    // For this system, signup is just first-time login since emails are pre-registered by admin
+    return signIn(email, password);
+  };
+
+  const updateBranchSelection = async (department: string) => {
+    try {
+      if (!student) {
+        return { error: 'Not authenticated' };
+      }
+
+      const { error } = await supabase
+        .from('students')
+        .update({
+          department: department,
+          branch_selected: true
+        })
+        .eq('id', student.id);
+
+      if (error) {
+        return { error: 'Failed to update branch selection' };
+      }
+
+      // Update local student state
+      setStudent({ ...student, department, branch_selected: true });
+      return { error: null };
+    } catch (error) {
+      return { error: 'An unexpected error occurred' };
+    }
   };
 
   const signOut = async () => {
@@ -162,6 +195,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signUp,
     signOut,
+    updateBranchSelection,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
