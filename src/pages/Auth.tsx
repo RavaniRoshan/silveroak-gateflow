@@ -135,10 +135,10 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-university-primary/10 flex items-center justify-center">
-            <GraduationCap className="h-6 w-6 text-university-primary" />
+          <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <GraduationCap className="h-6 w-6 text-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold text-university-forest">
+          <CardTitle className="text-2xl font-bold text-foreground">
             Silver Oak University
           </CardTitle>
           <CardDescription>
