@@ -74,8 +74,7 @@ const Header = () => {
                 Student Access
               </Button>
             )}
-            
-            <ThemeToggle />
+
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
