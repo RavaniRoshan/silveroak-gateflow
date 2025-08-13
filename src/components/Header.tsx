@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { BookOpen, Users, Trophy, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 // import { ThemeToggle } from "@/components/theme-toggle";
 // import universityLogo from "@/assets/university-logo.png";
@@ -34,21 +34,21 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/tests" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/tests" className="text-foreground hover:text-primary transition-colors">
               Tests
-            </a>
-            <a href="/pyqs" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/pyqs" className="text-foreground hover:text-primary transition-colors">
               PYQs
-            </a>
-            <a href="/study-resources" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/study-resources" className="text-foreground hover:text-primary transition-colors">
               Resources
-            </a>
-            <a href="/community" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/community" className="text-foreground hover:text-primary transition-colors">
               Community
-            </a>
-            <a href="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/connect-mentor" className="text-foreground hover:text-primary transition-colors">
               Mentors
-            </a>
+            </Link>
           </nav>
 
           {/* Action Buttons */}
@@ -87,41 +87,41 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[250px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <a
-                    href="/tests"
+                  <Link
+                    to="/tests"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Tests
-                  </a>
-                  <a
-                    href="/pyqs"
+                  </Link>
+                  <Link
+                    to="/pyqs"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     PYQs
-                  </a>
-                  <a
-                    href="/study-resources"
+                  </Link>
+                  <Link
+                    to="/study-resources"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Resources
-                  </a>
-                  <a
-                    href="/community"
+                  </Link>
+                  <Link
+                    to="/community"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Community
-                  </a>
-                  <a
-                    href="/connect-mentor"
+                  </Link>
+                  <Link
+                    to="/connect-mentor"
                     className="text-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Mentors
-                  </a>
+                  </Link>
                   
                   <div className="pt-4 border-t">
                     {student ? (
