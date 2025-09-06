@@ -145,9 +145,10 @@ const PYQs = () => {
         return b.year - a.year;
       case 'downloads':
         return b.downloads - a.downloads;
-      case 'difficulty':
+      case 'difficulty': {
         const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
         return difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty];
+      }
       default:
         return 0;
     }
@@ -313,7 +314,7 @@ const PYQs = () => {
               
               <div>
                 <Label>Sort By</Label>
-                <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                <Select value={sortBy} onValueChange={(value: 'year' | 'downloads' | 'difficulty') => setSortBy(value)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
