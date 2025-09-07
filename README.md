@@ -62,7 +62,7 @@ Follow these instructions to set up the project locally.
 
 4.  **Run the development server:**
     ```bash
-    bun run dev
+    npm run dev
     ```
     The application should now be running on `http://localhost:5173`.
 
@@ -106,6 +106,6 @@ The application can be deployed to any static site hosting service like Vercel, 
 
 Run the following command to build the application for production:
 ```bash
-bun run build
+npm run build
 ```
 This will create a `dist` directory with the production-ready files.
