@@ -105,7 +105,7 @@ const SubjectsSection = () => {
                 </Badge>
               </div>
               
-              <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-secondary transition-colors">
+              <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-lime-500 transition-colors">
                 {subject.title}
               </h3>
               
