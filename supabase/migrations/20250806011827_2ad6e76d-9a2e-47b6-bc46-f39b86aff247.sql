@@ -1,5 +1,4 @@
 -- Fix function search path security issues
-DROP FUNCTION IF EXISTS public.update_updated_at_column();
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -8,7 +7,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = '';
 
-DROP FUNCTION IF EXISTS public.cleanup_expired_sessions();
 CREATE OR REPLACE FUNCTION public.cleanup_expired_sessions()
 RETURNS void AS $$
 BEGIN

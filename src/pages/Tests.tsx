@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useMockTests, useSpeedTests, useTestStatistics } from '@/hooks/useSupabaseData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,137 +23,76 @@ import {
   Zap,
   Award,
   ChevronRight,
-  Star
+  Star,
+  Loader2
 } from 'lucide-react';
 
-interface MockTest {
-  id: string;
-  title: string;
-  description: string;
-  duration: number; // in minutes
-  totalQuestions: number;
-  totalMarks: number;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  subjects: string[];
-  attempts: number;
-  averageScore: number;
-  bestScore?: number;
-  lastAttempted?: string;
-  isCompleted: boolean;
+import type { MockTest, SpeedTest } from '@/integrations/supabase/types-extended';
+
+// Helper interface for display formatting
+interface MockTestDisplay extends MockTest {
   timeLimit: string;
 }
 
-interface SpeedTest {
-  id: string;
-  title: string;
-  subject: string;
-  topic: string;
-  duration: number; // in minutes
-  totalQuestions: number;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  attempts: number;
-  bestTime?: number; // in seconds
-  bestScore?: number;
-  averageAccuracy: number;
-  isCompleted: boolean;
+interface SpeedTestDisplay extends SpeedTest {
+  // Additional display properties if needed
 }
 
 const Tests = () => {
   const { student } = useAuth();
   const [activeTab, setActiveTab] = useState('mock-tests');
-
-  // Sample data - would come from API
-  const mockTests: MockTest[] = [
-    {
-      id: '1',
-      title: 'GATE 2024 Full Mock Test - Set 1',
-      description: 'Complete GATE pattern test covering all subjects',
-      duration: 180,
-      totalQuestions: 65,
-      totalMarks: 100,
-      difficulty: 'Medium',
-      subjects: ['Data Structures', 'Algorithms', 'OS', 'DBMS', 'Networks'],
-      attempts: 1250,
-      averageScore: 68,
-      bestScore: 85,
-      lastAttempted: '2024-01-15',
-      isCompleted: true,
-      timeLimit: '3 hours'
-    },
-    {
-      id: '2',
-      title: 'GATE 2024 Full Mock Test - Set 2',
-      description: 'Advanced level mock test with recent pattern',
-      duration: 180,
-      totalQuestions: 65,
-      totalMarks: 100,
-      difficulty: 'Hard',
-      subjects: ['TOC', 'Compiler Design', 'COA', 'Mathematics'],
-      attempts: 890,
-      averageScore: 62,
-      isCompleted: false,
-      timeLimit: '3 hours'
-    },
-    {
-      id: '3',
-      title: 'Subject-wise Mock Test - DSA',
-      description: 'Focused test on Data Structures and Algorithms',
-      duration: 90,
-      totalQuestions: 30,
-      totalMarks: 50,
-      difficulty: 'Medium',
-      subjects: ['Data Structures', 'Algorithms'],
-      attempts: 2100,
-      averageScore: 72,
-      bestScore: 92,
-      lastAttempted: '2024-01-12',
-      isCompleted: true,
-      timeLimit: '1.5 hours'
-    }
-  ];
-
-  const speedTests: SpeedTest[] = [
-    {
-      id: '1',
-      title: 'Quick Sort Implementation',
-      subject: 'Data Structures',
-      topic: 'Sorting Algorithms',
-      duration: 15,
-      totalQuestions: 10,
-      difficulty: 'Easy',
-      attempts: 3450,
-      bestTime: 420, // 7 minutes
-      bestScore: 90,
-      averageAccuracy: 85,
-      isCompleted: true
-    },
-    {
-      id: '2',
-      title: 'Binary Tree Traversals',
-      subject: 'Data Structures',
-      topic: 'Trees',
-      duration: 20,
-      totalQuestions: 15,
-      difficulty: 'Medium',
-      attempts: 2780,
-      bestTime: 850, // 14.2 minutes
-      bestScore: 87,
-      averageAccuracy: 78,
-      isCompleted: true
-    },
-    {
-      id: '3',
-      title: 'Dynamic Programming Basics',
-      subject: 'Algorithms',
-      topic: 'Dynamic Programming',
-      duration: 25,
-      totalQuestions: 12,
-      difficulty: 'Hard',
-      attempts: 1560,
-      averageAccuracy: 65,
-      isCompleted: false
-    }
-  ];
+  
+  // Fetch data using React Query hooks
+  const { data: mockTestsData, isLoading: mockTestsLoading, error: mockTestsError } = useMockTests();
+  const { data: speedTestsData, isLoading: speedTestsLoading, error: speedTestsError } = useSpeedTests();
+  const { data: testStats, isLoading: statsLoading } = useTestStatistics(student?.id);
+  
+  // Transform data for display
+  const mockTests: MockTestDisplay[] = (mockTestsData || []).map(test => ({
+    ...test,
+    timeLimit: `${Math.floor(test.time_limit / 60)}h ${test.time_limit % 60}m`
+  }));
+  
+  const speedTests: SpeedTestDisplay[] = speedTestsData || [];
+  
+  // Loading state
+  if (mockTestsLoading || speedTestsLoading || statsLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex items-center space-x-2">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              <span>Loading tests...</span>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+  
+  // Error state
+  if (mockTestsError || speedTestsError) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Error Loading Tests</h2>
+              <p className="text-muted-foreground">
+                {mockTestsError?.message || speedTestsError?.message || 'Failed to load test data'}
+              </p>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -184,13 +124,18 @@ const Tests = () => {
     // Navigate to results page
   };
 
-  const testStats = {
+  // Use real test stats from the hook or fallback to calculated values
+  const displayStats = testStats || {
     totalMockTests: mockTests.length,
-    completedMockTests: mockTests.filter(t => t.isCompleted).length,
+    completedMockTests: mockTests.filter(t => t.is_completed).length,
     totalSpeedTests: speedTests.length,
-    completedSpeedTests: speedTests.filter(t => t.isCompleted).length,
-    averageMockScore: Math.round(mockTests.filter(t => t.bestScore).reduce((acc, t) => acc + (t.bestScore || 0), 0) / mockTests.filter(t => t.bestScore).length),
-    averageSpeedAccuracy: Math.round(speedTests.filter(t => t.bestScore).reduce((acc, t) => acc + (t.bestScore || 0), 0) / speedTests.filter(t => t.bestScore).length)
+    completedSpeedTests: speedTests.filter(t => t.is_completed).length,
+    averageMockScore: mockTests.length > 0 
+      ? Math.round(mockTests.reduce((acc, t) => acc + t.average_score, 0) / mockTests.length)
+      : 0,
+    averageSpeedAccuracy: speedTests.length > 0 
+      ? Math.round(speedTests.reduce((acc, t) => acc + t.average_accuracy, 0) / speedTests.length)
+      : 0
   };
 
   return (

@@ -51,7 +51,7 @@ class NeoKeyboardNavigationManager {
     });
 
     this.registerShortcut({
-      key: 's',
+      key: 'j',
       metaKey: true,
       description: 'Go to Subjects',
       action: () => this.navigate('/subjects'),
@@ -78,7 +78,7 @@ class NeoKeyboardNavigationManager {
     });
 
     this.registerShortcut({
-      key: 'c',
+      key: 'u',
       metaKey: true,
       description: 'Go to Community',
       action: () => this.navigate('/community'),

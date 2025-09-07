@@ -61,7 +61,7 @@ export const NeoCommandPalette: React.FC<NeoCommandPaletteProps> = ({
       action: () => navigate('/subjects'),
       group: 'Navigation',
       keywords: ['subjects', 'topics'],
-      shortcut: ['⌘', 'S']
+      shortcut: ['⌘', 'J']
     },
     {
       id: 'nav-tests',
@@ -81,7 +81,7 @@ export const NeoCommandPalette: React.FC<NeoCommandPaletteProps> = ({
       action: () => navigate('/community'),
       group: 'Navigation',
       keywords: ['community', 'forum'],
-      shortcut: ['⌘', 'C']
+      shortcut: ['⌘', 'U']
     },
     {
       id: 'action-theme',
