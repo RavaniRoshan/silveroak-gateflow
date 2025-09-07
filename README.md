@@ -2,7 +2,8 @@
 
 Welcome to the official repository for the GATE CLUB Digital Excellence Hub, a comprehensive web application designed to help students prepare for the GATE (Graduate Aptitude Test in Engineering) exams. This platform is developed by Silver Oak University to provide a seamless and effective learning experience.
 
-![Hero Section](src/assets/hero-image.jpg)
+![Hero Section](<img width="1881" height="1070" alt="image" src="https://github.com/user-attachments/assets/00812261-d994-4d2b-b0a3-3cf5b02698d7" />
+)
 
 ## 🚀 Features
 
