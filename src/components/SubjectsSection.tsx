@@ -79,11 +79,11 @@ const SubjectsSection = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-secondary/10 rounded-full px-4 py-2 mb-6">
             <BookOpen className="h-4 w-4 text-secondary" />
-            <span className="text-sm font-medium text-secondary">Study Materials</span>
+            <span className="text-sm font-medium text-lime-500">Study Materials</span>
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Master All 27 GATE Subjects
-            <span className="block text-secondary">With Expert Guidance</span>
+            <span className="block text-lime-500">With Expert Guidance</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Comprehensive study materials designed by Silver Oak University faculty, 
