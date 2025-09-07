@@ -104,8 +104,54 @@ This project uses Supabase for its backend services.
 
 The application can be deployed to any static site hosting service like Vercel, Netlify, or GitHub Pages.
 
+### Building for Production
+
 Run the following command to build the application for production:
 ```bash
 npm run build
 ```
 This will create a `dist` directory with the production-ready files.
+
+### Deploying to Vercel (Recommended)
+
+1. **Connect your repository to Vercel:**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "New Project" and import your GitHub repository
+
+2. **Set up environment variables:**
+   - In your Vercel project dashboard, go to Settings > Environment Variables
+   - Add the following variables for **Production**, **Preview**, and **Development**:
+     - `VITE_SUPABASE_URL`: Your Supabase project URL
+     - `VITE_SUPABASE_ANON_KEY`: Your Supabase anon key
+
+3. **Deploy:**
+   - Vercel will automatically deploy your application
+   - Any push to your main branch will trigger a new deployment
+
+### Troubleshooting Deployment Issues
+
+If you encounter a blank page or errors in production:
+
+1. **Check Environment Variables:**
+   - Ensure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set in your deployment platform
+   - Environment variables must be prefixed with `VITE_` for Vite to include them in the build
+
+2. **Check Build Logs:**
+   - Review the build logs in your deployment platform for any errors
+   - Common issues include missing dependencies or TypeScript errors
+
+3. **Check Browser Console:**
+   - Open your deployed site and check the browser's developer console for JavaScript errors
+   - Network tab can show failed API requests
+
+4. **Verify Supabase Configuration:**
+   - Ensure your Supabase project is active and properly configured
+   - Check that your database has the required tables and RLS policies
+
+### Local Production Testing
+
+To test the production build locally:
+```bash
+npm run build
+npm run preview
+```
