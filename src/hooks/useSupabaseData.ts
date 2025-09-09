@@ -23,7 +23,7 @@ export const useMockTests = () => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as MockTest[];
     },
   });
 };
@@ -39,7 +39,7 @@ export const useMockTest = (id: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as MockTest;
     },
     enabled: !!id,
   });
@@ -77,7 +77,7 @@ export const useSpeedTests = () => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as SpeedTest[];
     },
   });
 };
@@ -93,7 +93,7 @@ export const useSpeedTestsBySubject = (subject: string) => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as SpeedTest[];
     },
     enabled: !!subject,
   });
@@ -110,7 +110,7 @@ export const useSpeedTest = (id: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as SpeedTest;
     },
     enabled: !!id,
   });
@@ -154,7 +154,7 @@ export const useTestResults = (studentId?: string) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as TestResult[];
     },
     enabled: !!studentId,
   });
@@ -172,7 +172,7 @@ export const useTestResultsByTest = (testId: string, testType: 'mock_test' | 'sp
         .order('attempted_at', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as TestResult[];
     },
     enabled: !!testId && !!testType,
   });
@@ -195,7 +195,7 @@ export const usePreviousYearPapers = (branch?: string) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as PreviousYearPaper[];
     },
   });
 };
@@ -211,7 +211,7 @@ export const usePreviousYearPapersByYear = (year: number) => {
         .order('branch');
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as PreviousYearPaper[];
     },
     enabled: !!year,
   });
@@ -238,7 +238,7 @@ export const useSubjectResources = (branch?: string, subject?: string) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as SubjectResource[];
     },
   });
 };
@@ -255,7 +255,7 @@ export const useFeaturedSubjectResources = () => {
         .limit(6);
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as SubjectResource[];
     },
   });
 };
@@ -271,7 +271,7 @@ export const useSubjectResourcesByType = (type: string) => {
         .order('rating', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as SubjectResource[];
     },
     enabled: !!type,
   });
@@ -294,7 +294,7 @@ export const useStudyPlans = (branch?: string) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as StudyPlan[];
     },
   });
 };
@@ -311,7 +311,7 @@ export const usePopularStudyPlans = () => {
         .limit(4);
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as StudyPlan[];
     },
   });
 };
@@ -327,7 +327,7 @@ export const useStudyPlansByType = (type: string) => {
         .order('enrolled_students', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as StudyPlan[];
     },
     enabled: !!type,
   });

@@ -234,7 +234,7 @@ const Tests = () => {
                             <CardTitle className="text-lg leading-tight">{test.title}</CardTitle>
                             <CardDescription className="mt-1">{test.description}</CardDescription>
                           </div>
-                          {test.isCompleted && (
+                          {test.is_completed && (
                             <CheckCircle className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
                           )}
                         </div>
@@ -253,11 +253,11 @@ const Tests = () => {
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
                             <p className="text-muted-foreground">Questions</p>
-                            <p className="font-medium">{test.totalQuestions}</p>
+                            <p className="font-medium">{test.total_questions}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground">Total Marks</p>
-                            <p className="font-medium">{test.totalMarks}</p>
+                            <p className="font-medium">{test.total_marks}</p>
                           </div>
                         </div>
                         
@@ -269,34 +269,34 @@ const Tests = () => {
                           ))}
                         </div>
                         
-                        {test.isCompleted && test.bestScore && (
+                        {test.is_completed && test.best_score && (
                           <div className="bg-accent/50 p-3 rounded-lg">
                             <div className="flex justify-between items-center mb-2">
                               <span className="text-sm font-medium">Your Best Score</span>
-                              <Badge variant="default">{test.bestScore}%</Badge>
+                              <Badge variant="default">{test.best_score}%</Badge>
                             </div>
-                            <Progress value={test.bestScore} className="h-2" />
+                            <Progress value={test.best_score} className="h-2" />
                             <p className="text-xs text-muted-foreground mt-1">
-                              Last attempted: {test.lastAttempted}
+                              Last attempted: {test.last_attempted}
                             </p>
                           </div>
                         )}
                         
                         <div className="flex justify-between text-sm text-muted-foreground">
                           <span>{test.attempts.toLocaleString()} attempts</span>
-                          <span>Avg: {test.averageScore}%</span>
+                          <span>Avg: {test.average_score}%</span>
                         </div>
                         
                         <div className="flex gap-2">
                           <Button 
                             onClick={() => startMockTest(test.id)} 
                             className="flex-1"
-                            variant={test.isCompleted ? "outline" : "default"}
+                            variant={test.is_completed ? "outline" : "default"}
                           >
                             <Play className="h-4 w-4 mr-1" />
-                            {test.isCompleted ? 'Retake' : 'Start Test'}
+                            {test.is_completed ? 'Retake' : 'Start Test'}
                           </Button>
-                          {test.isCompleted && (
+                          {test.is_completed && (
                             <Button 
                               onClick={() => viewResults(test.id, 'mock')} 
                               variant="ghost"
@@ -337,7 +337,7 @@ const Tests = () => {
                               {test.subject} • {test.topic}
                             </CardDescription>
                           </div>
-                          {test.isCompleted && (
+                          {test.is_completed && (
                             <CheckCircle className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
                           )}
                         </div>
@@ -356,21 +356,21 @@ const Tests = () => {
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
                             <p className="text-muted-foreground">Questions</p>
-                            <p className="font-medium">{test.totalQuestions}</p>
+                            <p className="font-medium">{test.total_questions}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground">Accuracy</p>
-                            <p className="font-medium">{test.averageAccuracy}%</p>
+                            <p className="font-medium">{test.average_accuracy}%</p>
                           </div>
                         </div>
                         
-                        {test.isCompleted && test.bestScore && test.bestTime && (
+                        {test.is_completed && test.best_score && test.best_time && (
                           <div className="bg-accent/50 p-3 rounded-lg">
                             <div className="flex justify-between items-center mb-2">
                               <span className="text-sm font-medium">Personal Best</span>
                               <div className="flex items-center gap-2">
-                                <Badge variant="default">{test.bestScore}%</Badge>
-                                <Badge variant="outline">{formatTime(test.bestTime)}</Badge>
+                                <Badge variant="default">{test.best_score}%</Badge>
+                                <Badge variant="outline">{formatTime(test.best_time)}</Badge>
                               </div>
                             </div>
                             <div className="flex justify-between items-center">
@@ -378,16 +378,16 @@ const Tests = () => {
                               <span className="text-xs text-muted-foreground">Accuracy</span>
                             </div>
                             <div className="grid grid-cols-2 gap-2 mt-1">
-                              <Progress value={(test.duration * 60 - test.bestTime) / (test.duration * 60) * 100} className="h-2" />
-                              <Progress value={test.bestScore} className="h-2" />
+                              <Progress value={(test.duration * 60 - test.best_time) / (test.duration * 60) * 100} className="h-2" />
+                              <Progress value={test.best_score} className="h-2" />
                             </div>
                           </div>
                         )}
                         
                         <div className="flex justify-between text-sm text-muted-foreground">
                           <span>{test.attempts.toLocaleString()} attempts</span>
-                          {test.bestTime && (
-                            <span>Best: {formatTime(test.bestTime)}</span>
+                          {test.best_time && (
+                            <span>Best: {formatTime(test.best_time)}</span>
                           )}
                         </div>
                         
@@ -395,12 +395,12 @@ const Tests = () => {
                           <Button 
                             onClick={() => startSpeedTest(test.id)} 
                             className="flex-1"
-                            variant={test.isCompleted ? "outline" : "default"}
+                            variant={test.is_completed ? "outline" : "default"}
                           >
                             <Zap className="h-4 w-4 mr-1" />
-                            {test.isCompleted ? 'Retry' : 'Start'}
+                            {test.is_completed ? 'Retry' : 'Start'}
                           </Button>
-                          {test.isCompleted && (
+                          {test.is_completed && (
                             <Button 
                               onClick={() => viewResults(test.id, 'speed')} 
                               variant="ghost"
