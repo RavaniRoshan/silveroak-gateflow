@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
@@ -46,12 +46,190 @@ export type Database = {
           },
         ]
       }
+      mock_tests: {
+        Row: {
+          attempts: number | null
+          average_score: number | null
+          best_score: number | null
+          created_at: string
+          description: string | null
+          difficulty: string
+          duration: number
+          id: string
+          is_completed: boolean | null
+          last_attempted: string | null
+          subjects: string[] | null
+          time_limit: number
+          title: string
+          total_marks: number
+          total_questions: number
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number | null
+          average_score?: number | null
+          best_score?: number | null
+          created_at?: string
+          description?: string | null
+          difficulty: string
+          duration: number
+          id?: string
+          is_completed?: boolean | null
+          last_attempted?: string | null
+          subjects?: string[] | null
+          time_limit: number
+          title: string
+          total_marks: number
+          total_questions: number
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number | null
+          average_score?: number | null
+          best_score?: number | null
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          duration?: number
+          id?: string
+          is_completed?: boolean | null
+          last_attempted?: string | null
+          subjects?: string[] | null
+          time_limit?: number
+          title?: string
+          total_marks?: number
+          total_questions?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      previous_year_papers: {
+        Row: {
+          attempts: number | null
+          average_score: number | null
+          branch: string
+          created_at: string
+          difficulty: string
+          download_count: number | null
+          duration: number
+          exam_name: string
+          file_format: string | null
+          file_size: string | null
+          has_solutions: boolean | null
+          has_video_solutions: boolean | null
+          id: string
+          is_premium: boolean | null
+          paper_code: string
+          subjects_covered: string[] | null
+          tags: string[] | null
+          total_marks: number
+          total_questions: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          attempts?: number | null
+          average_score?: number | null
+          branch: string
+          created_at?: string
+          difficulty: string
+          download_count?: number | null
+          duration: number
+          exam_name: string
+          file_format?: string | null
+          file_size?: string | null
+          has_solutions?: boolean | null
+          has_video_solutions?: boolean | null
+          id?: string
+          is_premium?: boolean | null
+          paper_code: string
+          subjects_covered?: string[] | null
+          tags?: string[] | null
+          total_marks: number
+          total_questions: number
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          attempts?: number | null
+          average_score?: number | null
+          branch?: string
+          created_at?: string
+          difficulty?: string
+          download_count?: number | null
+          duration?: number
+          exam_name?: string
+          file_format?: string | null
+          file_size?: string | null
+          has_solutions?: boolean | null
+          has_video_solutions?: boolean | null
+          id?: string
+          is_premium?: boolean | null
+          paper_code?: string
+          subjects_covered?: string[] | null
+          tags?: string[] | null
+          total_marks?: number
+          total_questions?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      speed_tests: {
+        Row: {
+          attempts: number | null
+          average_accuracy: number | null
+          best_score: number | null
+          best_time: number | null
+          created_at: string
+          difficulty: string
+          duration: number
+          id: string
+          is_completed: boolean | null
+          subject: string
+          title: string
+          topic: string
+          total_questions: number
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number | null
+          average_accuracy?: number | null
+          best_score?: number | null
+          best_time?: number | null
+          created_at?: string
+          difficulty: string
+          duration: number
+          id?: string
+          is_completed?: boolean | null
+          subject: string
+          title: string
+          topic: string
+          total_questions: number
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number | null
+          average_accuracy?: number | null
+          best_score?: number | null
+          best_time?: number | null
+          created_at?: string
+          difficulty?: string
+          duration?: number
+          id?: string
+          is_completed?: boolean | null
+          subject?: string
+          title?: string
+          topic?: string
+          total_questions?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
-          branch_selected: boolean
           created_at: string
           department: string | null
-          email: string
           enrollment_no: string
           first_name: string | null
           id: string
@@ -62,10 +240,8 @@ export type Database = {
           year_of_study: number | null
         }
         Insert: {
-          branch_selected?: boolean
           created_at?: string
           department?: string | null
-          email: string
           enrollment_no: string
           first_name?: string | null
           id?: string
@@ -76,10 +252,8 @@ export type Database = {
           year_of_study?: number | null
         }
         Update: {
-          branch_selected?: boolean
           created_at?: string
           department?: string | null
-          email?: string
           enrollment_no?: string
           first_name?: string | null
           id?: string
@@ -90,6 +264,212 @@ export type Database = {
           year_of_study?: number | null
         }
         Relationships: []
+      }
+      study_plans: {
+        Row: {
+          average_score_improvement: number | null
+          branch: string
+          completion_rate: number | null
+          created_at: string
+          created_by: string | null
+          daily_hours: number
+          description: string | null
+          difficulty_progression: string | null
+          duration_days: number
+          enrolled_students: number | null
+          id: string
+          is_popular: boolean | null
+          mock_tests_included: number
+          price: number | null
+          subjects_covered: string[] | null
+          tags: string[] | null
+          title: string
+          total_topics: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          average_score_improvement?: number | null
+          branch: string
+          completion_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          daily_hours: number
+          description?: string | null
+          difficulty_progression?: string | null
+          duration_days: number
+          enrolled_students?: number | null
+          id?: string
+          is_popular?: boolean | null
+          mock_tests_included: number
+          price?: number | null
+          subjects_covered?: string[] | null
+          tags?: string[] | null
+          title: string
+          total_topics: number
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          average_score_improvement?: number | null
+          branch?: string
+          completion_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          daily_hours?: number
+          description?: string | null
+          difficulty_progression?: string | null
+          duration_days?: number
+          enrolled_students?: number | null
+          id?: string
+          is_popular?: boolean | null
+          mock_tests_included?: number
+          price?: number | null
+          subjects_covered?: string[] | null
+          tags?: string[] | null
+          title?: string
+          total_topics?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subject_resources: {
+        Row: {
+          branch: string
+          content_format: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          difficulty_level: string
+          download_count: number | null
+          estimated_duration: string | null
+          file_size: string | null
+          id: string
+          is_featured: boolean | null
+          is_free: boolean | null
+          learning_outcomes: string[] | null
+          prerequisites: string[] | null
+          rating: number | null
+          subject: string
+          tags: string[] | null
+          title: string
+          total_ratings: number | null
+          type: string
+          updated_at: string
+          view_count: number | null
+        }
+        Insert: {
+          branch: string
+          content_format?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          difficulty_level: string
+          download_count?: number | null
+          estimated_duration?: string | null
+          file_size?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_free?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          rating?: number | null
+          subject: string
+          tags?: string[] | null
+          title: string
+          total_ratings?: number | null
+          type: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Update: {
+          branch?: string
+          content_format?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          difficulty_level?: string
+          download_count?: number | null
+          estimated_duration?: string | null
+          file_size?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_free?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          rating?: number | null
+          subject?: string
+          tags?: string[] | null
+          title?: string
+          total_ratings?: number | null
+          type?: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      test_results: {
+        Row: {
+          attempted_at: string
+          completed_at: string | null
+          completion_percentage: number
+          correct_answers: number
+          id: string
+          incorrect_answers: number
+          is_completed: boolean | null
+          max_score: number
+          questions_attempted: number
+          score: number
+          student_id: string
+          test_id: string
+          test_type: string
+          time_taken_minutes: number
+          total_time_minutes: number
+        }
+        Insert: {
+          attempted_at?: string
+          completed_at?: string | null
+          completion_percentage: number
+          correct_answers: number
+          id?: string
+          incorrect_answers: number
+          is_completed?: boolean | null
+          max_score: number
+          questions_attempted: number
+          score: number
+          student_id: string
+          test_id: string
+          test_type: string
+          time_taken_minutes: number
+          total_time_minutes: number
+        }
+        Update: {
+          attempted_at?: string
+          completed_at?: string | null
+          completion_percentage?: number
+          correct_answers?: number
+          id?: string
+          incorrect_answers?: number
+          is_completed?: boolean | null
+          max_score?: number
+          questions_attempted?: number
+          score?: number
+          student_id?: string
+          test_id?: string
+          test_type?: string
+          time_taken_minutes?: number
+          total_time_minutes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
