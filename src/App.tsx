@@ -6,10 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/useAuth";
 import { NeoCommandPalette, useNeoCommandPalette } from "@/components/NeoCommandPalette";
-import { NeoChatbot, useNeoChatbot } from "@/components/NeoChatbot";
 import { useNeoKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Command } from "lucide-react";
+import { Command } from "lucide-react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -31,7 +30,6 @@ const queryClient = new QueryClient();
 // Inner App component that has access to Router context
 const AppContent = () => {
   const commandPalette = useNeoCommandPalette();
-  const chatbot = useNeoChatbot();
   const keyboardNavigation = useNeoKeyboardNavigation();
 
   return (
@@ -99,13 +97,6 @@ const AppContent = () => {
         onClose={commandPalette.closePalette}
       />
       
-      <NeoChatbot 
-        isOpen={chatbot.isOpen}
-        onClose={chatbot.closeChatbot}
-        isMinimized={chatbot.isMinimized}
-        onToggleMinimize={chatbot.toggleMinimize}
-      />
-      
       {/* Floating Action Buttons */}
       <div className="fixed bottom-4 left-4 z-40 flex flex-col space-y-3">
         <Button
@@ -115,16 +106,6 @@ const AppContent = () => {
         >
           <Command className="w-5 h-5" />
         </Button>
-        
-        {!chatbot.isOpen && (
-          <Button
-            onClick={chatbot.openChatbot}
-            className="neo-button-primary w-12 h-12 p-0 rounded-full shadow-glow animate-pulse"
-            title="AI Assistant"
-          >
-            <MessageCircle className="w-5 h-5" />
-          </Button>
-        )}
       </div>
     </>
   );
