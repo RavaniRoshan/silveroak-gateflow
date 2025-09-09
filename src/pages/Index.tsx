@@ -3,16 +3,21 @@ import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import SubjectsSection from "@/components/SubjectsSection";
 import Footer from "@/components/Footer";
+import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <>
       <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <SubjectsSection />
-      <Footer />
-    </div>
+      <ScrollSmootherWrapper>
+        <div className="min-h-screen bg-white dark:bg-black">
+          <HeroSection />
+          <FeaturesSection />
+          <SubjectsSection />
+          <Footer />
+        </div>
+      </ScrollSmootherWrapper>
+    </>
   );
 };
 

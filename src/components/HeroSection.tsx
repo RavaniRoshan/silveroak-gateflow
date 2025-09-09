@@ -122,15 +122,23 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Modern Floating Elements */}
-      <div className="absolute top-32 right-20">
+      {/* Modern Floating Elements - Enhanced with ScrollSmoother Effects */}
+      <div className="absolute top-32 right-20" data-speed="clamp(0.7)">
         <div className="w-32 h-32 bg-lime-500/20 backdrop-blur-sm border border-lime-500/30 rounded-2xl animate-neo-bounce opacity-50"></div>
       </div>
-      <div className="absolute bottom-32 left-20">
+      <div className="absolute bottom-32 left-20" data-speed="clamp(0.3)">
         <div className="w-24 h-24 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-xl animate-neo-bounce opacity-60" style={{ animationDelay: '1s' }}></div>
       </div>
-      <div className="absolute top-1/2 left-1/4">
+      <div className="absolute top-1/2 left-1/4" data-lag="0.5">
         <div className="w-16 h-16 bg-black/10 dark:bg-white/10 backdrop-blur-sm border border-lime-500/30 rounded-lg animate-pulse opacity-30"></div>
+      </div>
+      
+      {/* Additional Parallax Elements */}
+      <div className="absolute top-20 left-1/3" data-speed="clamp(0.8)">
+        <div className="w-8 h-8 bg-emerald-500/30 rounded-full animate-pulse opacity-40"></div>
+      </div>
+      <div className="absolute bottom-40 right-1/3" data-speed="clamp(0.4)">
+        <div className="w-12 h-12 bg-purple-500/20 rounded-lg rotate-45 opacity-30"></div>
       </div>
     </section>
   );

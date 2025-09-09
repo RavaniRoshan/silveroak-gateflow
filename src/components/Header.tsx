@@ -26,8 +26,8 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-7xl">
-      <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-white/20 dark:border-gray-800/50 rounded-2xl shadow-2xl">
+    <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[9999] w-[95%] max-w-7xl pointer-events-auto">
+      <div className="bg-white/85 dark:bg-black/85 backdrop-blur-xl border border-white/30 dark:border-gray-800/50 rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
           {/* Neo-Minimal Logo & Branding */}

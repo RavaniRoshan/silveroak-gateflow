@@ -73,19 +73,27 @@ const subjects = [
 
 const SubjectsSection = () => {
   return (
-    <section className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-background relative overflow-hidden">
+      {/* Parallax Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-40 left-20 w-40 h-40 bg-lime-500/5 rounded-full" data-speed="clamp(0.3)"></div>
+        <div className="absolute bottom-40 right-20 w-32 h-32 bg-blue-500/5 rounded-lg rotate-12" data-speed="clamp(0.7)"></div>
+        <div className="absolute top-20 right-1/3 w-20 h-20 bg-purple-500/5 rounded-full" data-lag="0.4"></div>
+        <div className="absolute bottom-20 left-1/3 w-24 h-24 bg-emerald-500/5 rounded-lg rotate-45" data-lag="0.2"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-secondary/10 rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center space-x-2 bg-secondary/10 rounded-full px-4 py-2 mb-6" data-speed="clamp(0.9)">
             <BookOpen className="h-4 w-4 text-secondary" />
             <span className="text-sm font-medium text-lime-500">Study Materials</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6" data-speed="clamp(0.8)">
             Master All 27 GATE Subjects
             <span className="block text-lime-500">With Expert Guidance</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-speed="clamp(0.7)">
             Comprehensive study materials designed by Silver Oak University faculty, 
             covering every topic with depth and clarity.
           </p>
@@ -97,6 +105,7 @@ const SubjectsSection = () => {
             <Card 
               key={index}
               className="group p-6 hover:shadow-knowledge transition-all duration-300 transform hover:scale-105 border-2 hover:border-secondary/20 cursor-pointer"
+              data-speed={`clamp(${0.4 + (index % 3) * 0.15})`}
             >
               <div className="flex items-start justify-between mb-4">
                 <subject.icon className={`h-10 w-10 text-${subject.color}`} />
@@ -143,21 +152,21 @@ const SubjectsSection = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="bg-gradient-knowledge rounded-2xl p-8 text-center text-white">
+        <div className="bg-gradient-knowledge rounded-2xl p-8 text-center text-white" data-speed="clamp(0.6)">
           <div className="max-w-3xl mx-auto">
-            <h3 className="text-3xl font-bold mb-4">
-              Access All Subjects with Premium Membership
+            <h3 className="text-3xl font-bold mb-4" data-lag="0.1">
+              Start Your GATE Preparation Journey Today
             </h3>
-            <p className="text-xl text-white/90 mb-8">
-              Get unlimited access to comprehensive study materials, practice questions, 
-              and expert guidance across all GATE subjects.
+            <p className="text-xl text-white/90 mb-8" data-lag="0.2">
+              Join thousands of students at Silver Oak University and access comprehensive study materials, 
+              practice questions, and expert guidance across all GATE subjects.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center" data-lag="0.3">
               <Button variant="hero" size="lg" className="bg-white text-secondary hover:bg-white/90">
                 View All Subjects
               </Button>
               <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-secondary">
-                Compare Plans
+                Student Login
               </Button>
             </div>
           </div>

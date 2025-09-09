@@ -61,19 +61,26 @@ const stats = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-20 bg-background-secondary dark:bg-black">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-background-secondary dark:bg-black relative overflow-hidden">
+      {/* Parallax Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full" data-speed="clamp(0.6)"></div>
+        <div className="absolute bottom-20 right-10 w-24 h-24 bg-secondary/5 rounded-lg rotate-45" data-speed="clamp(0.4)"></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-accent/5 rounded-full" data-lag="0.3"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6" data-speed="clamp(0.9)">
             <Award className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-primary">Platform Features</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6" data-speed="clamp(0.8)">
             Everything You Need for
             <span className="block text-primary">GATE Success</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-speed="clamp(0.7)">
             Silver Oak University's GATE CLUB combines traditional academic excellence with cutting-edge 
             technology to create the ultimate preparation ecosystem.
           </p>
@@ -85,6 +92,7 @@ const FeaturesSection = () => {
             <Card 
               key={index} 
               className="p-8 hover:shadow-elegant transition-all duration-300 transform hover:scale-105 border-2 hover:border-primary/20"
+              data-speed={`clamp(${0.5 + (index % 3) * 0.1})`}
             >
               <feature.icon className={`h-12 w-12 ${feature.color} mb-6`} />
               <h3 className="text-xl font-bold text-foreground mb-4">{feature.title}</h3>
@@ -94,10 +102,10 @@ const FeaturesSection = () => {
         </div>
 
         {/* Stats Bar */}
-        <div className="bg-gradient-primary rounded-2xl p-8 text-white">
+        <div className="bg-gradient-primary rounded-2xl p-8 text-white" data-speed="clamp(0.6)">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
-              <div key={index} className="space-y-4">
+              <div key={index} className="space-y-4" data-lag="0.2">
                 <stat.icon className="h-12 w-12 mx-auto text-yellow-400" />
                 <div className="text-3xl font-bold">{stat.value}</div>
                 <div className="text-white/80 text-sm">{stat.label}</div>
@@ -109,19 +117,11 @@ const FeaturesSection = () => {
         {/* CTA Section */}
         <div className="text-center mt-16">
           <h3 className="text-3xl font-bold text-foreground mb-6">
-            Ready to Transform Your GATE Preparation?
+            Ready to Excel in Your GATE Preparation?
           </h3>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of successful engineers who chose Silver Oak University's proven methodology.
+            Join Silver Oak University's comprehensive GATE preparation program and achieve your engineering goals.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="lg">
-              Start Free Trial
-            </Button>
-            <Button variant="outline" size="lg">
-              Schedule Demo
-            </Button>
-          </div>
         </div>
       </div>
     </section>
