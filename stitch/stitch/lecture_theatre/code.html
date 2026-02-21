@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GATE CLUB - Lecture Theatre</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Merriweather:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#003366",
+                        secondary: "#8C92AC",
+                        "background-light": "#F4F6F8",
+                        "background-dark": "#101922", // Kept from original config for dark mode support, though design system specifies light mode mostly
+                        surface: "#FFFFFF",
+                        text: "#1A1D21",
+                        muted: "#5C6B7F",
+                        accent: "#C0392B",
+                        "border-color": "#E2E8F0"
+                    },
+                    fontFamily: {
+                        sans: ["Public Sans", "sans-serif"],
+                        serif: ["Merriweather", "serif"],
+                        mono: ["JetBrains Mono", "monospace"],
+                        display: ["Public Sans", "sans-serif"] // Mapping display to sans for compatibility with provided config instructions
+                    },
+                    borderRadius: {
+                        DEFAULT: "2px",
+                        sm: "2px",
+                        md: "4px",
+                        lg: "6px",
+                        xl: "8px",
+                        full: "9999px"
+                    },
+                    boxShadow: {
+                        sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                        DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for institutional feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F6F8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8C92AC;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5C6B7F;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text font-sans antialiased h-screen flex overflow-hidden">
+<!-- Sidebar Navigation (Collapsed/Mini for Cinema Mode) -->
+<nav class="w-16 bg-primary flex-shrink-0 flex flex-col items-center py-6 border-r border-primary z-20 h-full">
+<!-- Logo Icon -->
+<div class="mb-8 w-10 h-10 rounded-sm bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<!-- Nav Items -->
+<div class="flex flex-col gap-6 w-full items-center">
+<button class="w-10 h-10 flex items-center justify-center rounded-sm text-secondary hover:text-white hover:bg-white/10 transition-colors group relative" title="Dashboard">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-sm text-secondary hover:text-white hover:bg-white/10 transition-colors group relative" title="Library">
+<span class="material-symbols-outlined">local_library</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-sm bg-white/20 text-white shadow-sm border border-white/30 group relative" title="Lecture Theatre">
+<span class="material-symbols-outlined">smart_display</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-sm text-secondary hover:text-white hover:bg-white/10 transition-colors group relative" title="Exams">
+<span class="material-symbols-outlined">quiz</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-sm text-secondary hover:text-white hover:bg-white/10 transition-colors group relative" title="Analytics">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col gap-4 items-center">
+<div class="w-8 h-8 rounded-full bg-cover bg-center border border-white/20" data-alt="User profile portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_mpRLTiMor63O-CYZPP_PGzqHm4zx8XPhQuSsZneP6fwZoTxh_OEQ4LHrxLlJQO7Kj2NwYXSEtjjVJf8ALZ9gbjqI_8l9XGYAhwbHZzaIjZSfHvGky9cT3RQPLdyWKd9qWEXugQaXM63c9X8eiCCVSVcOkh988gMkZkas1sRE1q20ziXr7XR3af19w016uD4fa9ad_sKeXtAg1zLP9dLRhHkq4H2-jxnk-ZkD0tkDHvt4XDrJrZqJan2KODSzJdBaGCLGSaZtoDRh');"></div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-light">
+<!-- Header / Breadcrumbs -->
+<header class="bg-surface h-16 border-b border-border-color flex items-center px-6 justify-between flex-shrink-0">
+<div class="flex items-center gap-3">
+<div class="flex items-center text-muted text-sm font-medium">
+<span class="hover:text-primary cursor-pointer">Thermodynamics</span>
+<span class="material-symbols-outlined text-base mx-1">chevron_right</span>
+<span class="hover:text-primary cursor-pointer">Chapter 4: Entropy</span>
+<span class="material-symbols-outlined text-base mx-1">chevron_right</span>
+</div>
+<h1 class="text-text font-serif font-bold text-lg leading-tight">Concept of Irreversibility</h1>
+<span class="px-2 py-0.5 rounded-sm bg-accent/10 text-accent text-xs font-bold uppercase tracking-wider border border-accent/20">Live</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-background-light rounded-sm border border-border-color">
+<span class="material-symbols-outlined text-muted text-sm">schedule</span>
+<span class="font-mono text-xs text-text font-medium">GATE 2024: 142 Days</span>
+</div>
+<button class="text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Two Column Layout: Video + Sidebar -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left Column: Video Player & Resources -->
+<div class="flex-1 flex flex-col overflow-y-auto p-6 gap-6 relative">
+<!-- Video Player Container -->
+<div class="w-full bg-black rounded-sm shadow-sm border border-border-color overflow-hidden group relative aspect-video flex flex-col">
+<!-- Video Placeholder -->
+<div class="flex-1 relative bg-neutral-900 flex items-center justify-center bg-cover bg-center" data-alt="Abstract scientific visualization of thermodynamics with particles" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCjHu564jEzR8f63hTAzVIOVx40iI7VB_eAF060JQx-qO27XMdJntG7gmw5IthCAFu8GJU5X4xxqLwHOY3IddNuuykI4D9_-BC6EYaq8QFmiyZkEEX_J_OimX7COIRdqN_q-oCNpz8nw8I2Nfyk8Yx8PjRk9rYwbuyAeOqvYYdbP8aoa3nWKn_6NI6zYe-jJ_E6wrV-raLfGsepkkiFy91k4dDIszH0pEVT47qdEOaF3S829BTXfCR8FWl1HXcdgXZWyIqCGrifip-G');">
+<!-- Play Button Overlay -->
+<button class="w-16 h-16 bg-primary/90 text-white rounded-full flex items-center justify-center hover:scale-105 transition-transform backdrop-blur-sm border-2 border-white/20">
+<span class="material-symbols-outlined text-4xl ml-1">play_arrow</span>
+</button>
+</div>
+<!-- Video Controls -->
+<div class="h-12 bg-gray-900 flex items-center px-4 gap-4 border-t border-gray-800">
+<button class="text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+<span class="text-white font-mono text-xs">12:45 / 45:00</span>
+<!-- Progress Bar -->
+<div class="flex-1 h-1 bg-gray-700 rounded-sm cursor-pointer relative group/progress">
+<div class="w-[28%] h-full bg-primary rounded-sm relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover/progress:opacity-100 shadow-md"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1 text-gray-300 hover:text-white px-2 py-1 rounded-sm hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-sm">speed</span>
+<span class="text-xs font-medium">1.5x</span>
+</button>
+<button class="text-gray-300 hover:text-white">
+<span class="material-symbols-outlined text-sm">volume_up</span>
+</button>
+<button class="text-gray-300 hover:text-white">
+<span class="material-symbols-outlined text-sm">closed_caption</span>
+</button>
+<button class="text-gray-300 hover:text-white">
+<span class="material-symbols-outlined text-sm">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Resource Dock -->
+<div class="flex flex-col gap-3">
+<h2 class="font-serif text-text font-bold text-lg border-b border-border-color pb-2">Lecture Materials</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Resource Item 1 -->
+<div class="bg-surface p-3 border border-border-color rounded-sm flex items-start gap-3 hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-sm bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text truncate group-hover:text-primary">Lecture_Slides_v2.pdf</p>
+<p class="text-xs text-muted">2.4 MB • Uploaded Today</p>
+</div>
+<button class="text-muted hover:text-primary">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+<!-- Resource Item 2 -->
+<div class="bg-surface p-3 border border-border-color rounded-sm flex items-start gap-3 hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-sm bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 border border-blue-100">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text truncate group-hover:text-primary">Problem_Set_04.pdf</p>
+<p class="text-xs text-muted">1.1 MB • 15 Questions</p>
+</div>
+<button class="text-muted hover:text-primary">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+<!-- Resource Item 3 -->
+<div class="bg-surface p-3 border border-border-color rounded-sm flex items-start gap-3 hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-sm bg-yellow-50 text-yellow-600 flex items-center justify-center flex-shrink-0 border border-yellow-100">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text truncate group-hover:text-primary">GATE_Prev_Year_Qs.pdf</p>
+<p class="text-xs text-muted">850 KB • 2018-2023</p>
+</div>
+<button class="text-muted hover:text-primary">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Interactive Tools -->
+<div class="w-[380px] flex-shrink-0 bg-surface border-l border-border-color flex flex-col shadow-sm">
+<!-- Tabs Header -->
+<div class="flex border-b border-border-color bg-background-light/50">
+<button class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-surface text-center font-serif">
+                        Notes
+                    </button>
+<button class="flex-1 py-3 text-sm font-medium text-muted hover:text-text border-b-2 border-transparent hover:border-border-color text-center font-serif transition-colors">
+                        Doubts
+                    </button>
+<button class="flex-1 py-3 text-sm font-medium text-muted hover:text-text border-b-2 border-transparent hover:border-border-color text-center font-serif transition-colors">
+                        Transcript
+                    </button>
+</div>
+<!-- Tab Content: Notes -->
+<div class="flex-1 flex flex-col p-4 overflow-hidden">
+<!-- Editor Toolbar -->
+<div class="flex items-center gap-1 mb-2 pb-2 border-b border-border-color">
+<button class="p-1.5 rounded-sm hover:bg-background-light text-muted hover:text-text transition-colors" title="Bold">
+<span class="material-symbols-outlined text-[18px]">format_bold</span>
+</button>
+<button class="p-1.5 rounded-sm hover:bg-background-light text-muted hover:text-text transition-colors" title="Italic">
+<span class="material-symbols-outlined text-[18px]">format_italic</span>
+</button>
+<button class="p-1.5 rounded-sm hover:bg-background-light text-muted hover:text-text transition-colors" title="List">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+</button>
+<div class="h-4 w-px bg-border-color mx-1"></div>
+<button class="flex items-center gap-1 px-2 py-1.5 rounded-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-xs font-medium">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>Timestamp</span>
+</button>
+</div>
+<!-- Notes Input Area -->
+<div class="flex-1 overflow-y-auto mb-4 font-sans text-[15px] leading-relaxed text-text outline-none resize-none" contenteditable="true">
+<p class="mb-3"><span class="text-primary font-mono text-xs bg-primary/5 px-1 rounded mr-1">10:20</span> The Clausius Inequality is crucial for determining the reversibility of a cycle. Need to memorize the integral form.</p>
+<p class="mb-3">Entropy generation is always positive for irreversible processes.</p>
+<p class="text-muted">Type your notes here...</p>
+</div>
+<!-- Saved Notes List (Mini history) -->
+<div class="mt-auto pt-4 border-t border-border-color">
+<h3 class="text-xs font-bold text-muted uppercase tracking-wider mb-3">Saved Notes</h3>
+<div class="space-y-3">
+<div class="group cursor-pointer hover:bg-background-light p-2 rounded-sm -mx-2 transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-primary font-mono text-xs bg-primary/5 px-1 rounded border border-primary/10">04:15</span>
+<button class="opacity-0 group-hover:opacity-100 text-muted hover:text-red-500 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+<p class="text-sm text-text mt-1 line-clamp-2">Definition of Isolated System: No mass or energy transfer.</p>
+</div>
+<div class="group cursor-pointer hover:bg-background-light p-2 rounded-sm -mx-2 transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-primary font-mono text-xs bg-primary/5 px-1 rounded border border-primary/10">08:42</span>
+<button class="opacity-0 group-hover:opacity-100 text-muted hover:text-red-500 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+<p class="text-sm text-text mt-1 line-clamp-2">Reversible adiabatic process is isentropic.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="p-4 border-t border-border-color bg-background-light/30">
+<button class="w-full bg-white border border-border-color text-primary font-medium py-2 rounded-sm hover:bg-primary/5 hover:border-primary/30 transition-all shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save_alt</span>
+                        Export Notes to PDF
+                     </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

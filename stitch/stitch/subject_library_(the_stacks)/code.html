@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GATE CLUB - Subject Library</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0d59a5", // Aligned closer to the Navy requested but keeping config constraint
+              "primary-dark": "#003366", // Adding the deep navy from PRD for specific uses
+              "secondary": "#8C92AC",
+              "background-light": "#F4F6F8",
+              "background-dark": "#101922",
+              "surface": "#FFFFFF",
+              "border-color": "#E2E8F0",
+            },
+            fontFamily: {
+              "display": ["Public Sans", "sans-serif"],
+              "serif": ["Merriweather", "serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "2px", // Rigid rectangularity
+              "sm": "2px",
+              "lg": "4px",
+              "xl": "8px",
+              "full": "9999px",
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: "Public Sans", sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Merriweather", serif;
+        }
+        /* Custom scrollbar for institutional feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F6F8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 bg-white dark:bg-[#1a202c] border-r border-border-color flex flex-col justify-between z-20 shadow-sm h-full">
+<div class="flex flex-col">
+<!-- Brand -->
+<div class="h-16 flex items-center gap-3 px-6 border-b border-border-color">
+<div class="w-8 h-8 bg-primary-dark rounded-sm flex items-center justify-center text-white font-serif font-bold text-lg">G</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight tracking-tight">GATE CLUB</h1>
+<p class="text-slate-500 text-xs font-normal">Silver Oak University</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1 p-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-slate-50 text-slate-600 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary" style="font-size: 20px;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-primary/10 text-primary-dark border-l-2 border-primary-dark transition-colors" href="#">
+<span class="material-symbols-outlined fill-1" style="font-size: 20px;">library_books</span>
+<span class="text-sm font-bold">Subject Library</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-slate-50 text-slate-600 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary" style="font-size: 20px;">assignment</span>
+<span class="text-sm font-medium">Exam Simulator</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-slate-50 text-slate-600 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary" style="font-size: 20px;">bar_chart</span>
+<span class="text-sm font-medium">Analytics &amp; Insights</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-slate-50 text-slate-600 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary" style="font-size: 20px;">play_circle</span>
+<span class="text-sm font-medium">Live Classes</span>
+</a>
+</nav>
+</div>
+<!-- User Profile / Footer -->
+<div class="p-4 border-t border-border-color">
+<button class="w-full flex items-center gap-3 px-3 py-2 rounded hover:bg-slate-50 transition-colors text-left">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 bg-slate-200" data-alt="User profile photo avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUjXdwrxfZiF0xlQITAaaa2i7UDSqbvxNII_eVJ6sBUIISmoOlRy84SXM5_YIKMkLP6Ig8u-DPjPXo66OB0xau7BGt-wQfADLkvPUasbPb6x9s0BadRB6aiP0py7z4U0wCyqod68nxvo7DbMh88ZH2DeSCGE20J4azyn5xkNAGKvMibWxuPK7aVOcQ1RIo3H2gbG3baYTWc3wnbrxULFTff0g3d2oj4tjQp_25H7kaX9Qh3rTZPEIbmFcOcSgGahVkL2IOE6sP2tlE");'></div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-slate-900 text-sm font-medium truncate">Alex Morgan</span>
+<span class="text-slate-500 text-xs truncate">Comp. Sci. (Batch '24)</span>
+</div>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Sticky Header -->
+<header class="h-auto bg-white dark:bg-[#1a202c] border-b border-border-color px-8 py-6 z-10 flex-shrink-0">
+<div class="max-w-7xl mx-auto w-full">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm text-slate-500 mb-2">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="text-slate-300">/</span>
+<span class="text-slate-900 font-medium">Subject Library</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Subject Library</h1>
+<p class="text-slate-500 mt-1 text-sm font-light">Access structured materials for 27 GATE subjects across all engineering streams.</p>
+</div>
+<!-- Search & Filter Bar -->
+<div class="flex items-center gap-3">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary" style="font-size: 20px;">search</span>
+</div>
+<input class="block w-64 pl-10 pr-3 py-2 border border-border-color rounded bg-white text-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Search subjects..." type="text"/>
+</div>
+<div class="h-8 w-px bg-slate-200 mx-1"></div>
+<div class="relative">
+<select class="appearance-none bg-white border border-border-color text-slate-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm cursor-pointer hover:border-slate-400 transition-colors">
+<option>All Streams</option>
+<option>Computer Science (CS)</option>
+<option>Mechanical (ME)</option>
+<option>Civil (CE)</option>
+<option>Electrical (EE)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
+</div>
+</div>
+<div class="relative">
+<select class="appearance-none bg-white border border-border-color text-slate-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm cursor-pointer hover:border-slate-400 transition-colors">
+<option>Content Type</option>
+<option>Video Lectures</option>
+<option>Notes &amp; PDFs</option>
+<option>Prev. Papers</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined" style="font-size: 18px;">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Grid -->
+<div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+<div class="max-w-7xl mx-auto">
+<!-- Section Header -->
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold text-slate-800 font-serif">Core Engineering Subjects</h2>
+<span class="text-xs font-mono text-slate-500 bg-white border border-border-color px-2 py-1 rounded">Showing 27 Subjects</span>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Card 1: Thermodynamics (Active/InProgress) -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<!-- Stream Indicator Strip -->
+<div class="h-1 w-full bg-red-600"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Mechanical</span>
+<!-- Progress Ring (SVG) -->
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="65" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-primary">35%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Thermodynamics</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>14 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>42 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>1500 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:border-primary">
+<span>Continue</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Data Structures -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-blue-500"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Comp. Sci.</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="20" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-primary">80%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Data Structures &amp; Algorithms</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>18 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>50 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>2100 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Open Course
+                                </button>
+</div>
+</div>
+<!-- Card 3: Circuit Theory -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-yellow-500"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Electrical</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-300">0%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Circuit Theory</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>12 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>36 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>950 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Start Learning
+                                </button>
+</div>
+</div>
+<!-- Card 4: Engineering Maths (Common) -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-slate-800"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Common Subject</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="90" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-primary">10%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Engineering Mathematics</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>20 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>60 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>2500 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Open Course
+                                </button>
+</div>
+</div>
+<!-- Card 5: Digital Logic -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-blue-500"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Comp. Sci.</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-300">0%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Digital Logic</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>8 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>24 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>800 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Start Learning
+                                </button>
+</div>
+</div>
+<!-- Card 6: Fluid Mechanics -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-red-600"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Mechanical</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="50" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-primary">50%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Fluid Mechanics</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>15 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>48 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>1800 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Open Course
+                                </button>
+</div>
+</div>
+<!-- Card 7: Structural Analysis -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-orange-700"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Civil</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-300">0%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Structural Analysis</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>16 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>52 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>1200 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Start Learning
+                                </button>
+</div>
+</div>
+<!-- Card 8: Control Systems -->
+<div class="group bg-white rounded border border-border-color hover:border-primary hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col relative overflow-hidden h-full">
+<div class="h-1 w-full bg-yellow-500"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-3">
+<span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Electrical</span>
+<div class="relative size-8 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-300">0%</div>
+</div>
+</div>
+<h3 class="text-lg font-bold text-slate-900 font-serif mb-4 leading-tight group-hover:text-primary transition-colors">Control Systems</h3>
+<div class="flex flex-col gap-2 mb-6 flex-grow">
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">menu_book</span>
+<span>11 Chapters</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">schedule</span>
+<span>33 Hrs Video</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 16px;">quiz</span>
+<span>1100 Questions</span>
+</div>
+</div>
+<button class="w-full py-2 px-4 rounded border border-border-color text-slate-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors">
+                                    Start Learning
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

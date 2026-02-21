@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GATE CLUB - Exam Simulator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;family=Merriweather:wght@300;400;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#003366", // Deep Navy from PRD
+                        "primary-light": "#E6F0FF", // Light Blue for selected states
+                        "secondary": "#8C92AC", // Cool Silver
+                        "background-light": "#F4F6F8",
+                        "background-dark": "#101922",
+                        "gate-green": "#22C55E", // Answered
+                        "gate-red": "#EF4444", // Not Answered
+                        "gate-violet": "#8B5CF6", // Marked
+                        "gate-grey": "#E2E8F0", // Not Visited
+                        "surface": "#FFFFFF",
+                        "text-main": "#1A1D21",
+                        "text-muted": "#5C6B7F"
+                    },
+                    fontFamily: {
+                        "sans": ["Public Sans", "sans-serif"],
+                        "serif": ["Merriweather", "serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px", // Rigid rectangularity
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "8px",
+                    },
+                    boxShadow: {
+                        "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for a more technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        .question-content {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* Simulating the exact radio button style of exam software */
+        .exam-radio:checked {
+            background-color: #003366;
+            border-color: #003366;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+        }
+        .exam-radio:focus {
+            ring-color: #003366;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-sans h-screen overflow-hidden flex flex-col">
+<!-- Top Header Bar -->
+<header class="h-14 bg-surface border-b border-secondary/20 flex items-center justify-between px-4 shrink-0 z-20 shadow-sm relative">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary text-white flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<h1 class="text-sm font-bold text-primary uppercase tracking-wide hidden md:block">GATE 2024: Mechanical Engineering - Mock Test 4</h1>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2 bg-surface px-4 py-1 rounded border border-gate-red/20 shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-gate-red text-[20px]">timer</span>
+<span class="font-mono text-lg font-bold text-gate-red">02:45:12</span>
+<span class="text-xs text-text-muted uppercase font-semibold">Time Left</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-background-light border border-secondary/20 hover:bg-secondary/10 rounded text-xs font-semibold text-text-main transition-colors">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+                Calculator
+            </button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-background-light border border-secondary/20 hover:bg-secondary/10 rounded text-xs font-semibold text-text-main transition-colors">
+<span class="material-symbols-outlined text-[18px]">info</span>
+                Instructions
+            </button>
+</div>
+</header>
+<!-- Main Content Area: Split Screen -->
+<div class="flex flex-1 overflow-hidden">
+<!-- LEFT PANEL: Question Area (70%) -->
+<main class="w-[70%] flex flex-col h-full border-r border-secondary/20 bg-surface relative">
+<!-- Question Header -->
+<div class="flex items-center justify-between px-6 py-3 border-b border-secondary/10 bg-surface">
+<h2 class="text-lg font-bold text-primary">Question No. 14</h2>
+<div class="flex items-center gap-4 text-xs font-mono font-medium">
+<span class="text-text-muted">Type: <span class="text-text-main">MCQ</span></span>
+<span class="px-2 py-0.5 bg-green-50 text-green-700 border border-green-100 rounded">+2.00 Marks</span>
+<span class="px-2 py-0.5 bg-red-50 text-red-700 border border-red-100 rounded">-0.66 Marks</span>
+</div>
+</div>
+<!-- Scrollable Question Content -->
+<div class="flex-1 overflow-y-auto px-8 py-6 space-y-8 bg-white">
+<!-- Question Text -->
+<div class="question-content text-text-main text-[16px] leading-relaxed">
+<p class="mb-4">
+                        A frictionless piston-cylinder device contains 2 kg of nitrogen at 100 kPa and 300 K. Nitrogen is compressed slowly according to the relation <span class="font-mono bg-background-light px-1 rounded text-sm">PV<sup>1.4</sup> = constant</span> until it reaches a final temperature of 360 K.
+                    </p>
+<p>
+                        Assume the gas constant for Nitrogen (R) is 0.2968 kJ/kg·K and the specific heat ratio (γ) is 1.4. Calculate the work input during this process.
+                    </p>
+<!-- Diagram placeholder -->
+<div class="my-6 p-4 border border-dashed border-secondary/40 bg-background-light rounded flex flex-col items-center justify-center h-48 w-full max-w-md mx-auto">
+<img alt="Piston-cylinder diagram showing compression process" class="opacity-80 mix-blend-multiply" data-alt="Technical diagram of a piston cylinder system undergoing compression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG0PB91B-xYF6MHIpC1F0WSXwAQBI4Nb6uGG_amNwe2SHLVoXC8NPC6UMwi4BH4xwC2xQR9d6muzok6Y05IjoM5svAPfoqP_laASYuSlUhqv979eFKPGNOdIduB41V4HQYmJUtB0-3Cy-wMDJx1ggmPFDWsI9lTCo472Jm-5JAO8xQbVKo7h8kJkAENZj7YiroHIamu-lvRzse9voG3Tjw5sQSRJpxj-4RqWWX5tmwq--DsGb4AG_jR1YKvectPfKhv1sKdufVQCL4"/>
+</div>
+</div>
+<!-- Options -->
+<div class="space-y-3 max-w-2xl">
+<label class="group flex items-start gap-4 p-4 border border-secondary/20 rounded hover:bg-background-light cursor-pointer transition-colors has-[:checked]:bg-primary-light has-[:checked]:border-primary">
+<input class="exam-radio mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" name="q14" type="radio"/>
+<div class="flex-1">
+<span class="font-bold mr-2 text-primary group-has-[:checked]:text-primary-dark">(A)</span>
+<span class="question-content">89 kJ</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 border border-secondary/20 rounded hover:bg-background-light cursor-pointer transition-colors has-[:checked]:bg-primary-light has-[:checked]:border-primary">
+<input class="exam-radio mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" name="q14" type="radio"/>
+<div class="flex-1">
+<span class="font-bold mr-2 text-primary group-has-[:checked]:text-primary-dark">(B)</span>
+<span class="question-content">-89 kJ</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 border border-secondary/20 rounded hover:bg-background-light cursor-pointer transition-colors has-[:checked]:bg-primary-light has-[:checked]:border-primary">
+<input class="exam-radio mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" name="q14" type="radio"/>
+<div class="flex-1">
+<span class="font-bold mr-2 text-primary group-has-[:checked]:text-primary-dark">(C)</span>
+<span class="question-content">102 kJ</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 border border-secondary/20 rounded hover:bg-background-light cursor-pointer transition-colors has-[:checked]:bg-primary-light has-[:checked]:border-primary">
+<input class="exam-radio mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" name="q14" type="radio"/>
+<div class="flex-1">
+<span class="font-bold mr-2 text-primary group-has-[:checked]:text-primary-dark">(D)</span>
+<span class="question-content">-102 kJ</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Footer Action Bar -->
+<footer class="h-16 border-t border-secondary/20 bg-background-light px-6 flex items-center justify-between shrink-0">
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white border border-secondary/30 text-text-main font-semibold text-sm rounded hover:bg-gray-50 transition-colors shadow-sm">
+                        Mark for Review &amp; Next
+                    </button>
+<button class="px-4 py-2 bg-white border border-secondary/30 text-text-main font-semibold text-sm rounded hover:bg-gray-50 transition-colors shadow-sm">
+                        Clear Response
+                    </button>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 bg-primary text-white font-bold text-sm rounded hover:bg-blue-900 transition-colors shadow-sm flex items-center gap-2">
+                        Save &amp; Next
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- RIGHT PANEL: Question Palette (30%) -->
+<aside class="w-[30%] bg-background-light flex flex-col h-full border-l border-white shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)]">
+<!-- User Profile Snippet -->
+<div class="p-4 bg-white border-b border-secondary/20 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/20 overflow-hidden" data-alt="Profile picture of the student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVscbeqaYcl6yMVQrb-1t-pzIW6mDt8gV-CYJBAl29IrZJLXM2sBZyn4DxX-yWPXnsiECZ-wGnwF94QLzvkGTtMv0awKIIjzvj2V7Wj7HT59dz1hjmhPplp-wEsjf3IWkudY59-URJHhz_CrXRvdyo7XmDyenx_34UE8l0vpoFhACr1hRwU9lM4AG2zQPVfUMWvg72gzSqP56tcN1zsoGeU6-_40-8k7sIn-QCF850Lz2aTDd3s4VrCWHAMCszqOaq74JkteQdU50m"); background-size: cover; background-position: center;'></div>
+<div>
+<h3 class="text-sm font-bold text-text-main">Rahul Sharma</h3>
+<p class="text-xs text-text-muted">Mechanical Engineering</p>
+</div>
+</div>
+<!-- Legend -->
+<div class="p-4 grid grid-cols-2 gap-y-3 gap-x-2 border-b border-secondary/10 bg-white/50">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-gate-green text-white text-[10px] font-bold shadow-sm">12</div>
+<span class="text-xs text-text-muted">Answered</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-gate-red text-white text-[10px] font-bold shadow-sm">5</div>
+<span class="text-xs text-text-muted">Not Answered</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-gate-grey text-text-main text-[10px] font-bold border border-secondary/30">40</div>
+<span class="text-xs text-text-muted">Not Visited</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-gate-violet text-white text-[10px] font-bold shadow-sm">2</div>
+<span class="text-xs text-text-muted">Marked for Review</span>
+</div>
+</div>
+<!-- Palette Grid Header -->
+<div class="bg-primary/5 px-4 py-2 border-y border-secondary/10 flex justify-between items-center">
+<span class="text-xs font-bold text-primary uppercase tracking-wider">General Aptitude</span>
+<span class="material-symbols-outlined text-primary text-[18px] cursor-pointer">expand_less</span>
+</div>
+<!-- Scrollable Grid -->
+<div class="flex-1 overflow-y-auto p-4">
+<h4 class="text-xs font-bold text-text-main mb-3 uppercase tracking-wider">Question Palette</h4>
+<div class="grid grid-cols-5 gap-2">
+<!-- Questions 1-10 -->
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">1</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">2</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">3</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-red text-white shadow-sm hover:opacity-90">4</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">5</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-violet text-white shadow-sm hover:opacity-90">6</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">7</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">8</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">9</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">10</button>
+<!-- Questions 11-20 -->
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">11</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-green text-white shadow-sm hover:opacity-90">12</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-red text-white shadow-sm hover:opacity-90">13</button>
+<!-- Current Question -->
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-white text-primary border-2 border-primary shadow-sm ring-2 ring-primary/20 relative">
+                        14
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-gate-violet rounded-full"></span>
+</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">15</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">16</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">17</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">18</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">19</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">20</button>
+<!-- More Questions filler -->
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">21</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">22</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">23</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">24</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30 hover:bg-gray-100">25</button>
+</div>
+<div class="mt-8 border-t border-secondary/20 pt-4">
+<h4 class="text-xs font-bold text-text-main mb-3 uppercase tracking-wider">Engineering Mathematics</h4>
+<div class="grid grid-cols-5 gap-2 opacity-60">
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30">26</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30">27</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30">28</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30">29</button>
+<button class="aspect-square rounded flex items-center justify-center text-xs font-bold bg-gate-grey text-text-main border border-secondary/30">30</button>
+</div>
+</div>
+</div>
+<!-- Submit Panel -->
+<div class="bg-background-light p-4 border-t border-secondary/20 shrink-0">
+<button class="w-full py-3 bg-secondary/20 text-text-main font-bold text-sm rounded hover:bg-secondary/30 transition-colors border border-secondary/30 uppercase tracking-wide">
+                    Submit Test
+                </button>
+</div>
+</aside>
+</div>
+</body></html>

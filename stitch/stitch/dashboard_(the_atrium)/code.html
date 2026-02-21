@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GATE CLUB - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59a5", // Using the provided primary color, slightly brighter than PRD navy but consistent with system
+                        "primary-dark": "#003366", // Adding the PRD navy for specific sidebar/header use
+                        "secondary": "#8C92AC",
+                        "background-light": "#F4F6F8",
+                        "background-dark": "#101922",
+                        "surface": "#FFFFFF",
+                        "text-main": "#1A1D21",
+                        "text-muted": "#5C6B7F",
+                        "accent": "#C0392B",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"],
+                        "serif": ["Merriweather", "serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px", // Rigid 2px radius as per PRD
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "8px",
+                        "full": "9999px",
+                    },
+                    boxShadow: {
+                        "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for institutional feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F6F8; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        .font-serif {
+            font-family: 'Merriweather', serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display min-h-screen flex overflow-hidden selection:bg-primary/20 selection:text-primary">
+<!-- Sidebar (Left Column) -->
+<aside class="w-[240px] bg-primary-dark flex flex-col h-screen fixed left-0 top-0 border-r border-slate-800 z-50">
+<!-- Brand -->
+<div class="h-16 flex items-center px-5 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-white/10 rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<div>
+<h1 class="text-white text-base font-bold tracking-wide font-serif">GATE CLUB</h1>
+<p class="text-white/50 text-[10px] uppercase tracking-wider font-medium">Silver Oak Univ.</p>
+</div>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-white/10 text-white group border-l-2 border-white" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors" data-weight="fill">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/5 hover:text-white transition-all group border-l-2 border-transparent hover:border-white/30" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="regular">library_books</span>
+<span class="text-sm font-medium">Subject Library</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/5 hover:text-white transition-all group border-l-2 border-transparent hover:border-white/30" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="regular">quiz</span>
+<span class="text-sm font-medium">Exam Simulator</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/5 hover:text-white transition-all group border-l-2 border-transparent hover:border-white/30" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="regular">videocam</span>
+<span class="text-sm font-medium">Live Classes</span>
+<span class="ml-auto bg-accent text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm animate-pulse">LIVE</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/5 hover:text-white transition-all group border-l-2 border-transparent hover:border-white/30" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="regular">bar_chart</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+</nav>
+<!-- User Profile (Bottom) -->
+<div class="p-4 border-t border-white/10 bg-[#002a52]">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded bg-white/20 bg-center bg-cover border border-white/30" data-alt="Profile picture of a student named Arjun" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuChlgsOFHj93ajniRt6FFKtJZjM47NYH054vDzIggz3wGylOg_56YmJH-m7jjhWe9WCjnME9NC5Zz_wZgxEIuO2PJp2hCyfXveQhLO0BdjyTxnUoYSRBPYurpXJrL87E_7tigwP1A5V1_1OMn9_p5f6NmcIGLNOycadct0Ll3kXUq-Kjnwb_H2vc-fkKMAO_bWX7QAwZHAGIocVPC6G6eDCNEZ6Wgq48IOZWUnpvPXL5EWY9Bc7JgVrgqV8k0e-LJA8S_KC8C2eyLWP');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-white text-sm font-semibold truncate font-serif">Arjun Patel</p>
+<p class="text-white/50 text-xs truncate">B.Tech ME • Sem 7</p>
+</div>
+<button class="text-white/50 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 h-screen overflow-y-auto bg-background-light p-8 grid grid-cols-12 gap-8">
+<!-- Center Column (Feed) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-8">
+<!-- Header / Welcome Card -->
+<header class="flex flex-col gap-1">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Thursday, October 24th</p>
+<h1 class="text-text-main text-3xl font-serif font-bold leading-tight">Good Morning, Arjun.</h1>
+</div>
+<div class="hidden sm:block text-right">
+<div class="bg-white border border-slate-200 px-4 py-2 rounded shadow-sm flex items-baseline gap-2">
+<span class="text-text-muted text-xs font-bold uppercase tracking-wider">Days to GATE 2024</span>
+<span class="text-accent text-2xl font-serif font-black">142</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Resume Learning Strip -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-text-main text-lg font-serif font-bold">Resume Learning</h2>
+<a class="text-primary text-xs font-bold uppercase tracking-wider hover:underline flex items-center gap-1" href="#">
+                        View History <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Card 1: Video -->
+<div class="group bg-surface border border-slate-200 p-3 rounded hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex items-start justify-between mb-3">
+<div class="bg-red-50 text-red-700 p-1.5 rounded">
+<span class="material-symbols-outlined text-[20px] block">play_circle</span>
+</div>
+<span class="text-[10px] font-mono text-text-muted bg-slate-100 px-1.5 py-0.5 rounded">12:45 / 45:00</span>
+</div>
+<h3 class="font-serif font-bold text-sm text-text-main mb-1 line-clamp-2 group-hover:text-primary transition-colors">Thermodynamics: Entropy &amp; Irreversibility</h3>
+<p class="text-xs text-text-muted mb-3">Prof. R.K. Sharma</p>
+<div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<!-- Card 2: PDF -->
+<div class="group bg-surface border border-slate-200 p-3 rounded hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex items-start justify-between mb-3">
+<div class="bg-blue-50 text-blue-700 p-1.5 rounded">
+<span class="material-symbols-outlined text-[20px] block">description</span>
+</div>
+<span class="text-[10px] font-mono text-text-muted bg-slate-100 px-1.5 py-0.5 rounded">PDF</span>
+</div>
+<h3 class="font-serif font-bold text-sm text-text-main mb-1 line-clamp-2 group-hover:text-primary transition-colors">Fluid Mechanics: Chapter 4 Notes</h3>
+<p class="text-xs text-text-muted mb-3">Last read 2 hours ago</p>
+<div class="flex items-center gap-1 text-[10px] text-primary font-medium mt-auto">
+<span>Continue Reading</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+</div>
+</div>
+<!-- Card 3: Quiz -->
+<div class="group bg-surface border border-slate-200 p-3 rounded hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex items-start justify-between mb-3">
+<div class="bg-purple-50 text-purple-700 p-1.5 rounded">
+<span class="material-symbols-outlined text-[20px] block">quiz</span>
+</div>
+<span class="text-[10px] font-mono text-text-muted bg-slate-100 px-1.5 py-0.5 rounded">Pending</span>
+</div>
+<h3 class="font-serif font-bold text-sm text-text-main mb-1 line-clamp-2 group-hover:text-primary transition-colors">Weekly Mock Test #4: Mechanics</h3>
+<p class="text-xs text-text-muted mb-3">Due in 2 days</p>
+<button class="w-full text-center text-[11px] font-bold uppercase tracking-wider bg-primary/10 text-primary py-1.5 rounded hover:bg-primary hover:text-white transition-colors">
+                            Start Quiz
+                        </button>
+</div>
+</div>
+</section>
+<!-- AI Insights -->
+<section class="flex-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+<h2 class="text-text-main text-lg font-serif font-bold">Suggested Focus Areas</h2>
+</div>
+<div class="bg-surface border border-slate-200 rounded p-5 shadow-sm">
+<p class="text-sm text-text-muted mb-4">Based on your recent performance in <span class="font-semibold text-text-main">Full Length Mock #3</span>, our AI recommends focusing on these weak areas to improve your score by ~12%.</p>
+<div class="space-y-3">
+<!-- Recommendation Item 1 -->
+<div class="flex items-center justify-between p-3 border border-slate-100 rounded hover:bg-slate-50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded bg-red-50 border border-red-100 flex items-center justify-center text-red-600 font-bold text-xs">
+                                    -14%
+                                </div>
+<div>
+<h4 class="text-sm font-bold text-text-main font-serif group-hover:text-primary transition-colors">Heat Transfer: Convection</h4>
+<p class="text-xs text-text-muted">High error rate in numerical problems</p>
+</div>
+</div>
+<button class="text-xs font-medium text-primary border border-slate-200 bg-white px-3 py-1.5 rounded hover:border-primary transition-all">
+                                Practice Questions
+                            </button>
+</div>
+<!-- Recommendation Item 2 -->
+<div class="flex items-center justify-between p-3 border border-slate-100 rounded hover:bg-slate-50 transition-colors group">
+<div class="flex items-center justify-center size-10 rounded bg-orange-50 border border-orange-100 text-orange-600 font-bold text-xs">
+                                Low
+                            </div>
+<div class="flex-1 px-4">
+<h4 class="text-sm font-bold text-text-main font-serif group-hover:text-primary transition-colors">Engineering Math: Calculus</h4>
+<p class="text-xs text-text-muted">Speed issue: Avg time 4m 20s per question</p>
+</div>
+<button class="text-xs font-medium text-primary border border-slate-200 bg-white px-3 py-1.5 rounded hover:border-primary transition-all">
+                                Watch Speed Tips
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column (Stats & Widgets) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<!-- Quick Stats Grid -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Stat 1 -->
+<div class="bg-surface border border-slate-200 p-4 rounded shadow-sm">
+<p class="text-xs text-text-muted font-medium mb-1">Total Score Avg</p>
+<p class="text-2xl font-serif font-bold text-text-main">68.5</p>
+<div class="flex items-center gap-1 mt-2 text-[10px] font-bold text-emerald-600">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+<span>+5.2%</span>
+<span class="text-text-muted font-normal ml-1">vs last week</span>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface border border-slate-200 p-4 rounded shadow-sm">
+<p class="text-xs text-text-muted font-medium mb-1">Hours Studied</p>
+<p class="text-2xl font-serif font-bold text-text-main">42.5</p>
+<div class="flex items-center gap-1 mt-2 text-[10px] font-bold text-text-muted">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+<span>This week</span>
+</div>
+</div>
+<!-- Stat 3 -->
+<div class="bg-surface border border-slate-200 p-4 rounded shadow-sm">
+<p class="text-xs text-text-muted font-medium mb-1">Questions Solved</p>
+<p class="text-2xl font-serif font-bold text-text-main">1,240</p>
+</div>
+<!-- Stat 4 -->
+<div class="bg-surface border border-slate-200 p-4 rounded shadow-sm">
+<p class="text-xs text-text-muted font-medium mb-1">Percentile</p>
+<p class="text-2xl font-serif font-bold text-text-main">94.2</p>
+</div>
+</div>
+<!-- Leaderboard Widget -->
+<div class="bg-surface border border-slate-200 rounded shadow-sm flex flex-col overflow-hidden">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+<h3 class="font-serif font-bold text-sm text-text-main">Class Leaderboard</h3>
+<span class="text-[10px] font-bold text-text-muted uppercase tracking-wider">ME Branch</span>
+</div>
+<div class="divide-y divide-slate-100">
+<!-- Top 1 -->
+<div class="p-3 flex items-center gap-3">
+<div class="w-6 text-center text-sm font-bold text-[#D4AF37] font-serif">1</div> <!-- Gold -->
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD-e4QWaeuK24kdB2NZ7BELKrTyAUBncUNiGiWoCiEq-qFrR3khtLK71LPZiWdCGk_vARO14JD7YZA71Egqd1XoAiz_F9l-CUHO4s-5y_3sxlGFO7rrDWPBaASlSQb_udpzJc-tb4MZATAWKU9e5T29qZmXZSiIEywUE6lmMKLI8Dh0H8EHvgh32HAEvNlErHRudjk8a49cgrdP14VsLoZ85BFXUJvQ3RD5bvSyCzNp3t18bu5pPN1PFlYSGplpC0j378KasGsOW9Vm');"></div>
+<div class="flex-1">
+<p class="text-sm font-semibold text-text-main">Rohan Das</p>
+<p class="text-xs text-text-muted">Score: 88.5</p>
+</div>
+</div>
+<!-- Top 2 -->
+<div class="p-3 flex items-center gap-3">
+<div class="w-6 text-center text-sm font-bold text-[#C0C0C0] font-serif">2</div> <!-- Silver -->
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDyph3ZWIqxp5Q54U6XO-8W-7oLU8CT6WUL-Ng2cBmUTVzt8sJ634yofFVUR2hg66RSeD_DS2-7usS1S9jkbwd4KZQkmKSZR1Sn5ylIajVskRoA714jAmUskpmOM3teMfBl1GvINnbjnhuVMy7v-XQfEmkbF1ZgroSIA0Af6sG6HhtPbEnnKeuTpkIGe5nXCc493u1ugZZGigzPozuGP4lChXyupRqmsY69SQuk2b_zoS0qbonGx7sxgw8UAWtN1I3MrtwsRaLBfImb');"></div>
+<div class="flex-1">
+<p class="text-sm font-semibold text-text-main">Priya Sharma</p>
+<p class="text-xs text-text-muted">Score: 86.2</p>
+</div>
+</div>
+<!-- Top 3 -->
+<div class="p-3 flex items-center gap-3">
+<div class="w-6 text-center text-sm font-bold text-[#CD7F32] font-serif">3</div> <!-- Bronze -->
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDEkYZnIbME6DytuO6xtpSvP5Dq6z61jOeXGoBXcU-8TIC75dmbITaRroZsC3vQmU8DonDGN8B-UWa293Lw5zLpW5kmKxG19B1HDeogJMU0gowS4Zwcur0pQbJB99LaI1zuOkD25SCxmEls5_bOR95FbgoxqKOUWSdbdDzrOusAVDmVVywsR9heswhWzUGcFix5gq6Z9pmmtSI41m7GEL3YknXyuRvtXlLxqTZUkolW11SS0EHmH9RlhjD_CRLVmSn_pJ6DAf-wq_2V');"></div>
+<div class="flex-1">
+<p class="text-sm font-semibold text-text-main">Vikram Singh</p>
+<p class="text-xs text-text-muted">Score: 84.0</p>
+</div>
+</div>
+<!-- Gap indicator -->
+<div class="py-1 bg-slate-50 flex justify-center">
+<span class="material-symbols-outlined text-slate-300 text-[16px]">more_horiz</span>
+</div>
+<!-- User Rank -->
+<div class="p-3 flex items-center gap-3 bg-primary/5 border-l-4 border-primary">
+<div class="w-6 text-center text-sm font-bold text-primary font-serif">42</div>
+<div class="size-8 rounded-full bg-cover bg-center border border-primary/20" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCT8tpfhEM0UO09ocXe_SUX5Vs5oycIF0iyIBug0YcQpRPXnSMGcbeTSnV8dgsVR4e_zKnr-ltrDWMEC9WlIh6bFnqEYSTn5TdjilSR7NS4c4CGJlEeuLcJjdKWg9sGwSwqCdbRwszJzFPZDCrD78fLMZa4P0-_WyPuVM9lA-ipWfaIcepMiRcIOQ3sA_WF896DnlKCtGmHW-0Ak0IYMiypT4fMwfNkuHaojpp1Eg3Zrok1pAaD_M44uoViPUi6F17cIskbEcjTv1RI');"></div>
+<div class="flex-1">
+<p class="text-sm font-bold text-text-main">You</p>
+<p class="text-xs text-text-muted">Score: 68.5</p>
+</div>
+</div>
+</div>
+<div class="p-3 border-t border-slate-100 bg-slate-50 text-center">
+<a class="text-xs font-bold text-primary uppercase tracking-wider hover:underline" href="#">View Full Board</a>
+</div>
+</div>
+<!-- Up Next / Calendar Widget -->
+<div class="bg-surface border border-slate-200 rounded shadow-sm p-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-serif font-bold text-sm text-text-main">Upcoming</h3>
+<button class="text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+</button>
+</div>
+<div class="space-y-3">
+<div class="flex gap-3">
+<div class="flex flex-col items-center justify-center bg-slate-100 rounded min-w-[40px] h-[40px]">
+<span class="text-[9px] font-bold text-text-muted uppercase">Oct</span>
+<span class="text-sm font-bold text-text-main font-serif">26</span>
+</div>
+<div>
+<p class="text-xs font-bold text-text-main">Mock Test #5 Live</p>
+<p class="text-[10px] text-text-muted">10:00 AM - 1:00 PM</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center justify-center bg-slate-100 rounded min-w-[40px] h-[40px]">
+<span class="text-[9px] font-bold text-text-muted uppercase">Oct</span>
+<span class="text-sm font-bold text-text-main font-serif">28</span>
+</div>
+<div>
+<p class="text-xs font-bold text-text-main">Live Q&amp;A: Heat Transfer</p>
+<p class="text-[10px] text-text-muted">4:00 PM - 5:30 PM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

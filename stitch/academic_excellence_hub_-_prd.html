@@ -1,0 +1,197 @@
+# Academic Excellence Hub
+
+## Product Overview
+
+**The Pitch:** GATE CLUB is the premier digital extension of Silver Oak University’s academic ecosystem, engineered specifically for GATE exam preparation. It transforms the chaotic landscape of competitive exam study into a structured, authoritative repository of knowledge.
+
+**For:** Ambitious engineering students at Silver Oak University who demand rigorous, curriculum-aligned resources and data-driven insights to crack the GATE exam.
+
+**Device:** desktop
+
+**Design Direction:** Institutional Modernism. A balanced fusion of academic tradition and digital efficiency. The interface feels like a high-end digital library—quiet, organized, and deeply focused. It prioritizes information density without clutter, using rigid grids and subtle metallic textures.
+
+**Inspired by:** JSTOR, MIT OpenCourseWare, Bloomberg Terminal (for the analytics).
+
+---
+
+## Screens
+
+- **Dashboard (The Atrium):** Central hub for progress tracking, daily goals, and personalized AI recommendations.
+- **Subject Library (The Stacks):** A structured repository of the 27 GATE subjects, organized by engineering stream.
+- **Exam Simulator (The Hall):** A focused, distraction-free environment for taking mock tests.
+- **Analytics & Insights (The Report):** Detailed performance breakdown and weakness identification.
+- **Lecture Theatre:** Video playback interface with integrated notes and doubt resolution.
+
+---
+
+## Key Flows
+
+**Flow: Taking a Diagnostic Mock Test**
+
+1. User is on **Dashboard** -> sees "Weekly Full-Length Mock #4" in 'Up Next'.
+2. User clicks **"Start Exam"** -> enters **Exam Simulator** (Full screen, timer active).
+3. User completes test & submits -> Redirected to **Analytics & Insights**.
+4. Result: User sees score (e.g., 68/100), percentile, and AI-generated "Focus Areas" for next week.
+
+**Flow: Resolving a Doubt during Study**
+
+1. User is in **Lecture Theatre** watching "Thermodynamics: Entropy".
+2. User pauses video at 12:45 -> clicks sidebar **"Ask Expert"** tab.
+3. User types question; AI suggests similar solved queries first. User posts new query.
+4. Result: Notification confirms "Faculty assigned. Est. response: 2 hours."
+
+---
+
+<details>
+<summary>Design System</summary>
+
+## Color Palette
+
+- **Primary:** `#003366` - Deep Navy (Header, Primary Buttons, Active States)
+- **Secondary:** `#8C92AC` - Cool Silver (Borders, Icons, Secondary Text)
+- **Background:** `#F4F6F8` - Pale Gray Blue (App Background)
+- **Surface:** `#FFFFFF` - Cards, Sidebar, Modals
+- **Text:** `#1A1D21` - Primary Headings (Near Black)
+- **Muted:** `#5C6B7F` - Body Text, Metadata
+- **Accent:** `#C0392B` - Urgent Alerts, "Live" Indicators
+
+## Typography
+
+Fonts chosen for high legibility and academic authority.
+
+- **Headings:** **Merriweather**, 700/900. A sturdy serif that evokes textbooks and reliability.
+    - H1: 32px (Page Titles)
+    - H2: 24px (Section Headers)
+- **Body:** **Public Sans**, 400/500. A neutral, government-grade sans-serif for UI elements.
+    - Body: 15px (Reading text)
+    - UI: 13px (Labels, buttons)
+- **Monospace:** **JetBrains Mono**, 400. For code snippets and numerical data.
+    - Data: 12px
+
+**Style notes:** Rigid rectangularity. 2px border radius maximum. Heavy use of 1px borders in `#E2E8F0`. Shadows are minimal (`shadow-sm` only), preferring borders to define separation.
+
+## Design Tokens
+
+```css
+:root {
+  --color-primary: #003366;
+  --color-secondary: #8C92AC;
+  --color-background: #F4F6F8;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1D21;
+  --color-muted: #5C6B7F;
+  --font-serif: 'Merriweather', serif;
+  --font-sans: 'Public Sans', sans-serif;
+  --radius: 2px;
+  --spacing: 24px;
+}
+```
+
+</details>
+
+---
+
+<details>
+<summary>Screen Specifications</summary>
+
+### 1. Dashboard (The Atrium)
+
+**Purpose:** Provide an immediate snapshot of academic standing and next actions.
+
+**Layout:** Three-column grid (Left: Nav, Center: Feed/Study Plan, Right: Quick Stats).
+
+**Key Elements:**
+- **Sidebar Nav:** `240px` wide. Dark Navy `#003366`. White text. Links: Dashboard, Library, Exams, Live Classes, Analytics.
+- **Welcome Card:** "Good Morning, [Name]." Shows "Days until GATE 2024: [Number]" in large serif font.
+- **"Resume Learning" Strip:** Horizontal list of last 3 accessed resources (Video, PDF, or Quiz).
+- **AI Recommendation Engine:** A section titled "Suggested Focus Areas." Cards display specific topics (e.g., "Fluid Mechanics: Buoyancy") based on recent error rates.
+- **Leaderboard Widget:** Right column. Top 5 students in current branch. "You are ranked #42."
+
+**States:**
+- **Empty:** "Welcome to GATE CLUB. Take the diagnostic test to generate your study plan."
+- **Loading:** Skeleton screens with shimmering silver effect.
+
+**Components:**
+- **Stat Card:** White bg, 1px silver border. Label (Sans 12px), Value (Serif 32px), Trend (+5% in green).
+
+### 2. Subject Library (The Stacks)
+
+**Purpose:** Browsing the 27 GATE subjects and drilling down into chapters.
+
+**Layout:** Breadcrumb header. Grid of Subject Cards (4 per row).
+
+**Key Elements:**
+- **Filter Bar:** Dropdowns for "Stream" (CS, ME, CE), "Content Type" (Video, Notes, Papers).
+- **Subject Card:**
+    - Header: Color-coded strip (e.g., Red for Mechanical).
+    - Title: **Merriweather** 18px. "Thermodynamics".
+    - Meta: "14 Chapters • 42 Hrs Video • 1500 Qs".
+    - Action: "Open Course" button (Outline style).
+- **Progress Ring:** Small SVG ring in top right of card showing completion %.
+
+**Interactions:**
+- **Hover Card:** Slight lift (`translate-y-1`), border turns Primary Blue `#003366`.
+
+### 3. Exam Simulator (The Hall)
+
+**Purpose:** Replicate the actual GATE interface to build exam temperament.
+
+**Layout:** Split screen. Left (70%): Question area. Right (30%): Question Palette.
+
+**Key Elements:**
+- **Header:** Minimal. Time Remaining (Red monospace font). Calculator button.
+- **Question Area:**
+    - "Question No. 14" (Bold Sans).
+    - Question text (Serif 16px).
+    - Options: Radio buttons. Selected state gets Blue background `#E6F0FF`.
+- **Palette:** Grid of buttons.
+    - Green: Answered.
+    - Red: Not Answered.
+    - Violet: Marked for Review.
+    - Grey: Not Visited.
+- **Footer:** "Save & Next", "Clear Response", "Mark for Review".
+
+**Responsive:** Desktop only. (GATE is a computer-based test; mobile not supported for this view to force realistic practice).
+
+### 4. Analytics & Insights (The Report)
+
+**Purpose:** Deep dive into performance post-exam.
+
+**Layout:** Dashboard style with heavy use of charts.
+
+**Key Elements:**
+- **Score Header:** Large card. "Total Score: 64.33". Rank prediction.
+- **Subject-wise Breakdown:** Horizontal bar chart. X-axis: Marks. Y-axis: Subjects. Bars split by Correct/Incorrect/Unattempted colors.
+- **Time Management Matrix:** Scatter plot. X-axis: Time Spent. Y-axis: Difficulty. Dots represent questions. Helps identify "Time wasters" (easy questions that took too long).
+- **Accuracy Gauge:** Half-circle chart. "82% Accuracy".
+
+### 5. Lecture Theatre
+
+**Purpose:** Video consumption with integrated active learning tools.
+
+**Layout:** Cinema mode. Video player (Left/Center). Tabbed Sidebar (Right).
+
+**Key Elements:**
+- **Video Player:** Standard controls + "Playback Speed" prominent.
+- **Sidebar Tabs:** [Notes], [Doubts], [Transcript].
+    - **Notes Tab:** Rich text editor. Auto-timestamps when typing starts.
+    - **Doubts Tab:** Threaded chat view. "Post anonymously" toggle.
+- **Resource List:** Below video. PDF downloads related to the lecture.
+
+</details>
+
+---
+
+<details>
+<summary>Build Guide</summary>
+
+**Stack:** HTML + Tailwind CSS v3
+
+**Build Order:**
+1. **Layout & Sidebar (The Shell):** Establish the `grid-cols-[240px_1fr]` structure and the `#003366` navigation sidebar. This defines the app's "campus" feel.
+2. **Subject Library:** Focus on the Card component and Typography hierarchy (Merriweather vs Public Sans). This sets the visual tone.
+3. **Lecture Theatre:** Implement the two-column media layout.
+4. **Exam Simulator:** Needs specific attention to the "Question Palette" grid system.
+5. **Dashboard:** Bring in the components from previous screens to populate the summary view.
+
+</details>

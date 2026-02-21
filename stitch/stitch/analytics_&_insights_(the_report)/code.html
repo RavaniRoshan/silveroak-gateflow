@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics &amp; Insights - GATE CLUB</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;family=Merriweather:wght@300;400;700;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#003366", // Deep Navy per PRD, overriding default blue for accuracy
+                        "secondary": "#8C92AC", // Cool Silver
+                        "background-light": "#F4F6F8", // Pale Gray Blue
+                        "background-dark": "#101922",
+                        "surface": "#FFFFFF",
+                        "text-main": "#1A1D21",
+                        "text-muted": "#5C6B7F",
+                        "accent": "#C0392B",
+                        "success": "#078838",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"],
+                        "serif": ["Merriweather", "serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "2px", "sm": "2px", "md": "4px", "lg": "6px", "xl": "8px", "full": "9999px"},
+                    boxShadow: {
+                        "subtle": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Merriweather', serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom scrollbar for data tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main h-screen overflow-hidden flex selection:bg-primary selection:text-white">
+<!-- SideNavBar -->
+<nav class="w-64 bg-primary text-white flex-shrink-0 flex flex-col h-full border-r border-white/10 relative z-20">
+<!-- Logo -->
+<div class="h-16 flex items-center px-6 border-b border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-white/90" style="font-size: 28px;">school</span>
+<div>
+<h1 class="font-serif font-black text-lg tracking-wide leading-none">GATE CLUB</h1>
+<p class="text-xs text-white/60 font-light mt-0.5">Silver Oak University</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-white transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-white transition-colors">library_books</span>
+<span class="text-sm font-medium">Subject Library</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-white transition-colors">quiz</span>
+<span class="text-sm font-medium">Exam Simulator</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-white/20 text-white shadow-sm border border-white/10" href="#">
+<span class="material-symbols-outlined text-white">analytics</span>
+<span class="text-sm font-bold">Analytics &amp; Insights</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-white transition-colors">video_library</span>
+<span class="text-sm font-medium">Lecture Theatre</span>
+</a>
+</div>
+<!-- User Profile -->
+<div class="p-4 border-t border-white/10 bg-black/20">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold font-mono">
+                    JD
+                </div>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-white">John Doe</span>
+<span class="text-[10px] text-white/60 uppercase tracking-wider">ME • Batch 2024</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-light relative">
+<!-- Header -->
+<header class="h-16 bg-surface border-b border-[#E2E8F0] px-8 flex items-center justify-between flex-shrink-0 z-10">
+<div class="flex items-baseline gap-4">
+<h2 class="font-serif text-xl font-bold text-primary">Performance Report</h2>
+<span class="text-text-muted text-sm font-mono bg-background-light px-2 py-0.5 rounded border border-[#E2E8F0]">ID: MOCK-TEST-04</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-text-muted">Generated: Oct 24, 2023 • 14:30</span>
+<div class="h-4 w-px bg-[#E2E8F0]"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-primary border border-primary/20 rounded hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                    Export PDF
+                </button>
+<button class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-white bg-primary rounded hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+                    Compare with Topper
+                </button>
+</div>
+</header>
+<!-- Scrollable Dashboard Content -->
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<div class="max-w-[1400px] mx-auto space-y-6">
+<!-- Top Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Total Score -->
+<div class="bg-surface p-5 rounded border border-[#E2E8F0] shadow-subtle flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">emoji_events</span>
+</div>
+<div class="mb-2">
+<p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Total Score</p>
+</div>
+<div class="flex items-baseline gap-2">
+<h3 class="font-serif text-4xl font-black text-primary">68.33</h3>
+<span class="text-text-muted text-lg font-serif">/ 100</span>
+</div>
+<div class="mt-3 flex items-center gap-2 text-xs font-medium">
+<span class="text-success bg-success/10 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +5.2%
+                            </span>
+<span class="text-text-muted">vs last mock</span>
+</div>
+</div>
+<!-- Predicted Rank -->
+<div class="bg-surface p-5 rounded border border-[#E2E8F0] shadow-subtle flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">leaderboard</span>
+</div>
+<div class="mb-2">
+<p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Predicted Rank</p>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-serif text-2xl font-bold text-text-main">AIR</span>
+<h3 class="font-serif text-4xl font-black text-text-main">~240</h3>
+</div>
+<div class="mt-3 flex items-center gap-2 text-xs font-medium">
+<span class="text-success bg-success/10 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">arrow_upward</span> +12
+                            </span>
+<span class="text-text-muted">positions gained</span>
+</div>
+</div>
+<!-- Percentile -->
+<div class="bg-surface p-5 rounded border border-[#E2E8F0] shadow-subtle flex flex-col justify-between">
+<div class="mb-2 flex justify-between items-start">
+<p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Percentile</p>
+<span class="material-symbols-outlined text-secondary/50">percent</span>
+</div>
+<div>
+<h3 class="font-mono text-3xl font-bold text-text-main tracking-tight">94.2%</h3>
+</div>
+<div class="mt-3 w-full bg-background-light rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 94.2%"></div>
+</div>
+</div>
+<!-- Accuracy Gauge (Simulated) -->
+<div class="bg-surface p-5 rounded border border-[#E2E8F0] shadow-subtle flex flex-col items-center justify-center relative">
+<p class="absolute top-4 left-5 text-text-muted text-xs font-semibold uppercase tracking-wider">Accuracy</p>
+<div class="relative w-32 h-16 mt-4 overflow-hidden">
+<div class="absolute top-0 left-0 w-32 h-32 rounded-full border-[12px] border-[#F1F5F9]"></div>
+<div class="absolute top-0 left-0 w-32 h-32 rounded-full border-[12px] border-primary border-b-transparent border-r-transparent border-l-transparent" style="transform: rotate(45deg);"></div>
+</div>
+<div class="absolute bottom-6 text-center">
+<span class="font-mono text-2xl font-bold text-text-main">82%</span>
+</div>
+<p class="text-[10px] text-text-muted mt-1 text-center">54 Correct / 12 Wrong</p>
+</div>
+</div>
+<!-- Main Analysis Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Subject Performance (Left Column - 2/3 width) -->
+<div class="lg:col-span-2 bg-surface rounded border border-[#E2E8F0] shadow-subtle flex flex-col">
+<div class="p-5 border-b border-[#E2E8F0] flex justify-between items-center">
+<h3 class="font-serif text-lg font-bold text-text-main">Subject-wise Breakdown</h3>
+<div class="flex gap-4 text-xs font-medium">
+<div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-success rounded-[1px]"></div>Correct</div>
+<div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-accent rounded-[1px]"></div>Incorrect</div>
+<div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-[#E2E8F0] rounded-[1px]"></div>Unattempted</div>
+</div>
+</div>
+<div class="p-6 space-y-5">
+<!-- Subject Item 1 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1.5">
+<span class="text-sm font-semibold text-text-main">Engineering Mathematics</span>
+<span class="text-xs font-mono text-text-muted">12/15 Marks</span>
+</div>
+<div class="h-3 w-full bg-[#E2E8F0] rounded-[1px] flex overflow-hidden">
+<div class="h-full bg-success" style="width: 80%"></div>
+<div class="h-full bg-accent" style="width: 10%"></div>
+</div>
+</div>
+<!-- Subject Item 2 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1.5">
+<span class="text-sm font-semibold text-text-main">Thermodynamics</span>
+<span class="text-xs font-mono text-text-muted">8/10 Marks</span>
+</div>
+<div class="h-3 w-full bg-[#E2E8F0] rounded-[1px] flex overflow-hidden">
+<div class="h-full bg-success" style="width: 70%"></div>
+<div class="h-full bg-accent" style="width: 15%"></div>
+</div>
+</div>
+<!-- Subject Item 3 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1.5">
+<span class="text-sm font-semibold text-text-main">Fluid Mechanics</span>
+<span class="text-xs font-mono text-text-muted">5/12 Marks</span>
+</div>
+<div class="h-3 w-full bg-[#E2E8F0] rounded-[1px] flex overflow-hidden">
+<div class="h-full bg-success" style="width: 40%"></div>
+<div class="h-full bg-accent" style="width: 30%"></div>
+</div>
+</div>
+<!-- Subject Item 4 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1.5">
+<span class="text-sm font-semibold text-text-main">Heat Transfer</span>
+<span class="text-xs font-mono text-text-muted">6/8 Marks</span>
+</div>
+<div class="h-3 w-full bg-[#E2E8F0] rounded-[1px] flex overflow-hidden">
+<div class="h-full bg-success" style="width: 75%"></div>
+<div class="h-full bg-accent" style="width: 5%"></div>
+</div>
+</div>
+<!-- Subject Item 5 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1.5">
+<span class="text-sm font-semibold text-text-main">General Aptitude</span>
+<span class="text-xs font-mono text-text-muted">14/15 Marks</span>
+</div>
+<div class="h-3 w-full bg-[#E2E8F0] rounded-[1px] flex overflow-hidden">
+<div class="h-full bg-success" style="width: 90%"></div>
+<div class="h-full bg-accent" style="width: 5%"></div>
+</div>
+</div>
+</div>
+<div class="px-5 py-3 border-t border-[#E2E8F0] bg-background-light/50">
+<button class="text-primary text-xs font-bold hover:underline">View All 12 Subjects</button>
+</div>
+</div>
+<!-- Right Column Stack -->
+<div class="space-y-6">
+<!-- Time Management Matrix -->
+<div class="bg-surface rounded border border-[#E2E8F0] shadow-subtle p-5">
+<div class="mb-4 flex justify-between items-start">
+<div>
+<h3 class="font-serif text-base font-bold text-text-main">Time Matrix</h3>
+<p class="text-xs text-text-muted mt-0.5">Time Spent vs. Difficulty</p>
+</div>
+<button class="p-1 hover:bg-background-light rounded text-secondary">
+<span class="material-symbols-outlined text-[20px]">info</span>
+</button>
+</div>
+<!-- Scatter Plot Representation -->
+<div class="relative h-48 w-full border-l border-b border-[#E2E8F0] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4=')]">
+<!-- Axis Labels -->
+<span class="absolute -left-6 top-1/2 -translate-y-1/2 -rotate-90 text-[10px] text-text-muted font-mono tracking-wide">DIFFICULTY</span>
+<span class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-text-muted font-mono tracking-wide">TIME SPENT</span>
+<!-- Quadrant Lines -->
+<div class="absolute top-1/2 left-0 w-full h-px bg-primary/10 border-t border-dashed border-primary/30"></div>
+<div class="absolute top-0 left-1/2 h-full w-px bg-primary/10 border-r border-dashed border-primary/30"></div>
+<!-- Data Points (Scatter) -->
+<!-- Easy & Quick (Green) -->
+<div class="absolute bottom-4 left-4 w-2 h-2 rounded-full bg-success/80 ring-2 ring-white"></div>
+<div class="absolute bottom-8 left-10 w-2 h-2 rounded-full bg-success/80 ring-2 ring-white"></div>
+<!-- Hard & Slow (Orange) -->
+<div class="absolute top-6 right-8 w-2 h-2 rounded-full bg-orange-400 ring-2 ring-white"></div>
+<!-- "Time Wasters" (Red - Easy but Slow) -->
+<div class="absolute bottom-6 right-10 w-3 h-3 rounded-full bg-accent ring-2 ring-white shadow-lg animate-pulse" title="Time Waster!"></div>
+<!-- Quick Guess (Gray - Hard but Quick) -->
+<div class="absolute top-10 left-6 w-2 h-2 rounded-full bg-text-muted ring-2 ring-white"></div>
+</div>
+<div class="mt-8 p-3 bg-red-50 border border-red-100 rounded text-xs flex gap-3 items-start">
+<span class="material-symbols-outlined text-accent text-[18px]">warning</span>
+<div>
+<span class="font-bold text-accent">Alert: Time Trap Detected</span>
+<p class="text-text-main mt-0.5 leading-snug">You spent 12 mins on Q.14 (Easy) but got it wrong. Review "Fluid Statics".</p>
+</div>
+</div>
+</div>
+<!-- Strategic Insights List -->
+<div class="bg-surface rounded border border-[#E2E8F0] shadow-subtle flex flex-col">
+<div class="p-4 border-b border-[#E2E8F0]">
+<h3 class="font-serif text-base font-bold text-text-main">Focus Areas</h3>
+</div>
+<div class="divide-y divide-[#E2E8F0]">
+<div class="p-4 flex items-start gap-3 hover:bg-background-light transition-colors">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-text-main">Entropy Calculation</p>
+<p class="text-xs text-text-muted mt-0.5">High negative marks in Thermodynamics.</p>
+<button class="mt-2 text-[10px] font-bold text-primary uppercase tracking-wide flex items-center gap-1 group">
+                                            Practice Now <span class="material-symbols-outlined text-[12px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="p-4 flex items-start gap-3 hover:bg-background-light transition-colors">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-text-main">Calculus Speed</p>
+<p class="text-xs text-text-muted mt-0.5">Average time 2.5x higher than topper.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Question Analysis Table -->
+<div class="bg-surface rounded border border-[#E2E8F0] shadow-subtle overflow-hidden">
+<div class="px-6 py-4 border-b border-[#E2E8F0] flex justify-between items-center bg-gray-50/50">
+<h3 class="font-serif text-lg font-bold text-text-main">Question Analysis</h3>
+<div class="flex gap-2">
+<select class="form-select text-xs border-[#E2E8F0] rounded py-1 pl-2 pr-8 text-text-main focus:ring-primary focus:border-primary">
+<option>All Sections</option>
+<option>Technical</option>
+<option>Aptitude</option>
+</select>
+<select class="form-select text-xs border-[#E2E8F0] rounded py-1 pl-2 pr-8 text-text-main focus:ring-primary focus:border-primary">
+<option>All Status</option>
+<option>Incorrect</option>
+<option>Unattempted</option>
+</select>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[#E2E8F0] text-xs font-semibold text-text-muted bg-background-light uppercase tracking-wider">
+<th class="px-6 py-3 font-mono">Q.No</th>
+<th class="px-6 py-3">Subject &amp; Topic</th>
+<th class="px-6 py-3">Difficulty</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3 text-right">Time Spent</th>
+<th class="px-6 py-3 text-right">Marks</th>
+<th class="px-6 py-3"></th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<!-- Row 1 -->
+<tr class="border-b border-[#E2E8F0] hover:bg-gray-50 transition-colors">
+<td class="px-6 py-3 font-mono text-text-main">01</td>
+<td class="px-6 py-3">
+<div class="flex flex-col">
+<span class="font-medium">Engineering Math</span>
+<span class="text-xs text-text-muted">Linear Algebra</span>
+</div>
+</td>
+<td class="px-6 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded font-medium">Easy</span></td>
+<td class="px-6 py-3 text-success font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Correct
+                                    </td>
+<td class="px-6 py-3 text-right font-mono">45s</td>
+<td class="px-6 py-3 text-right font-mono text-success">+1.0</td>
+<td class="px-6 py-3 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold">Review</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-[#E2E8F0] hover:bg-gray-50 transition-colors">
+<td class="px-6 py-3 font-mono text-text-main">02</td>
+<td class="px-6 py-3">
+<div class="flex flex-col">
+<span class="font-medium">Thermodynamics</span>
+<span class="text-xs text-text-muted">First Law</span>
+</div>
+</td>
+<td class="px-6 py-3"><span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded font-medium">Medium</span></td>
+<td class="px-6 py-3 text-accent font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">cancel</span> Incorrect
+                                    </td>
+<td class="px-6 py-3 text-right font-mono">1m 20s</td>
+<td class="px-6 py-3 text-right font-mono text-accent">-0.33</td>
+<td class="px-6 py-3 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold">Review</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-[#E2E8F0] hover:bg-gray-50 transition-colors">
+<td class="px-6 py-3 font-mono text-text-main">03</td>
+<td class="px-6 py-3">
+<div class="flex flex-col">
+<span class="font-medium">Fluid Mechanics</span>
+<span class="text-xs text-text-muted">Buoyancy</span>
+</div>
+</td>
+<td class="px-6 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded font-medium">Hard</span></td>
+<td class="px-6 py-3 text-text-muted font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">remove_circle_outline</span> Unattempted
+                                    </td>
+<td class="px-6 py-3 text-right font-mono">10s</td>
+<td class="px-6 py-3 text-right font-mono text-text-muted">0.0</td>
+<td class="px-6 py-3 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold">Review</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-3 font-mono text-text-main">04</td>
+<td class="px-6 py-3">
+<div class="flex flex-col">
+<span class="font-medium">Machine Design</span>
+<span class="text-xs text-text-muted">Bearings</span>
+</div>
+</td>
+<td class="px-6 py-3"><span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded font-medium">Medium</span></td>
+<td class="px-6 py-3 text-success font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Correct
+                                    </td>
+<td class="px-6 py-3 text-right font-mono">2m 15s</td>
+<td class="px-6 py-3 text-right font-mono text-success">+2.0</td>
+<td class="px-6 py-3 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold">Review</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3 border-t border-[#E2E8F0] bg-gray-50 flex justify-center">
+<button class="text-xs text-text-muted hover:text-primary font-medium flex items-center gap-1">
+                            Load More Questions <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
