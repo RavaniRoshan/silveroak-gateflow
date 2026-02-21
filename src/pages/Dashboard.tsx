@@ -7,12 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BookOpen, 
-  Clock, 
-  Trophy, 
-  TrendingUp, 
-  Users, 
+import {
+  BookOpen,
+  Clock,
+  Trophy,
+  TrendingUp,
+  Users,
   Calendar,
   FileText,
   Video,
@@ -23,56 +23,74 @@ import {
   Target,
   Award,
   Bell,
-  GraduationCap
+  GraduationCap,
+  Flame
 } from 'lucide-react';
+import {
+  studentStats,
+  recentTests,
+  upcomingTests,
+  notificationsData,
+  leaderboardData,
+  studyResources,
+  mockTests
+} from '@/data/mockData';
 
 const Dashboard = () => {
   const { student } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
   const quickStats = {
-    totalTests: 45,
+    totalTests: 42,
     completedTests: 12,
-    averageScore: 68,
-    studyHours: 124,
-    rank: 23,
-    totalStudents: 156
+    averageScore: Math.round(studentStats.accuracy),
+    studyHours: 156,
+    rank: studentStats.currentRank,
+    totalStudents: 8900,
+    streak: studentStats.streakDays,
+    resourcesViewed: studentStats.resourcesViewed
   };
 
-  const recentTests = [
-    { id: 1, name: 'Data Structures & Algorithms', score: 75, date: '2024-01-15', duration: '3h' },
-    { id: 2, name: 'Computer Networks', score: 82, date: '2024-01-12', duration: '3h' },
-    { id: 3, name: 'Operating Systems', score: 65, date: '2024-01-10', duration: '3h' }
-  ];
+  // Get recent test results from mock data
+  const recentTestsData = recentTests.slice(0, 3);
 
-  const upcomingTests = [
-    { id: 1, name: 'Database Management Systems', date: '2024-01-20', type: 'Mock Test' },
-    { id: 2, name: 'Software Engineering', date: '2024-01-22', type: 'Speed Test' },
-    { id: 3, name: 'Computer Organization', date: '2024-01-25', type: 'Mock Test' }
-  ];
+  // Get upcoming tests from mock data
+  const upcomingTestsData = upcomingTests.slice(0, 3);
 
-  const studyMaterials = [
-    { id: 1, title: 'GATE 2024 Syllabus', type: 'PDF', downloads: 1250 },
-    { id: 2, title: 'Previous Year Solutions', type: 'PDF', downloads: 890 },
-    { id: 3, title: 'Important Formulas', type: 'PDF', downloads: 2100 }
-  ];
+  // Get recent notifications
+  const notificationsDisplay = notificationsData.slice(0, 3);
 
-  const recentLectures = [
-    { id: 1, title: 'Dynamic Programming Techniques', instructor: 'Prof. Smith', duration: '45m', watched: 75 },
-    { id: 2, title: 'Graph Algorithms', instructor: 'Dr. Johnson', duration: '52m', watched: 100 },
-    { id: 3, title: 'Database Normalization', instructor: 'Prof. Wilson', duration: '38m', watched: 30 }
-  ];
+  // Get top leaderboard
+  const topLeaderboard = leaderboardData.slice(0, 5);
 
-  const notifications = [
-    { id: 1, text: 'New mock test available for Database Systems', type: 'test', time: '2h ago' },
-    { id: 2, text: 'GATE 2024 application deadline extended to Jan 30', type: 'announcement', time: '1d ago' },
-    { id: 3, text: 'Your rank improved to #23 this week!', type: 'achievement', time: '2d ago' }
-  ];
+  // Get recent lectures
+  const recentLectures = studyResources
+    .filter((r) => r.type === 'lecture')
+    .slice(0, 3)
+    .map((r) => ({
+      id: r.id,
+      title: r.title,
+      instructor: r.instructor || 'Instructor',
+      duration: `${r.duration}m`,
+      watched: Math.round((r.views / r.downloads) * 100 * Math.random())
+    }));
 
+  // Get study materials
+  const studyMaterials = studyResources
+    .filter((r) => r.type === 'document')
+    .slice(0, 3)
+    .map((r) => ({
+      id: r.id,
+      title: r.title,
+      type: 'PDF',
+      downloads: r.downloads
+    }));
+
+  // Alumni data (example)
   const alumni = [
-    { id: 1, name: 'Rajesh Kumar', year: '2023', rank: 'AIR 45', company: 'Google', image: '/placeholder.svg' },
-    { id: 2, name: 'Priya Singh', year: '2022', rank: 'AIR 23', company: 'Microsoft', image: '/placeholder.svg' },
-    { id: 3, name: 'Amit Sharma', year: '2021', rank: 'AIR 67', company: 'Amazon', image: '/placeholder.svg' }
+    { id: 1, name: 'Arjun Singh', year: '2023', rank: 'AIR 45', company: 'Google', branch: 'CS' },
+    { id: 2, name: 'Priya Sharma', year: '2022', rank: 'AIR 23', company: 'Microsoft', branch: 'CS' },
+    { id: 3, name: 'Rohit Kumar', year: '2021', rank: 'AIR 67', company: 'Amazon', branch: 'ME' }
   ];
 
   return (
@@ -104,7 +122,7 @@ const Dashboard = () => {
               <Progress value={(quickStats.completedTests / quickStats.totalTests) * 100} className="mt-2" />
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -117,7 +135,7 @@ const Dashboard = () => {
               <Progress value={quickStats.averageScore} className="mt-2" />
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -127,20 +145,20 @@ const Dashboard = () => {
                 </div>
                 <TrendingUp className="h-8 w-8 text-green-500" />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">Out of {quickStats.totalStudents} students</p>
+              <p className="text-xs text-muted-foreground mt-2">Out of {quickStats.totalStudents.toLocaleString()} students</p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Study Hours</p>
-                  <p className="text-2xl font-bold">{quickStats.studyHours}h</p>
+                  <p className="text-sm font-medium text-muted-foreground">Study Streak</p>
+                  <p className="text-2xl font-bold">{quickStats.streak} days</p>
                 </div>
-                <Clock className="h-8 w-8 text-blue-500" />
+                <Flame className="h-8 w-8 text-orange-500" />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">This month</p>
+              <p className="text-xs text-muted-foreground mt-2">Keep it going!</p>
             </CardContent>
           </Card>
         </div>
@@ -198,11 +216,11 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {recentTests.map((test) => (
+                    {recentTestsData.map((test) => (
                       <div key={test.id} className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                         <div>
-                          <p className="font-medium">{test.name}</p>
-                          <p className="text-sm text-muted-foreground">{test.date} • {test.duration}</p>
+                          <p className="font-medium text-sm">{test.name}</p>
+                          <p className="text-xs text-muted-foreground">{new Date(test.attemptDate).toLocaleDateString()}</p>
                         </div>
                         <Badge variant={test.score >= 70 ? "default" : "secondary"}>
                           {test.score}%
@@ -210,6 +228,7 @@ const Dashboard = () => {
                       </div>
                     ))}
                   </div>
+                  <Button variant="outline" className="w-full mt-4">View All Results</Button>
                 </CardContent>
               </Card>
 
@@ -223,41 +242,75 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {upcomingTests.map((test) => (
+                    {upcomingTestsData.map((test) => (
                       <div key={test.id} className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                         <div>
-                          <p className="font-medium">{test.name}</p>
-                          <p className="text-sm text-muted-foreground">{test.date}</p>
+                          <p className="font-medium text-sm">{test.name}</p>
+                          <p className="text-xs text-muted-foreground">{new Date(test.date).toLocaleDateString()}</p>
                         </div>
-                        <Badge variant="outline">{test.type}</Badge>
+                        <Badge variant="outline">Scheduled</Badge>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full mt-4">View Calendar</Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Leaderboard & Notifications */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Top Performers */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Top Performers This Week
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {topLeaderboard.map((student, idx) => (
+                      <div key={student.rank} className="flex items-center justify-between p-2 bg-accent/30 rounded">
+                        <div className="flex items-center gap-3 flex-1">
+                          <Badge className="bg-primary min-w-fit">#{student.rank}</Badge>
+                          <div>
+                            <p className="font-medium text-sm">{student.name}</p>
+                            <p className="text-xs text-muted-foreground">{student.branch}</p>
+                          </div>
+                        </div>
+                        <span className="font-bold text-sm">{student.score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Notifications & Announcements */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bell className="h-5 w-5" />
+                    Recent Announcements
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {notificationsDisplay.map((notification) => (
+                      <div key={notification.id} className="flex items-start gap-3 p-3 bg-accent/50 rounded-lg border-l-4 border-primary">
+                        <Bell className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium">{notification.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{notification.message}</p>
+                          <p className="text-xs text-muted-foreground mt-2">
+                            {new Date(notification.timestamp).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
             </div>
-
-            {/* Notifications & Announcements */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
-                  Recent Notifications
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {notifications.map((notification) => (
-                    <div key={notification.id} className="flex items-start gap-3 p-3 bg-accent/50 rounded-lg">
-                      <div className="flex-1">
-                        <p className="text-sm">{notification.text}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="tests">
@@ -266,21 +319,31 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Target className="h-5 w-5" />
-                    Mock Tests
+                    Full Mock Tests
                   </CardTitle>
-                  <CardDescription>Full-length GATE pattern tests</CardDescription>
+                  <CardDescription>Complete 3-hour GATE pattern tests</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full mb-4">Start New Mock Test</Button>
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Features:</p>
-                    <ul className="text-sm space-y-1">
-                      <li>• 3-hour timed examination</li>
-                      <li>• Instant results & analysis</li>
-                      <li>• Performance comparison</li>
-                      <li>• Question-wise breakdown</li>
-                    </ul>
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {mockTests.slice(0, 6).map((test) => (
+                      <div key={test.id} className="p-3 border border-border rounded-lg hover:bg-accent/50 transition">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-sm font-medium">{test.name}</h4>
+                          <Badge variant="outline" className="text-xs">{test.difficulty}</Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {test.totalQuestions} questions • {test.totalMarks} marks • {test.duration} min
+                        </p>
+                        <div className="flex gap-2 justify-between">
+                          <span className="text-xs text-muted-foreground">
+                            {test.completedBy.toLocaleString()} students completed
+                          </span>
+                          <Button size="sm" variant="ghost">Start</Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                  <Button className="w-full mt-4">View All Tests</Button>
                 </CardContent>
               </Card>
 
@@ -290,18 +353,22 @@ const Dashboard = () => {
                     <Timer className="h-5 w-5" />
                     Speed Tests
                   </CardTitle>
-                  <CardDescription>Quick topic-wise tests</CardDescription>
+                  <CardDescription>Quick subject/topic-wise tests</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="outline" className="w-full mb-4">Start Speed Test</Button>
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Features:</p>
-                    <ul className="text-sm space-y-1">
-                      <li>• 15-30 minute duration</li>
-                      <li>• Subject/chapter selection</li>
-                      <li>• Speed tracking metrics</li>
-                      <li>• Accuracy analysis</li>
-                    </ul>
+                  <div className="space-y-3">
+                    <div className="text-sm space-y-2">
+                      <p className="text-muted-foreground">25+ subject-wise tests available</p>
+                      <ul className="text-xs space-y-1 ml-4">
+                        <li>• DSA Basics (10 questions, 15 min)</li>
+                        <li>• Trees & Graphs (15 questions, 20 min)</li>
+                        <li>• DBMS Basics (10 questions, 15 min)</li>
+                        <li>• OS Concepts (15 questions, 20 min)</li>
+                        <li>• Networks Basics (10 questions, 15 min)</li>
+                        <li>• And 20+ more topics...</li>
+                      </ul>
+                    </div>
+                    <Button variant="outline" className="w-full">Start Speed Test</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -313,27 +380,29 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5" />
-                  Past Year Questions (Last 5 Years)
+                  Previous Year Questions (All 5 Branches)
                 </CardTitle>
+                <CardDescription>
+                  Access 30+ PYQ papers across CS, ME, EE, EC, and CE branches from 2019-2024
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[2023, 2022, 2021, 2020, 2019].map((year) => (
-                    <Card key={year} className="hover:shadow-lg transition-shadow">
+                  {[
+                    { branch: 'CS', name: 'Computer Science', icon: '💻' },
+                    { branch: 'ME', name: 'Mechanical', icon: '⚙️' },
+                    { branch: 'EE', name: 'Electrical', icon: '⚡' },
+                    { branch: 'EC', name: 'Electronics', icon: '🔌' },
+                    { branch: 'CE', name: 'Civil', icon: '🏗️' },
+                  ].map((b) => (
+                    <Card key={b.branch} className="hover:shadow-lg transition-shadow cursor-pointer">
                       <CardContent className="p-4">
-                        <h3 className="font-semibold mb-2">GATE {year}</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Computer Science & Engineering
+                        <div className="text-3xl mb-2">{b.icon}</div>
+                        <h3 className="font-semibold mb-1">{b.name} ({b.branch})</h3>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          6 years of papers with solutions
                         </p>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
-                            <Download className="h-4 w-4 mr-1" />
-                            Download
-                          </Button>
-                          <Button size="sm">
-                            View Online
-                          </Button>
-                        </div>
+                        <Button size="sm" className="w-full">View Papers</Button>
                       </CardContent>
                     </Card>
                   ))}
@@ -348,24 +417,29 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Video className="h-5 w-5" />
-                    Recorded Lectures
+                    Video Lectures
                   </CardTitle>
+                  <CardDescription>
+                    {recentLectures.length} lectures available
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {recentLectures.map((lecture) => (
+                    {recentLectures.slice(0, 2).map((lecture) => (
                       <div key={lecture.id} className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                         <div className="flex-1">
-                          <p className="font-medium">{lecture.title}</p>
-                          <p className="text-sm text-muted-foreground">{lecture.instructor} • {lecture.duration}</p>
-                          <Progress value={lecture.watched} className="mt-2" />
+                          <p className="font-medium text-sm">{lecture.title}</p>
+                          <p className="text-xs text-muted-foreground">{lecture.instructor} • {lecture.duration}</p>
+                          <Progress value={lecture.watched} className="mt-2 h-1.5" />
+                          <p className="text-xs text-muted-foreground mt-1">{lecture.watched}% watched</p>
                         </div>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" className="ml-2">
                           <Play className="h-4 w-4" />
                         </Button>
                       </div>
                     ))}
                   </div>
+                  <Button variant="outline" className="w-full mt-4">View All Lectures (25+)</Button>
                 </CardContent>
               </Card>
 
@@ -375,14 +449,17 @@ const Dashboard = () => {
                     <BookOpen className="h-5 w-5" />
                     Study Materials
                   </CardTitle>
+                  <CardDescription>
+                    {studyMaterials.length} documents available
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {studyMaterials.map((material) => (
+                    {studyMaterials.slice(0, 2).map((material) => (
                       <div key={material.id} className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                         <div>
-                          <p className="font-medium">{material.title}</p>
-                          <p className="text-sm text-muted-foreground">{material.downloads} downloads</p>
+                          <p className="font-medium text-sm">{material.title}</p>
+                          <p className="text-xs text-muted-foreground">{material.downloads.toLocaleString()} downloads</p>
                         </div>
                         <Button size="sm" variant="outline">
                           <Download className="h-4 w-4" />
@@ -390,6 +467,7 @@ const Dashboard = () => {
                       </div>
                     ))}
                   </div>
+                  <Button variant="outline" className="w-full mt-4">View All Resources (50+)</Button>
                 </CardContent>
               </Card>
             </div>
@@ -401,24 +479,39 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Users className="h-5 w-5" />
-                    Leaderboard
+                    Leaderboard Top 10
                   </CardTitle>
+                  <CardDescription>University-wide rankings</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-2 mb-4">
                     <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-1">
                         <Badge className="bg-primary">#{quickStats.rank}</Badge>
                         <div>
-                          <p className="font-medium">{student?.first_name} {student?.last_name}</p>
-                          <p className="text-sm text-muted-foreground">You</p>
+                          <p className="font-medium text-sm">{student?.first_name} {student?.last_name}</p>
+                          <p className="text-xs text-muted-foreground">YOU</p>
                         </div>
                       </div>
-                      <span className="font-bold">{quickStats.averageScore}%</span>
+                      <span className="font-bold text-sm">{quickStats.averageScore}%</span>
                     </div>
-                    <p className="text-sm text-muted-foreground text-center">
-                      University-wide ranking based on overall performance
-                    </p>
+                  </div>
+                  <div className="text-xs text-muted-foreground mb-4 pb-4 border-b">
+                    Your rank out of {quickStats.totalStudents.toLocaleString()} students
+                  </div>
+                  <div className="space-y-2">
+                    {topLeaderboard.slice(0, 5).map((student) => (
+                      <div key={student.rank} className="flex items-center justify-between text-xs p-2 rounded">
+                        <div className="flex items-center gap-2 flex-1">
+                          <Badge variant="outline" className="min-w-fit">#{student.rank}</Badge>
+                          <div>
+                            <p className="font-medium">{student.name}</p>
+                            <p className="text-muted-foreground">{student.branch}</p>
+                          </div>
+                        </div>
+                        <span className="font-bold">{student.score}</span>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -427,20 +520,34 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Award className="h-5 w-5" />
-                    Performance Analytics
+                    Your Analytics
                   </CardTitle>
+                  <CardDescription>Personalized performance metrics</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center">
+                      <div className="p-3 bg-accent rounded-lg text-center">
                         <p className="text-2xl font-bold text-primary">{quickStats.studyHours}</p>
-                        <p className="text-sm text-muted-foreground">Study Hours</p>
+                        <p className="text-xs text-muted-foreground">Study Hours</p>
                       </div>
-                      <div className="text-center">
+                      <div className="p-3 bg-accent rounded-lg text-center">
                         <p className="text-2xl font-bold text-green-500">{quickStats.completedTests}</p>
-                        <p className="text-sm text-muted-foreground">Tests Completed</p>
+                        <p className="text-xs text-muted-foreground">Tests Done</p>
                       </div>
+                      <div className="p-3 bg-accent rounded-lg text-center">
+                        <p className="text-2xl font-bold text-yellow-500">{quickStats.streak}</p>
+                        <p className="text-xs text-muted-foreground">Day Streak</p>
+                      </div>
+                      <div className="p-3 bg-accent rounded-lg text-center">
+                        <p className="text-2xl font-bold text-blue-500">{quickStats.resourcesViewed}</p>
+                        <p className="text-xs text-muted-foreground">Resources</p>
+                      </div>
+                    </div>
+                    <div className="pt-4 border-t">
+                      <p className="text-xs font-medium mb-2">Average Improvement</p>
+                      <Progress value={65} className="h-2" />
+                      <p className="text-xs text-muted-foreground mt-1">+8% from last month</p>
                     </div>
                   </div>
                 </CardContent>
@@ -453,24 +560,30 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <GraduationCap className="h-5 w-5" />
-                  Notable Alumni Success Stories
+                  Success Stories - GATE Toppers
                 </CardTitle>
                 <CardDescription>
-                  Learn from our successful GATE toppers
+                  Learn from students who achieved their goals using our platform
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {alumni.map((person) => (
-                    <Card key={person.id} className="hover:shadow-lg transition-shadow">
+                    <Card key={person.id} className="hover:shadow-lg transition-shadow border-l-4 border-primary">
                       <CardContent className="p-6 text-center">
                         <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
                           <GraduationCap className="h-8 w-8 text-primary" />
                         </div>
-                        <h3 className="font-semibold mb-1">{person.name}</h3>
-                        <p className="text-sm text-primary font-medium mb-1">{person.rank}</p>
-                        <p className="text-sm text-muted-foreground mb-2">GATE {person.year}</p>
-                        <Badge variant="outline">{person.company}</Badge>
+                        <h3 className="font-semibold text-base">{person.name}</h3>
+                        <p className="text-sm text-primary font-bold mb-1 mt-2">{person.rank}</p>
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          <Badge variant="secondary" className="text-xs">{person.branch}</Badge>
+                          <Badge variant="outline" className="text-xs">GATE {person.year}</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          <Star className="h-3 w-3 inline mr-1 text-yellow-500" />
+                          {person.company}
+                        </p>
                       </CardContent>
                     </Card>
                   ))}

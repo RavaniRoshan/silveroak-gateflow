@@ -1,167 +1,88 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FileText, Search, Clock, Users, Calendar, Play, Download } from 'lucide-react';
-
-const mockPapers = [
-  {
-    id: 1,
-    title: "GATE 2024 - Computer Science",
-    year: 2024,
-    subject: "Computer Science",
-    subjectCode: "CS",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 1456,
-    avgScore: 68.5,
-    difficulty: "Hard",
-    type: "Official"
-  },
-  {
-    id: 2,
-    title: "GATE 2024 - Mechanical Engineering",
-    year: 2024,
-    subject: "Mechanical Engineering",
-    subjectCode: "ME",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 892,
-    avgScore: 62.3,
-    difficulty: "Hard",
-    type: "Official"
-  },
-  {
-    id: 3,
-    title: "GATE 2023 - Computer Science",
-    year: 2023,
-    subject: "Computer Science",
-    subjectCode: "CS",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 2134,
-    avgScore: 71.2,
-    difficulty: "Medium",
-    type: "Official"
-  },
-  {
-    id: 4,
-    title: "GATE 2023 - Electronics & Communication",
-    year: 2023,
-    subject: "Electronics & Communication",
-    subjectCode: "EC",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 743,
-    avgScore: 58.9,
-    difficulty: "Hard",
-    type: "Official"
-  },
-  {
-    id: 5,
-    title: "GATE 2022 - Civil Engineering",
-    year: 2022,
-    subject: "Civil Engineering",
-    subjectCode: "CE",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 567,
-    avgScore: 64.7,
-    difficulty: "Medium",
-    type: "Official"
-  },
-  {
-    id: 6,
-    title: "GATE 2022 - Electrical Engineering",
-    year: 2022,
-    subject: "Electrical Engineering",
-    subjectCode: "EE",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 678,
-    avgScore: 59.4,
-    difficulty: "Hard",
-    type: "Official"
-  },
-  {
-    id: 7,
-    title: "GATE 2021 - Computer Science",
-    year: 2021,
-    subject: "Computer Science",
-    subjectCode: "CS",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 1834,
-    avgScore: 66.8,
-    difficulty: "Medium",
-    type: "Official"
-  },
-  {
-    id: 8,
-    title: "GATE 2020 - Mechanical Engineering",
-    year: 2020,
-    subject: "Mechanical Engineering",
-    subjectCode: "ME",
-    duration: "3 hours",
-    questions: 65,
-    marks: 100,
-    attempts: 945,
-    avgScore: 61.5,
-    difficulty: "Medium",
-    type: "Official"
-  }
-];
+import { FileText, Search, Clock, Users, Play, Download, Bookmark } from 'lucide-react';
+import { paqPapers } from '@/data/mockData';
+import { saveBookmark, removeBookmark, getBookmarks } from '@/lib/storage';
 
 const MockPapers = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedYear, setSelectedYear] = useState('All');
-  const [selectedSubject, setSelectedSubject] = useState('All');
+  const [selectedYear, setSelectedYear] = useState('all');
+  const [selectedBranch, setSelectedBranch] = useState('all');
+  const [bookmarkedPapers, setBookmarkedPapers] = useState<Set<number>>(
+    new Set(getBookmarks('mockpaper'))
+  );
 
-  const years = ['All', '2024', '2023', '2022', '2021', '2020'];
-  const subjects = ['All', 'Computer Science', 'Mechanical Engineering', 'Electronics & Communication', 'Civil Engineering', 'Electrical Engineering'];
+  // Get unique years and branches
+  const years = ['all', ...new Set(paqPapers.map(p => p.year.toString())).sort().reverse()];
+  const branches = ['all', ...new Set(paqPapers.map(p => p.branch))];
 
-  const filteredPapers = mockPapers.filter(paper => {
-    const matchesSearch = paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         paper.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         paper.subjectCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesYear = selectedYear === 'All' || paper.year.toString() === selectedYear;
-    const matchesSubject = selectedSubject === 'All' || paper.subject === selectedSubject;
-    return matchesSearch && matchesYear && matchesSubject;
-  });
+  // Filter papers
+  const filteredPapers = useMemo(() => {
+    return paqPapers.filter(paper => {
+      const matchesSearch = paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           paper.branch.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesYear = selectedYear === 'all' || paper.year.toString() === selectedYear;
+      const matchesBranch = selectedBranch === 'all' || paper.branch === selectedBranch;
+      return matchesSearch && matchesYear && matchesBranch;
+    });
+  }, [searchTerm, selectedYear, selectedBranch]);
+
+  // Group by year
+  const papersGroupedByYear = useMemo(() => {
+    const grouped: Record<number, typeof paqPapers> = {};
+    filteredPapers.forEach(paper => {
+      if (!grouped[paper.year]) grouped[paper.year] = [];
+      grouped[paper.year].push(paper);
+    });
+    return Object.entries(grouped).sort(([a], [b]) => Number(b) - Number(a));
+  }, [filteredPapers]);
 
   const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy': return 'bg-success/10 text-success border border-success/20';
-      case 'Medium': return 'bg-warning/10 text-warning border border-warning/20';
-      case 'Hard': return 'bg-destructive/10 text-destructive border border-destructive/20';
-      default: return 'bg-muted text-muted-foreground border border-border';
+    switch (difficulty.toLowerCase()) {
+      case 'easy': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'hard': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 70) return 'text-success';
-    if (score >= 60) return 'text-warning';
-    return 'text-destructive';
+  const toggleBookmark = (paperId: number) => {
+    const newBookmarked = new Set(bookmarkedPapers);
+    if (bookmarkedPapers.has(paperId)) {
+      newBookmarked.delete(paperId);
+      removeBookmark('mockpaper', paperId);
+    } else {
+      newBookmarked.add(paperId);
+      saveBookmark('mockpaper', paperId);
+    }
+    setBookmarkedPapers(newBookmarked);
+  };
+
+  const takeMockTest = (paperId: number, title: string) => {
+    console.log('Starting mock test:', title);
+  };
+
+  const downloadPaper = (paperId: number, title: string) => {
+    console.log('Downloading paper:', title);
   };
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-university-primary to-university-forest text-white py-12">
+      <div className="bg-gradient-to-r from-primary/20 to-secondary/20 py-12 border-b">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">GATE Mock Papers</h1>
-            <p className="text-xl opacity-90">
-              Previous 5 years GATE question papers with detailed solutions
+          <div className="max-w-4xl">
+            <h1 className="text-4xl font-bold mb-4 text-foreground">GATE Mock Papers</h1>
+            <p className="text-lg text-muted-foreground">
+              Practice with 30+ authentic GATE question papers across all 5 branches from 2019-2024
             </p>
           </div>
         </div>
@@ -169,139 +90,198 @@ const MockPapers = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Search and Filter */}
-        <div className="mb-8 space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search papers by title, subject, or code..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <div className="flex flex-col md:flex-row gap-4">
-            <Select value={selectedYear} onValueChange={setSelectedYear}>
-              <SelectTrigger className="w-full md:w-40">
-                <SelectValue placeholder="Select Year" />
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year}>{year}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-              <SelectTrigger className="w-full md:w-60">
-                <SelectValue placeholder="Select Subject" />
-              </SelectTrigger>
-              <SelectContent>
-                {subjects.map((subject) => (
-                  <SelectItem key={subject} value={subject}>{subject}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <Card className="mb-8">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search papers by branch..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Select value={selectedYear} onValueChange={setSelectedYear}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map((year) => (
+                      <SelectItem key={year} value={year}>
+                        {year === 'all' ? 'All Years' : year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={selectedBranch} onValueChange={setSelectedBranch}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Branch" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {branches.map((branch) => (
+                      <SelectItem key={branch} value={branch}>
+                        {branch === 'all' ? 'All Branches' : branch}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <div className="text-sm text-muted-foreground flex items-center">
+                  Total: {filteredPapers.length} papers
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-sm text-muted-foreground mb-2">Total Papers</div>
+              <div className="text-3xl font-bold">{paqPapers.length}+</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-sm text-muted-foreground mb-2">Branches</div>
+              <div className="text-3xl font-bold">{branches.length - 1}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-sm text-muted-foreground mb-2">Years Covered</div>
+              <div className="text-3xl font-bold">{years.length - 1}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-sm text-muted-foreground mb-2">Bookmarked</div>
+              <div className="text-3xl font-bold">{bookmarkedPapers.size}</div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Papers Grouped by Year */}
-        {Object.entries(
-          filteredPapers.reduce((acc: Record<string, typeof filteredPapers>, paper) => {
-            const y = paper.year.toString();
-            (acc[y] ||= []).push(paper);
-            return acc;
-          }, {} as Record<string, typeof filteredPapers>)
-        )
-          .sort(([a], [b]) => Number(b) - Number(a))
-          .map(([year, papers]) => (
-            <section key={year} aria-labelledby={`year-${year}`} className="mb-10">
-              <div className="flex items-center justify-between mb-3">
-                <h2 id={`year-${year}`} className="text-xl font-semibold">{year} Papers</h2>
-                <Badge variant="outline">{papers.length}</Badge>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {papers.map((paper) => (
-                  <Card key={paper.id} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <FileText className="h-5 w-5 text-university-primary" />
-                          <Badge variant="outline">{paper.year}</Badge>
+        <div className="space-y-10">
+          {papersGroupedByYear.length > 0 ? (
+            papersGroupedByYear.map(([year, papers]) => (
+              <section key={year} className="space-y-4">
+                <div className="flex items-center justify-between sticky top-0 bg-background py-2 border-b">
+                  <h2 className="text-2xl font-bold text-foreground">{year} Papers</h2>
+                  <Badge variant="secondary">{papers.length} papers</Badge>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {papers.map((paper) => (
+                    <Card key={paper.id} className="hover:shadow-lg transition-shadow flex flex-col">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-5 w-5 text-primary" />
+                            <Badge variant="outline" className="text-xs">{paper.year}</Badge>
+                          </div>
+                          <Badge className={getDifficultyColor(paper.difficulty)}>
+                            {paper.difficulty}
+                          </Badge>
                         </div>
-                        <Badge className={getDifficultyColor(paper.difficulty)}>
-                          {paper.difficulty}
-                        </Badge>
-                      </div>
-                      
-                      <CardTitle className="text-lg">{paper.title}</CardTitle>
-                      <CardDescription>
-                        {paper.subject} ({paper.subjectCode})
-                      </CardDescription>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <div className="space-y-4">
+
+                        <CardTitle className="text-lg leading-tight">{paper.title}</CardTitle>
+                        <CardDescription className="mt-2">
+                          Branch: {paper.branch}
+                        </CardDescription>
+                      </CardHeader>
+
+                      <CardContent className="space-y-4 flex-1">
                         {/* Paper Stats */}
                         <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             <Clock className="h-4 w-4 text-muted-foreground" />
-                            <span>{paper.duration}</span>
+                            <span>180 min</span>
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             <FileText className="h-4 w-4 text-muted-foreground" />
-                            <span>{paper.questions} Questions</span>
+                            <span>65 Questions</span>
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             <Users className="h-4 w-4 text-muted-foreground" />
-                            <span>{paper.attempts} Attempts</span>
+                            <span>{(paper.downloadCount || 0).toLocaleString()} downloads</span>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <span className="text-muted-foreground">Avg Score:</span>
-                            <span className={`font-semibold ${getScoreColor(paper.avgScore)}`}>
-                              {paper.avgScore}%
-                            </span>
+                          <div className="text-muted-foreground">
+                            100 Marks
                           </div>
                         </div>
-                        
+
+                        {/* Topics */}
+                        {paper.topic && (
+                          <div className="flex flex-wrap gap-1">
+                            {paper.topic.split(',').slice(0, 3).map((t, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs">
+                                {t.trim()}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+
                         {/* Action Buttons */}
-                        <div className="flex gap-2">
-                          <Button className="flex-1" size="sm">
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            onClick={() => takeMockTest(paper.id, paper.title)}
+                            className="flex-1"
+                            size="sm"
+                          >
                             <Play className="h-4 w-4 mr-2" />
                             Take Test
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => toggleBookmark(paper.id)}
+                            className={bookmarkedPapers.has(paper.id) ? 'text-yellow-500' : ''}
+                          >
+                            <Bookmark className={`h-4 w-4 ${bookmarkedPapers.has(paper.id) ? 'fill-current' : ''}`} />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => downloadPaper(paper.id, paper.title)}
+                          >
                             <Download className="h-4 w-4" />
                           </Button>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-        ))}
-
-        {filteredPapers.length === 0 && (
-          <div className="text-center py-12">
-            <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No papers found</h3>
-            <p className="text-muted-foreground">
-              Try adjusting your search or filter criteria
-            </p>
-          </div>
-        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No papers found</h3>
+              <p className="text-muted-foreground">
+                Try adjusting your search or filter criteria
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Additional Info */}
         <div className="mt-12 bg-primary/5 rounded-lg p-6 border border-primary/10">
           <h3 className="text-lg font-semibold text-primary mb-2">About GATE Mock Papers</h3>
-          <p className="text-primary/80 text-sm leading-relaxed">
-            Practice with authentic GATE question papers from the last 5 years. Each paper is designed to simulate 
-            the actual exam environment with accurate timing, marking scheme, and difficulty level. All solutions 
-            are provided with detailed explanations by our Silver Oak University faculty.
+          <p className="text-foreground/80 text-sm leading-relaxed">
+            Practice with authentic GATE question papers from the last 6 years across all 5 branches (CS, ME, EE, EC, CE).
+            Each paper is designed to simulate the actual exam environment with accurate timing, marking scheme, and difficulty level.
+            All solutions are provided with detailed explanations. Bookmark papers for quick access and track your progress.
           </p>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
