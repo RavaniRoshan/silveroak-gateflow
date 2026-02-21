@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useMockTests, useSpeedTests, useTestStatistics } from '@/hooks/useSupabaseData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,91 +7,107 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Target, 
-  Timer, 
-  TrendingUp, 
-  Clock, 
+import {
+  Target,
+  Timer,
+  TrendingUp,
+  Clock,
   Play,
   CheckCircle,
-  XCircle,
   Trophy,
   BarChart3,
-  Users,
-  Calendar,
-  Zap,
   Award,
   ChevronRight,
-  Star,
-  Loader2
+  Zap,
+  Search
 } from 'lucide-react';
-
-import type { MockTest, SpeedTest } from '@/integrations/supabase/types-extended';
-
-// Helper interface for display formatting
-interface MockTestDisplay extends MockTest {
-  timeLimit: string;
-}
-
-interface SpeedTestDisplay extends SpeedTest {
-  // Additional display properties if needed
-}
+import { mockTests, speedTests } from '@/data/mockData';
+import { saveTestResult, getTestResults, getAllTestResults } from '@/lib/storage';
 
 const Tests = () => {
   const { student } = useAuth();
   const [activeTab, setActiveTab] = useState('mock-tests');
-  
-  // Fetch data using React Query hooks
-  const { data: mockTestsData, isLoading: mockTestsLoading, error: mockTestsError } = useMockTests();
-  const { data: speedTestsData, isLoading: speedTestsLoading, error: speedTestsError } = useSpeedTests();
-  const { data: testStats, isLoading: statsLoading } = useTestStatistics(student?.id);
-  
-  // Transform data for display
-  const mockTests: MockTestDisplay[] = (mockTestsData || []).map(test => ({
-    ...test,
-    timeLimit: `${Math.floor(test.time_limit / 60)}h ${test.time_limit % 60}m`
-  }));
-  
-  const speedTests: SpeedTestDisplay[] = speedTestsData || [];
-  
-  // Loading state
-  if (mockTestsLoading || speedTestsLoading || statsLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="flex items-center space-x-2">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span>Loading tests...</span>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-  
-  // Error state
-  if (mockTestsError || speedTestsError) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold mb-2">Error Loading Tests</h2>
-              <p className="text-muted-foreground">
-                {mockTestsError?.message || speedTestsError?.message || 'Failed to load test data'}
-              </p>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  const [mockTestDifficulty, setMockTestDifficulty] = useState('all');
+  const [speedTestSubject, setSpeedTestSubject] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Get all test results from localStorage
+  const allResults = getAllTestResults();
+
+  // Filter mock tests
+  const filteredMockTests = useMemo(() => {
+    return mockTests
+      .filter(test => {
+        const matchesDifficulty = mockTestDifficulty === 'all' || test.difficulty === mockTestDifficulty;
+        const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesDifficulty && matchesSearch;
+      })
+      .map(test => {
+        const testResults = getTestResults(test.id);
+        return {
+          ...test,
+          results: testResults,
+          isCompleted: testResults.length > 0,
+          bestScore: testResults.length > 0 ? Math.max(...testResults.map(r => r.score)) : 0,
+          averageScore: testResults.length > 0 ? Math.round(testResults.reduce((acc, r) => acc + r.score, 0) / testResults.length) : 0,
+          attemptCount: testResults.length
+        };
+      });
+  }, [mockTestDifficulty, searchQuery]);
+
+  // Filter speed tests
+  const filteredSpeedTests = useMemo(() => {
+    return speedTests
+      .filter(test => {
+        const matchesSubject = speedTestSubject === 'all' || test.subject === speedTestSubject;
+        const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesSubject && matchesSearch;
+      })
+      .map(test => {
+        const testResults = getTestResults(test.id);
+        return {
+          ...test,
+          results: testResults,
+          isCompleted: testResults.length > 0,
+          bestScore: testResults.length > 0 ? Math.max(...testResults.map(r => r.score)) : 0,
+          bestTime: testResults.length > 0 ? Math.min(...testResults.map(r => r.duration)) : 0,
+          averageAccuracy: testResults.length > 0 ? Math.round(testResults.reduce((acc, r) => acc + r.accuracy, 0) / testResults.length) : 0,
+          attemptCount: testResults.length
+        };
+      });
+  }, [speedTestSubject, searchQuery]);
+
+  // Calculate overall stats
+  const stats = {
+    totalMockTests: mockTests.length,
+    completedMockTests: mockTests.filter(t => getTestResults(t.id).length > 0).length,
+    totalSpeedTests: speedTests.length,
+    completedSpeedTests: speedTests.filter(t => getTestResults(t.id).length > 0).length,
+    averageMockScore: allResults.filter(r => {
+      const test = mockTests.find(t => t.id === r.testId);
+      return test && test.duration === 180;
+    }).length > 0 ? Math.round(allResults.filter(r => {
+      const test = mockTests.find(t => t.id === r.testId);
+      return test && test.duration === 180;
+    }).reduce((acc, r) => acc + r.score, 0) / allResults.filter(r => {
+      const test = mockTests.find(t => t.id === r.testId);
+      return test && test.duration === 180;
+    }).length) : 0,
+    averageSpeedAccuracy: allResults.filter(r => {
+      const test = speedTests.find(t => t.id === r.testId);
+      return test;
+    }).length > 0 ? Math.round(allResults.filter(r => {
+      const test = speedTests.find(t => t.id === r.testId);
+      return test;
+    }).reduce((acc, r) => acc + r.accuracy, 0) / allResults.filter(r => {
+      const test = speedTests.find(t => t.id === r.testId);
+      return test;
+    }).length) : 0
+  };
+
+  // Get unique subjects for speed test filter
+  const speedTestSubjects = ['all', ...new Set(speedTests.map(t => t.subject))];
+  const mockTestDifficulties = ['all', 'Easy', 'Medium', 'Hard'];
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -109,39 +124,25 @@ const Tests = () => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  const startMockTest = (testId: string) => {
+  const startMockTest = (testId: number) => {
+    // Mock implementation: navigate to test interface
     console.log('Starting mock test:', testId);
-    // Navigate to test interface
   };
 
-  const startSpeedTest = (testId: string) => {
+  const startSpeedTest = (testId: number) => {
+    // Mock implementation: navigate to speed test interface
     console.log('Starting speed test:', testId);
-    // Navigate to speed test interface
   };
 
-  const viewResults = (testId: string, type: 'mock' | 'speed') => {
+  const viewResults = (testId: number, type: 'mock' | 'speed') => {
+    // Mock implementation: navigate to results page
     console.log('Viewing results for:', type, testId);
-    // Navigate to results page
-  };
-
-  // Use real test stats from the hook or fallback to calculated values
-  const displayStats = testStats || {
-    totalMockTests: mockTests.length,
-    completedMockTests: mockTests.filter(t => t.is_completed).length,
-    totalSpeedTests: speedTests.length,
-    completedSpeedTests: speedTests.filter(t => t.is_completed).length,
-    averageMockScore: mockTests.length > 0 
-      ? Math.round(mockTests.reduce((acc, t) => acc + t.average_score, 0) / mockTests.length)
-      : 0,
-    averageSpeedAccuracy: speedTests.length > 0 
-      ? Math.round(speedTests.reduce((acc, t) => acc + t.average_accuracy, 0) / speedTests.length)
-      : 0
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -160,45 +161,45 @@ const Tests = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Mock Tests</p>
-                  <p className="text-2xl font-bold">{testStats.completedMockTests}/{testStats.totalMockTests}</p>
+                  <p className="text-2xl font-bold">{stats.completedMockTests}/{stats.totalMockTests}</p>
                 </div>
                 <Target className="h-8 w-8 text-primary" />
               </div>
-              <Progress value={(testStats.completedMockTests / testStats.totalMockTests) * 100} className="mt-2" />
+              <Progress value={(stats.completedMockTests / stats.totalMockTests) * 100} className="mt-2" />
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Speed Tests</p>
-                  <p className="text-2xl font-bold">{testStats.completedSpeedTests}/{testStats.totalSpeedTests}</p>
+                  <p className="text-2xl font-bold">{stats.completedSpeedTests}/{stats.totalSpeedTests}</p>
                 </div>
                 <Zap className="h-8 w-8 text-yellow-500" />
               </div>
-              <Progress value={(testStats.completedSpeedTests / testStats.totalSpeedTests) * 100} className="mt-2" />
+              <Progress value={(stats.completedSpeedTests / stats.totalSpeedTests) * 100} className="mt-2" />
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Avg Mock Score</p>
-                  <p className="text-2xl font-bold">{testStats.averageMockScore || 0}%</p>
+                  <p className="text-2xl font-bold">{stats.averageMockScore}%</p>
                 </div>
                 <Trophy className="h-8 w-8 text-orange-500" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Speed Accuracy</p>
-                  <p className="text-2xl font-bold">{testStats.averageSpeedAccuracy || 0}%</p>
+                  <p className="text-2xl font-bold">{stats.averageSpeedAccuracy}%</p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-green-500" />
               </div>
@@ -209,8 +210,8 @@ const Tests = () => {
         {/* Main Test Sections */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="mock-tests">Mock Tests</TabsTrigger>
-            <TabsTrigger value="speed-tests">Speed Tests</TabsTrigger>
+            <TabsTrigger value="mock-tests">Mock Tests ({mockTests.length})</TabsTrigger>
+            <TabsTrigger value="speed-tests">Speed Tests ({speedTests.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="mock-tests" className="space-y-6">
@@ -221,84 +222,98 @@ const Tests = () => {
                   Full-Length Mock Tests
                 </CardTitle>
                 <CardDescription>
-                  Complete GATE pattern tests with detailed analysis and performance tracking
+                  Complete GATE pattern tests (3 hours) with detailed analysis
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
+                {/* Search and Filter */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search tests..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground"
+                    />
+                  </div>
+                  <select
+                    value={mockTestDifficulty}
+                    onChange={(e) => setMockTestDifficulty(e.target.value)}
+                    className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                  >
+                    {mockTestDifficulties.map(diff => (
+                      <option key={diff} value={diff}>
+                        {diff === 'all' ? 'All Difficulties' : diff}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Tests Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {mockTests.map((test) => (
-                    <Card key={test.id} className="hover:shadow-lg transition-shadow">
+                  {filteredMockTests.map((test) => (
+                    <Card key={test.id} className="hover:shadow-lg transition-shadow flex flex-col">
                       <CardHeader className="pb-3">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <CardTitle className="text-lg leading-tight">{test.title}</CardTitle>
-                            <CardDescription className="mt-1">{test.description}</CardDescription>
+                            <CardTitle className="text-lg leading-tight">{test.name}</CardTitle>
+                            <CardDescription className="mt-1 text-xs">{test.description}</CardDescription>
                           </div>
-                          {test.is_completed && (
+                          {test.isCompleted && (
                             <CheckCircle className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
                           )}
                         </div>
                       </CardHeader>
-                      <CardContent className="space-y-4">
+                      <CardContent className="space-y-4 flex-1">
                         <div className="flex justify-between items-center">
                           <Badge className={getDifficultyColor(test.difficulty)}>
                             {test.difficulty}
                           </Badge>
                           <div className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Clock className="h-4 w-4" />
-                            {test.timeLimit}
+                            {test.duration}m
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
                             <p className="text-muted-foreground">Questions</p>
-                            <p className="font-medium">{test.total_questions}</p>
+                            <p className="font-medium">{test.totalQuestions}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground">Total Marks</p>
-                            <p className="font-medium">{test.total_marks}</p>
+                            <p className="font-medium">{test.totalMarks}</p>
                           </div>
                         </div>
-                        
-                        <div className="flex flex-wrap gap-1">
-                          {test.subjects.map((subject, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {subject}
-                            </Badge>
-                          ))}
-                        </div>
-                        
-                        {test.is_completed && test.best_score && (
+
+                        {test.isCompleted && (
                           <div className="bg-accent/50 p-3 rounded-lg">
                             <div className="flex justify-between items-center mb-2">
-                              <span className="text-sm font-medium">Your Best Score</span>
-                              <Badge variant="default">{test.best_score}%</Badge>
+                              <span className="text-sm font-medium">Best Score</span>
+                              <Badge variant="default">{test.bestScore}%</Badge>
                             </div>
-                            <Progress value={test.best_score} className="h-2" />
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Last attempted: {test.last_attempted}
-                            </p>
+                            <Progress value={test.bestScore} className="h-2" />
+                            <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                              <span>Avg: {test.averageScore}%</span>
+                              <span>{test.attemptCount} attempt{test.attemptCount !== 1 ? 's' : ''}</span>
+                            </div>
                           </div>
                         )}
-                        
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>{test.attempts.toLocaleString()} attempts</span>
-                          <span>Avg: {test.average_score}%</span>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button 
-                            onClick={() => startMockTest(test.id)} 
+
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            onClick={() => startMockTest(test.id)}
                             className="flex-1"
-                            variant={test.is_completed ? "outline" : "default"}
+                            variant={test.isCompleted ? "outline" : "default"}
                           >
                             <Play className="h-4 w-4 mr-1" />
-                            {test.is_completed ? 'Retake' : 'Start Test'}
+                            {test.isCompleted ? 'Retake' : 'Start Test'}
                           </Button>
-                          {test.is_completed && (
-                            <Button 
-                              onClick={() => viewResults(test.id, 'mock')} 
+                          {test.isCompleted && (
+                            <Button
+                              onClick={() => viewResults(test.id, 'mock')}
                               variant="ghost"
                               size="sm"
                             >
@@ -310,6 +325,12 @@ const Tests = () => {
                     </Card>
                   ))}
                 </div>
+
+                {filteredMockTests.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No tests matching your filters</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -325,24 +346,50 @@ const Tests = () => {
                   Quick topic-wise tests to improve your speed and accuracy
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
+                {/* Search and Filter */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search speed tests..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground"
+                    />
+                  </div>
+                  <select
+                    value={speedTestSubject}
+                    onChange={(e) => setSpeedTestSubject(e.target.value)}
+                    className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                  >
+                    {speedTestSubjects.map(subject => (
+                      <option key={subject} value={subject}>
+                        {subject === 'all' ? 'All Subjects' : subject}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Tests Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {speedTests.map((test) => (
-                    <Card key={test.id} className="hover:shadow-lg transition-shadow">
+                  {filteredSpeedTests.map((test) => (
+                    <Card key={test.id} className="hover:shadow-lg transition-shadow flex flex-col">
                       <CardHeader className="pb-3">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <CardTitle className="text-lg leading-tight">{test.title}</CardTitle>
+                            <CardTitle className="text-lg leading-tight">{test.name}</CardTitle>
                             <CardDescription className="mt-1">
                               {test.subject} • {test.topic}
                             </CardDescription>
                           </div>
-                          {test.is_completed && (
+                          {test.isCompleted && (
                             <CheckCircle className="h-5 w-5 text-green-500 ml-2 flex-shrink-0" />
                           )}
                         </div>
                       </CardHeader>
-                      <CardContent className="space-y-4">
+                      <CardContent className="space-y-4 flex-1">
                         <div className="flex justify-between items-center">
                           <Badge className={getDifficultyColor(test.difficulty)}>
                             {test.difficulty}
@@ -352,57 +399,46 @@ const Tests = () => {
                             {test.duration} min
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
                             <p className="text-muted-foreground">Questions</p>
-                            <p className="font-medium">{test.total_questions}</p>
+                            <p className="font-medium">{test.totalQuestions}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground">Accuracy</p>
-                            <p className="font-medium">{test.average_accuracy}%</p>
+                            <p className="font-medium">{test.averageAccuracy}%</p>
                           </div>
                         </div>
-                        
-                        {test.is_completed && test.best_score && test.best_time && (
+
+                        {test.isCompleted && (
                           <div className="bg-accent/50 p-3 rounded-lg">
                             <div className="flex justify-between items-center mb-2">
                               <span className="text-sm font-medium">Personal Best</span>
                               <div className="flex items-center gap-2">
-                                <Badge variant="default">{test.best_score}%</Badge>
-                                <Badge variant="outline">{formatTime(test.best_time)}</Badge>
+                                <Badge variant="default">{test.bestScore}%</Badge>
+                                <Badge variant="outline">{formatTime(test.bestTime)}</Badge>
                               </div>
                             </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-xs text-muted-foreground">Speed</span>
-                              <span className="text-xs text-muted-foreground">Accuracy</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2 mt-1">
-                              <Progress value={(test.duration * 60 - test.best_time) / (test.duration * 60) * 100} className="h-2" />
-                              <Progress value={test.best_score} className="h-2" />
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>Speed: {test.attemptCount} attempt{test.attemptCount !== 1 ? 's' : ''}</span>
+                              <span>{test.averageAccuracy}% avg</span>
                             </div>
                           </div>
                         )}
-                        
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>{test.attempts.toLocaleString()} attempts</span>
-                          {test.best_time && (
-                            <span>Best: {formatTime(test.best_time)}</span>
-                          )}
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button 
-                            onClick={() => startSpeedTest(test.id)} 
+
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            onClick={() => startSpeedTest(test.id)}
                             className="flex-1"
-                            variant={test.is_completed ? "outline" : "default"}
+                            variant={test.isCompleted ? "outline" : "default"}
                           >
                             <Zap className="h-4 w-4 mr-1" />
-                            {test.is_completed ? 'Retry' : 'Start'}
+                            {test.isCompleted ? 'Retry' : 'Start'}
                           </Button>
-                          {test.is_completed && (
-                            <Button 
-                              onClick={() => viewResults(test.id, 'speed')} 
+                          {test.isCompleted && (
+                            <Button
+                              onClick={() => viewResults(test.id, 'speed')}
                               variant="ghost"
                               size="sm"
                             >
@@ -414,6 +450,12 @@ const Tests = () => {
                     </Card>
                   ))}
                 </div>
+
+                {filteredSpeedTests.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No tests matching your filters</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -427,23 +469,26 @@ const Tests = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {[
-                    { name: 'Data Structures', tests: 12, icon: '🌳' },
-                    { name: 'Algorithms', tests: 8, icon: '⚡' },
-                    { name: 'Operating Systems', tests: 6, icon: '💻' },
-                    { name: 'Database Systems', tests: 5, icon: '🗄️' }
-                  ].map((category, index) => (
-                    <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{category.icon}</div>
-                        <h3 className="font-medium mb-1">{category.name}</h3>
-                        <p className="text-sm text-muted-foreground">{category.tests} speed tests</p>
-                        <Button variant="ghost" size="sm" className="mt-2">
-                          Explore <ChevronRight className="h-4 w-4 ml-1" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  {speedTestSubjects.filter(s => s !== 'all').map((subject, index) => {
+                    const subjectCount = speedTests.filter(t => t.subject === subject).length;
+                    return (
+                      <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
+                        <CardContent className="p-4 text-center">
+                          <div className="text-2xl mb-2">📋</div>
+                          <h3 className="font-medium mb-1">{subject}</h3>
+                          <p className="text-sm text-muted-foreground">{subjectCount} speed test{subjectCount !== 1 ? 's' : ''}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="mt-2"
+                            onClick={() => setSpeedTestSubject(subject)}
+                          >
+                            Explore <ChevronRight className="h-4 w-4 ml-1" />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

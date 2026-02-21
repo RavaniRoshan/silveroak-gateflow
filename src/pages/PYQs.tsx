@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,11 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  FileText, 
-  Download, 
-  Eye, 
-  Search, 
+import {
+  FileText,
+  Download,
+  Eye,
+  Search,
   Filter,
   Clock,
   Star,
@@ -22,151 +22,82 @@ import {
   BookOpen,
   TrendingUp
 } from 'lucide-react';
+import { paqPapers } from '@/data/mockData';
+import { saveBookmark, removeBookmark, getBookmarks, isBookmarked } from '@/lib/storage';
 
 interface PYQPaper {
-  id: string;
+  id: number;
+  branch: string;
   year: number;
-  session: 'Feb' | 'Oct';
-  subject: string;
+  topic: string;
+  title: string;
+  totalQuestions: number;
+  markingScheme: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
-  downloads: number;
-  views: number;
-  topics: string[];
-  duration: string;
-  marks: number;
-  isBookmarked: boolean;
-  pdfUrl: string;
-  solutionUrl?: string;
+  session: string;
+  syllabus: string[];
+  bookmark: boolean;
+  downloadCount: number;
 }
 
 const PYQs = () => {
   const { student } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState<string>('all');
   const [selectedYear, setSelectedYear] = useState<string>('all');
-  const [selectedSession, setSelectedSession] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
-  const [selectedTopic, setSelectedTopic] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'year' | 'downloads' | 'difficulty'>('year');
+  const [bookmarkedPapers, setBookmarkedPapers] = useState<Set<number>>(
+    new Set(getBookmarks('pyq'))
+  );
 
-  // Sample data - would come from API
-  const pyqPapers: PYQPaper[] = [
-    {
-      id: '1',
-      year: 2023,
-      session: 'Feb',
-      subject: 'Computer Science',
-      difficulty: 'Medium',
-      downloads: 2450,
-      views: 5620,
-      topics: ['Data Structures', 'Algorithms', 'Operating Systems', 'DBMS'],
-      duration: '3 hours',
-      marks: 100,
-      isBookmarked: true,
-      pdfUrl: '/papers/gate-2023-cs.pdf',
-      solutionUrl: '/solutions/gate-2023-cs-solutions.pdf'
-    },
-    {
-      id: '2',
-      year: 2023,
-      session: 'Oct',
-      subject: 'Computer Science',
-      difficulty: 'Hard',
-      downloads: 1890,
-      views: 4120,
-      topics: ['Computer Networks', 'Software Engineering', 'TOC', 'COA'],
-      duration: '3 hours',
-      marks: 100,
-      isBookmarked: false,
-      pdfUrl: '/papers/gate-2023-oct-cs.pdf',
-      solutionUrl: '/solutions/gate-2023-oct-cs-solutions.pdf'
-    },
-    {
-      id: '3',
-      year: 2022,
-      session: 'Feb',
-      subject: 'Computer Science',
-      difficulty: 'Medium',
-      downloads: 3120,
-      views: 7890,
-      topics: ['Data Structures', 'Algorithms', 'Mathematics', 'Digital Logic'],
-      duration: '3 hours',
-      marks: 100,
-      isBookmarked: true,
-      pdfUrl: '/papers/gate-2022-cs.pdf',
-      solutionUrl: '/solutions/gate-2022-cs-solutions.pdf'
-    },
-    {
-      id: '4',
-      year: 2021,
-      session: 'Feb',
-      subject: 'Computer Science',
-      difficulty: 'Easy',
-      downloads: 2780,
-      views: 6450,
-      topics: ['Programming', 'Data Structures', 'DBMS', 'Operating Systems'],
-      duration: '3 hours',
-      marks: 100,
-      isBookmarked: false,
-      pdfUrl: '/papers/gate-2021-cs.pdf'
-    },
-    {
-      id: '5',
-      year: 2020,
-      session: 'Feb',
-      subject: 'Computer Science',
-      difficulty: 'Hard',
-      downloads: 2340,
-      views: 5670,
-      topics: ['Algorithms', 'TOC', 'Compiler Design', 'Computer Networks'],
-      duration: '3 hours',
-      marks: 100,
-      isBookmarked: false,
-      pdfUrl: '/papers/gate-2020-cs.pdf',
-      solutionUrl: '/solutions/gate-2020-cs-solutions.pdf'
+  // Get unique branches, years from mockData
+  const branches = useMemo(() => [...new Set(paqPapers.map(p => p.branch))].sort(), []);
+  const years = useMemo(() => [...new Set(paqPapers.map(p => p.year))].sort((a, b) => b - a), []);
+
+  const filteredPapers = useMemo(() => {
+    return paqPapers
+      .filter(paper => {
+        const matchesSearch =
+          paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          paper.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          paper.branch.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesBranch = selectedBranch === 'all' || paper.branch === selectedBranch;
+        const matchesYear = selectedYear === 'all' || paper.year.toString() === selectedYear;
+        const matchesDifficulty = selectedDifficulty === 'all' || paper.difficulty === selectedDifficulty;
+
+        return matchesSearch && matchesBranch && matchesYear && matchesDifficulty;
+      })
+      .sort((a, b) => {
+        switch (sortBy) {
+          case 'year':
+            return b.year - a.year;
+          case 'downloads':
+            return b.downloadCount - a.downloadCount;
+          case 'difficulty': {
+            const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+            return difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty];
+          }
+          default:
+            return 0;
+        }
+      });
+  }, [searchTerm, selectedBranch, selectedYear, selectedDifficulty, sortBy]);
+
+  const toggleBookmark = (paperId: number) => {
+    const isCurrentlyBookmarked = bookmarkedPapers.has(paperId);
+    const newBookmarked = new Set(bookmarkedPapers);
+
+    if (isCurrentlyBookmarked) {
+      newBookmarked.delete(paperId);
+      removeBookmark('pyq', paperId);
+    } else {
+      newBookmarked.add(paperId);
+      saveBookmark('pyq', paperId);
     }
-  ];
 
-  const allTopics = [...new Set(pyqPapers.flatMap(paper => paper.topics))];
-  const years = [...new Set(pyqPapers.map(paper => paper.year))].sort((a, b) => b - a);
-
-  const filteredPapers = pyqPapers.filter(paper => {
-    const matchesSearch = paper.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         paper.topics.some(topic => topic.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesYear = selectedYear === 'all' || paper.year.toString() === selectedYear;
-    const matchesSession = selectedSession === 'all' || paper.session === selectedSession;
-    const matchesDifficulty = selectedDifficulty === 'all' || paper.difficulty === selectedDifficulty;
-    const matchesTopic = selectedTopic === 'all' || paper.topics.includes(selectedTopic);
-
-    return matchesSearch && matchesYear && matchesSession && matchesDifficulty && matchesTopic;
-  }).sort((a, b) => {
-    switch (sortBy) {
-      case 'year':
-        return b.year - a.year;
-      case 'downloads':
-        return b.downloads - a.downloads;
-      case 'difficulty': {
-        const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
-        return difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty];
-      }
-      default:
-        return 0;
-    }
-  });
-
-  const toggleBookmark = (paperId: string) => {
-    // API call to toggle bookmark
-    console.log('Toggling bookmark for paper:', paperId);
-  };
-
-  const downloadPaper = (paper: PYQPaper) => {
-    // API call to track download and initiate download
-    console.log('Downloading paper:', paper.id);
-  };
-
-  const viewPaper = (paper: PYQPaper) => {
-    // Open PDF viewer
-    console.log('Viewing paper:', paper.id);
+    setBookmarkedPapers(newBookmarked);
   };
 
   const getDifficultyColor = (difficulty: string) => {
@@ -178,18 +109,29 @@ const PYQs = () => {
     }
   };
 
+  const getBranchIcon = (branch: string) => {
+    const icons: Record<string, string> = {
+      'CS': '💻',
+      'ME': '⚙️',
+      'EE': '⚡',
+      'EC': '🔌',
+      'CE': '🏗️'
+    };
+    return icons[branch] || '📄';
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Past Year Questions (PYQs)
+            Previous Year Questions (PYQs)
           </h1>
           <p className="text-muted-foreground">
-            Last 5 years of GATE papers for {student?.department?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            Access 30+ GATE papers across all 5 branches (CS, ME, EE, EC, CE) from 2019-2024
           </p>
         </div>
 
@@ -200,43 +142,43 @@ const PYQs = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Papers</p>
-                  <p className="text-2xl font-bold">{pyqPapers.length}</p>
+                  <p className="text-2xl font-bold">{paqPapers.length}</p>
                 </div>
                 <FileText className="h-8 w-8 text-primary" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Years Covered</p>
-                  <p className="text-2xl font-bold">2019-2023</p>
+                  <p className="text-sm font-medium text-muted-foreground">Branches</p>
+                  <p className="text-2xl font-bold">{branches.length}</p>
                 </div>
-                <Calendar className="h-8 w-8 text-blue-500" />
+                <BookOpen className="h-8 w-8 text-blue-500" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Bookmarked</p>
-                  <p className="text-2xl font-bold">{pyqPapers.filter(p => p.isBookmarked).length}</p>
+                  <p className="text-2xl font-bold">{bookmarkedPapers.size}</p>
                 </div>
                 <Bookmark className="h-8 w-8 text-yellow-500" />
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Downloads</p>
-                  <p className="text-2xl font-bold">{pyqPapers.reduce((sum, p) => sum + p.downloads, 0).toLocaleString()}</p>
+                  <p className="text-2xl font-bold">{paqPapers.reduce((sum, p) => sum + p.downloadCount, 0).toLocaleString()}</p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-green-500" />
               </div>
@@ -267,7 +209,24 @@ const PYQs = () => {
                   />
                 </div>
               </div>
-              
+
+              <div>
+                <Label>Branch</Label>
+                <Select value={selectedBranch} onValueChange={setSelectedBranch}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Branches" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Branches</SelectItem>
+                    {branches.map(branch => (
+                      <SelectItem key={branch} value={branch}>
+                        {branch}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
               <div>
                 <Label>Year</Label>
                 <Select value={selectedYear} onValueChange={setSelectedYear}>
@@ -282,21 +241,7 @@ const PYQs = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
-              <div>
-                <Label>Session</Label>
-                <Select value={selectedSession} onValueChange={setSelectedSession}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Sessions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Sessions</SelectItem>
-                    <SelectItem value="Feb">February</SelectItem>
-                    <SelectItem value="Oct">October</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
+
               <div>
                 <Label>Difficulty</Label>
                 <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
@@ -311,7 +256,7 @@ const PYQs = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label>Sort By</Label>
                 <Select value={sortBy} onValueChange={(value: 'year' | 'downloads' | 'difficulty') => setSortBy(value)}>
@@ -359,17 +304,20 @@ const PYQs = () => {
                 <Card key={paper.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">GATE {paper.year}</CardTitle>
-                        <CardDescription>{paper.session} Session</CardDescription>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{getBranchIcon(paper.branch)}</span>
+                        <div>
+                          <CardTitle className="text-lg">{paper.branch} {paper.year}</CardTitle>
+                          <CardDescription>{paper.topic}</CardDescription>
+                        </div>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleBookmark(paper.id)}
-                        className={paper.isBookmarked ? 'text-yellow-500' : 'text-muted-foreground'}
+                        className={bookmarkedPapers.has(paper.id) ? 'text-yellow-500' : 'text-muted-foreground'}
                       >
-                        {paper.isBookmarked ? <Star className="h-4 w-4 fill-current" /> : <Star className="h-4 w-4" />}
+                        {bookmarkedPapers.has(paper.id) ? <Star className="h-4 w-4 fill-current" /> : <Star className="h-4 w-4" />}
                       </Button>
                     </div>
                   </CardHeader>
@@ -381,44 +329,24 @@ const PYQs = () => {
                         </Badge>
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Clock className="h-4 w-4" />
-                          {paper.duration}
+                          3 hours
                         </div>
                       </div>
-                      
-                      <div className="flex flex-wrap gap-1">
-                        {paper.topics.slice(0, 3).map((topic, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {topic}
-                          </Badge>
-                        ))}
-                        {paper.topics.length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{paper.topics.length - 3} more
-                          </Badge>
-                        )}
+
+                      <div className="text-xs space-y-1">
+                        <p className="text-muted-foreground">{paper.totalQuestions} questions • {paper.markingScheme}</p>
+                        <p className="text-muted-foreground">{paper.downloadCount.toLocaleString()} downloads</p>
                       </div>
-                      
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{paper.downloads.toLocaleString()} downloads</span>
-                        <span>{paper.views.toLocaleString()} views</span>
-                      </div>
-                      
+
                       <div className="flex gap-2">
-                        <Button size="sm" onClick={() => viewPaper(paper)} className="flex-1">
+                        <Button size="sm" className="flex-1">
                           <Eye className="h-4 w-4 mr-1" />
                           View
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => downloadPaper(paper)}>
+                        <Button size="sm" variant="outline">
                           <Download className="h-4 w-4" />
                         </Button>
                       </div>
-                      
-                      {paper.solutionUrl && (
-                        <Button size="sm" variant="ghost" className="w-full text-xs">
-                          <BookOpen className="h-4 w-4 mr-1" />
-                          Solutions Available
-                        </Button>
-                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -431,16 +359,15 @@ const PYQs = () => {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
+                        <span className="text-2xl">{getBranchIcon(paper.branch)}</span>
                         <div>
-                          <h3 className="font-semibold">GATE {paper.year} - {paper.session} Session</h3>
+                          <h3 className="font-semibold">{paper.branch} {paper.year} - {paper.topic}</h3>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge className={getDifficultyColor(paper.difficulty)}>
                               {paper.difficulty}
                             </Badge>
-                            <span className="text-sm text-muted-foreground">{paper.duration}</span>
-                            <span className="text-sm text-muted-foreground">
-                              {paper.downloads.toLocaleString()} downloads
-                            </span>
+                            <span className="text-sm text-muted-foreground">{paper.totalQuestions} questions</span>
+                            <span className="text-sm text-muted-foreground">{paper.downloadCount.toLocaleString()} downloads</span>
                           </div>
                         </div>
                       </div>
@@ -449,15 +376,15 @@ const PYQs = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => toggleBookmark(paper.id)}
-                          className={paper.isBookmarked ? 'text-yellow-500' : 'text-muted-foreground'}
+                          className={bookmarkedPapers.has(paper.id) ? 'text-yellow-500' : 'text-muted-foreground'}
                         >
-                          {paper.isBookmarked ? <Star className="h-4 w-4 fill-current" /> : <Star className="h-4 w-4" />}
+                          {bookmarkedPapers.has(paper.id) ? <Star className="h-4 w-4 fill-current" /> : <Star className="h-4 w-4" />}
                         </Button>
-                        <Button size="sm" onClick={() => viewPaper(paper)}>
+                        <Button size="sm">
                           <Eye className="h-4 w-4 mr-1" />
                           View
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => downloadPaper(paper)}>
+                        <Button size="sm" variant="outline">
                           <Download className="h-4 w-4" />
                         </Button>
                       </div>
